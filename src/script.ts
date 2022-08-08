@@ -142,6 +142,25 @@ app.delete('/users/logout', async (req: Request, res: Response) => {
     res.status(200).send("Logged out successfully");
 });
 
+// Authentication function
+function authenticateToken(req: Request, res: Response, next: NextFunction) {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    if (token == null) return res.sendStatus(401)
+    
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string, (err, user) =>{
+        if (err) {
+            return res.status(403).send("Token is invalid or has expired, please login again")
+        }
+        req.body.user = user
+        next()
+    });
+};
+
+// Token Generation function
+function generateToken(userid: string){
+    return jwt.sign({id: userid}, process.env.ACCESS_TOKEN_SECRET as string, {expiresIn: '30m'});
+};
 
 
 // PORT listen
