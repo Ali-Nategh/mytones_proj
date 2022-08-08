@@ -124,6 +124,23 @@ app.post('/users/refreshtoken', async (req: Request, res: Response) =>{
 });
 
 
+// DELETE '/users/logout'
+app.delete('/users/logout', async (req: Request, res: Response) => {
+    const refresh_Token = req.body.token
+    if (refresh_Token == null) return res.status(400).send("Please include a refresh token");
+
+    const refreshtoken = await prisma.refreshToken.findUnique({
+        where: {id: refresh_Token}
+    });
+    if (refreshtoken == null) return res.status(404).send("Refresh token not found");
+    if (refreshtoken.valid == false) return res.status(403).send("Already logged out");
+
+    await prisma.refreshToken.update({
+        where: {id: refresh_Token},
+        data: {valid: false}
+    });
+    res.status(200).send("Logged out successfully");
+});
 
 
 
