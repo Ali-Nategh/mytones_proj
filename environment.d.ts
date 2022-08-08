@@ -1,11 +1,9 @@
-import { Secret } from "jsonwebtoken";
-
 // Making .env usable in typescript
 declare global {
     namespace NodeJS {
         interface ProcessEnv {
-            ACCESS_TOKEN_SECRET: Secret;
-            REFRESH_TOKEN_SECRET: Secret;
+            ACCESS_TOKEN_SECRET: string | undefined;
+            REFRESH_TOKEN_SECRET: string | undefined;
             DATABASE_URL: string;
         }
     }
