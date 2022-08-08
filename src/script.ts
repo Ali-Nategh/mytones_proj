@@ -81,6 +81,33 @@ app.post('/users/signup', async (req: Request, res: Response) => {
     };
 });
 
+// POST '/users/login'
+app.post('/users/login', async (req: Request, res: Response) => {
+    const user = null || await prisma.user.findUnique({
+        where: {email: req.body.email}
+    });
+    if (user == null){
+        return res.status(400).send('Cannot find user');
+    };
+    try {
+        if (await bcrypt.compare(req.body.password, user.password)){
+            const accessToken = generateToken(user.id)
+            const refresh_token = await prisma.refreshToken.update({
+                where: {userId: user.id},
+                data: {valid: true}
+            });
+            res.json({accessToken: accessToken, refresh_token: refresh_token.id});
+        } else {
+            res.send('Not Allowed');
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Server Error");
+    };
+});
+
+
+
 
 
 // PORT listen
