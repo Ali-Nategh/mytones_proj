@@ -27,6 +27,11 @@ async function getMembers(res: Response) {
     res.send(users);
 };
 
+// GET '/' route (HomePage)
+app.get('/', (req: Request, res: Response, next: NextFunction) => {
+    res.send("Home Page");
+});
+
 
 
 // PORT listen
