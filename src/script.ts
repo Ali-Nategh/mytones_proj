@@ -106,6 +106,23 @@ app.post('/users/login', async (req: Request, res: Response) => {
     };
 });
 
+// POST '/users/refreshtoken'
+app.post('/users/refreshtoken', async (req: Request, res: Response) =>{
+    const refreshToken = req.body.token;
+    if (refreshToken == null) return res.status(400).send("Please include a refresh token");
+    const refresh_token = await prisma.refreshToken.findUnique({
+        where: {id: refreshToken}
+    });
+    if (refresh_token == null) return res.status(404).send("Refresh token not found");
+    if (refresh_token.valid == false) return res.status(403).send("Refresh token is not active, please login");
+    
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string, (err: VerifyErrors | null, user: any) => {
+        if (err) return res.sendStatus(403);
+        const accessToken = generateToken(user);
+        res.json({accessToken: accessToken});
+    });
+});
+
 
 
 
