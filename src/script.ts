@@ -16,6 +16,17 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 
+// A function getting members from the Database
+async function getMembers(res: Response) {
+    const users = await prisma.user.findMany({
+        select: {
+            name: true,
+            email: true
+        }
+    })
+    res.send(users);
+};
+
 
 
 // PORT listen
