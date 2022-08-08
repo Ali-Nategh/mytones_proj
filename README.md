@@ -18,6 +18,7 @@ Features:
     
     
  -Verify Email
+ 
     Coming soon ...
     
     
