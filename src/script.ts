@@ -26,11 +26,18 @@ async function getMembers(res: Response) {
     })
     res.send(users);
 };
+// A delete all function, JUST FOR TESTING
+async function deleting(){
+    const del = await prisma.user.deleteMany();
+};
+
+
 
 // GET '/' route (HomePage)
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
     res.send("Home Page");
 });
+
 
 // GET '/admin/get_members' to bring back all the members (JUST FOR TESTING)
 app.get('/admin/get_members', authenticateToken, async (req: Request, res: Response) => {
@@ -42,6 +49,7 @@ app.get('/admin/get_members', authenticateToken, async (req: Request, res: Respo
             await prisma.$disconnect()
         });
 });
+
 
 // POST '/users/signup' adding a member to the Database
 app.post('/users/signup', async (req: Request, res: Response) => {
@@ -123,7 +131,6 @@ app.post('/users/refreshtoken', async (req: Request, res: Response) =>{
     });
 });
 
-
 // DELETE '/users/logout'
 app.delete('/users/logout', async (req: Request, res: Response) => {
     const refresh_Token = req.body.token
@@ -141,6 +148,7 @@ app.delete('/users/logout', async (req: Request, res: Response) => {
     });
     res.status(200).send("Logged out successfully");
 });
+
 
 // Authentication function
 function authenticateToken(req: Request, res: Response, next: NextFunction) {
