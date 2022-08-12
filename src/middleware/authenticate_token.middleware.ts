@@ -1,5 +1,5 @@
 import {Request, Response, NextFunction} from 'express';
-import { jwtVerify } from "../controllers/JwtGenerate";
+import { jwtVerify } from "../utils/jwt_generate";
 
 export default function authenticateToken(req: Request, res: Response, next: NextFunction) {
     const authHeader = req.headers['authorization']

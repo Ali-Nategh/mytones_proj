@@ -13,11 +13,11 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 
-import userRoute from './api/routes/User';
+import userRoute from './routes/user.routes';
 app.use('/user', userRoute)
 
 
-import homeRoute from './api/routes/Home';
+import homeRoute from './routes/home.routes';
 app.use('/', homeRoute);
 
 
@@ -113,7 +113,7 @@ app.use('/', homeRoute);
 
 
 // Authentication function
-import authenticateToken from './api/Middleware/AuthenticateToken';
+import authenticateToken from './middleware/authenticate_token.middleware';
 
 // function authenticateToken(req: Request, res: Response, next: NextFunction) {
 //     const authHeader = req.headers['authorization']
@@ -130,7 +130,7 @@ import authenticateToken from './api/Middleware/AuthenticateToken';
 // };
 
 // Token Generation function
-import { jwtAccessGen as generateToken } from './api/controllers/JwtGenerate'
+import { jwtAccessGen as generateToken } from './utils/jwt_generate'
 
 
 // PORT listen

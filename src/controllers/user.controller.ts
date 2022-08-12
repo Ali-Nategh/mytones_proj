@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import hashPass from "./HashPass";
-import { jwtRefreshGen } from "./JwtGenerate";
-import { PrismaUserCreation } from "../../config/PrismaUser";
+import hashPass from "../utils/hash_pass";
+import { jwtRefreshGen } from "../utils/jwt_generate";
+import { PrismaUserCreation } from "../config/prisma_user";
 
-import User from "../models/UserModel";
+import User from "../models/user";
 
 export async function signUpUser(req: Request, res: Response){
     try {
