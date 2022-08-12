@@ -113,7 +113,7 @@ app.use('/', homeRoute);
 
 
 // Authentication function
-import authenticateToken from './middleware/authenticate_token.middleware';
+import authenticateToken from './middleware/authenticateToken.middleware';
 
 // function authenticateToken(req: Request, res: Response, next: NextFunction) {
 //     const authHeader = req.headers['authorization']
@@ -130,7 +130,7 @@ import authenticateToken from './middleware/authenticate_token.middleware';
 // };
 
 // Token Generation function
-import { jwtAccessGen as generateToken } from './utils/jwt_generate'
+import { jwtAccessGen as generateToken } from './utils/jwtGenerate'
 
 
 // PORT listen

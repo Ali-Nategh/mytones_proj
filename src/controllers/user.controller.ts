@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import hashPass from "../utils/hash_pass";
-import { jwtRefreshGen } from "../utils/jwt_generate";
-import { PrismaUserCreation } from "../config/prisma_user";
+import hashPass from "../utils/hashPass";
+import { jwtRefreshGen } from "../utils/jwtGenerate";
+import { PrismaUserCreation } from "../repositories/user.repository";
 
 import User from "../models/user";
 
