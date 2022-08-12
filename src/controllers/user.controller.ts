@@ -4,14 +4,20 @@ import { jwtRefreshGen } from "../utils/jwtGenerate";
 import { createUser } from "../services/user.service";
 
 import User from "../models/user";
+import { validationResult } from "express-validator";
 
 export async function signUpUser(req: Request, res: Response){
     
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    
     const hashedPassword = await hashPass(req.body.password);
     // Get user info from request body and create a user object
-    const user = new User(req.body.name, req.body.email, hashedPassword, req.body.age);
+    const user = new User(req.body.username, req.body.email, hashedPassword, req.body.age);
     // Generate a refreshToken for this user
-    const refresh_token:string = jwtRefreshGen(user.name, user.email);
+    const refresh_token:string = jwtRefreshGen(user.username, user.email);
  
     try {
         // Adding user to Database
@@ -26,3 +32,15 @@ export async function signUpUser(req: Request, res: Response){
         return res.status(500).send();
     };
 };
+
+export async function loginUser(req: Request, res: Response){
+
+}
+
+export async function refreshUserToken(req: Request, res: Response){
+
+}
+
+export async function logoutUser(req: Request, res: Response){
+    
+}

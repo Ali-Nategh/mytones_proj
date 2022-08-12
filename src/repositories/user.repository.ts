@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 export async function PrismaUserCreation(name: string, email: string, password: string, refresh_token: string, age?: any) {
     const user = await prisma.user.create({   
         data: {
-            name: name,
+            username: name,
             email: email,
             password: password,
             age: age,

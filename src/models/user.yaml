@@ -2,7 +2,7 @@
 
 User:
   id: null
-  name: null
+  username: null
   password: null
   email: null
   age: null

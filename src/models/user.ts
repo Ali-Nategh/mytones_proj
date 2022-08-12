@@ -1,6 +1,6 @@
 export default class User {
     id: any = undefined;
-    name:string;
+    username:string;
     password:string;
     email:string;
     age:any;
@@ -8,9 +8,9 @@ export default class User {
     refreshToken:string = "";
 
     constructor(name:string, email:string, password:string, age?:number) {
-        this.name = name;
-        this.email = email;
+        this.username = name;
         this.password = password;
+        this.email = email;
         this.age = age;
     }
 }
