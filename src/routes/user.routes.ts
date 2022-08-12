@@ -5,8 +5,16 @@ import { signUpUser,  } from '../controllers/user.controller';
 
 
 
-// POST '/users/signup' adding a member to the Database
+// POST '/user/signup' adding a member to the Database
 router.post('/signup', signUpUser);
 
+// // POST '/user/login'
+// router.post('/login', loginUser);
+
+// // POST '/user/refreshtoken'
+// router.post('/refreshtoken', refreshUserToken);
+
+// // DELETE '/user/logout'
+// router.delete('/logout', logoutUser);
 
 export default router;

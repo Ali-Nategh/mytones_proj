@@ -37,7 +37,7 @@ export async function PrismaDeleteAllUsers() {
 };
 
 
-export async function PrismaActiveRefreshToken(id: string) {
+export async function PrismaActivateRefreshToken(id: string) {
     await prisma.refreshToken.update({
         where: {userId: id},
         data: {valid: true}

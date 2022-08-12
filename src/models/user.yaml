@@ -1,0 +1,9 @@
+# Testing
+
+User:
+  id: null
+  name: null
+  password: null
+  email: null
+  age: null
+  refreshToken: null
