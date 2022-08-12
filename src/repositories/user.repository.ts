@@ -35,3 +35,18 @@ export async function PrismaGetAllUsers() {
 export async function PrismaDeleteAllUsers() {
     await prisma.user.deleteMany({});
 };
+
+
+export async function PrismaActiveRefreshToken(id: string) {
+    await prisma.refreshToken.update({
+        where: {userId: id},
+        data: {valid: true}
+    });
+};
+
+export async function PrismaDeactivateRefreshToken(refreshToken: string) {
+    prisma.refreshToken.update({
+        where: {id: refreshToken},
+        data: {valid: false}
+    });
+};

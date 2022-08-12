@@ -18,10 +18,9 @@ export async function signUpUser(req: Request, res: Response){
         
         // Add user to Database
         const user_data = await PrismaUserCreation(user.name, user.email, hashedPassword, refresh_token, user?.age);
-        // user.id = user_data.id || null;
-        // user.refreshToken = refresh_token || "";
+
         console.log(user_data);
-        // console.log(hashedPassword, user, refresh_token);
+
         res.status(201).send("User Created Successfully");
     } catch (error){
         if (String(error).includes('email')){
