@@ -2,7 +2,7 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
-export async function PrismaUserCreation (name: string, email: string, password: string, refresh_token: string, age?: any) {
+export async function PrismaUserCreation(name: string, email: string, password: string, refresh_token: string, age?: any) {
     const user = await prisma.user.create({   
         data: {
             name: name,
@@ -20,7 +20,7 @@ export async function PrismaUserCreation (name: string, email: string, password:
     return user;
 };
 
-export async function PrismaGetAllUsers (){
+export async function PrismaGetAllUsers() {
     const users = await prisma.user.findMany({
         // select: {
         //     name: true,
@@ -32,4 +32,6 @@ export async function PrismaGetAllUsers (){
 
 
 
-export async function PrismaDeleteAllUsers () {await prisma.user.deleteMany({});};
+export async function PrismaDeleteAllUsers() {
+    await prisma.user.deleteMany({});
+};

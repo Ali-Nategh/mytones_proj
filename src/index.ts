@@ -21,21 +21,6 @@ import homeRoute from './routes/home.routes';
 app.use('/', homeRoute);
 
 
-// // A function getting members from the Database
-// async function getMembers(res: Response) {
-//     const users = await prisma.user.findMany({
-//         select: {
-//             name: true,
-//             email: true
-//         }
-//     })
-//     res.send(users);
-// };
-// // A delete all function, JUST FOR TESTING
-// async function deleting(){
-//     const del = await prisma.user.deleteMany();
-// };
-
 
 // // GET '/admin/get_members' to bring back all the members (JUST FOR TESTING)
 // app.get('/admin/get_members', authenticateToken, async (req: Request, res: Response) => {
@@ -51,8 +36,8 @@ app.use('/', homeRoute);
 
 
 
-// // POST '/users/login'
-// app.post('/users/login', async (req: Request, res: Response) => {
+// // POST '/user/login'
+// app.post('/user/login', async (req: Request, res: Response) => {
 //     const user = null || await prisma.user.findUnique({
 //         where: {email: req.body.email}
 //     });
@@ -76,8 +61,8 @@ app.use('/', homeRoute);
 //     };
 // });
 
-// // POST '/users/refreshtoken'
-// app.post('/users/refreshtoken', async (req: Request, res: Response) =>{
+// // POST '/user/refreshtoken'
+// app.post('/user/refreshtoken', async (req: Request, res: Response) =>{
 //     const refreshToken = req.body.token;
 //     if (refreshToken == null) return res.status(400).send("Please include a refresh token");
 //     const refresh_token = await prisma.refreshToken.findUnique({
@@ -93,8 +78,8 @@ app.use('/', homeRoute);
 //     });
 // });
 
-// // DELETE '/users/logout'
-// app.delete('/users/logout', async (req: Request, res: Response) => {
+// // DELETE '/user/logout'
+// app.delete('/user/logout', async (req: Request, res: Response) => {
 //     const refresh_Token = req.body.token
 //     if (refresh_Token == null) return res.status(400).send("Please include a refresh token");
 
