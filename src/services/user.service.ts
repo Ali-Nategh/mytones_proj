@@ -1,5 +1,5 @@
 import { PrismaUserCreation } from "../repositories/user.repository";
-import { check, validationResult } from 'express-validator';
+import { check } from 'express-validator';
 import User from "../models/user";
 
 export async function createUser(user: User, refresh_token: string){
@@ -25,5 +25,11 @@ export function validatePassword(){
 }
 export function validateAge(age: number){
     return (100 > age && age > 10)
+}
+
+export function validateRefreshToken(){
+    return check('token', 'Refresh token was invalid or not found.')
+        .isJWT()
+        .exists()
 }
 

@@ -1,28 +1,26 @@
 import { Request, Response } from "express";
-import hashPass from "../utils/hashPass";
-import { jwtRefreshGen } from "../utils/jwtGenerate";
-import { createUser } from "../services/user.service";
-
-import User from "../models/user";
 import { validationResult } from "express-validator";
 
+import { createUser } from "../services/user.service";
+import { jwtRefreshGen } from "../utils/jwtGenerate";
+import hashPass from "../utils/hashPass";
+import User from "../models/user";
+
+
 export async function signUpUser(req: Request, res: Response){
-    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    
     const hashedPassword = await hashPass(req.body.password);
     // Get user info from request body and create a user object
     const user = new User(req.body.username, req.body.email, hashedPassword, req.body.age);
     // Generate a refreshToken for this user
     const refresh_token:string = jwtRefreshGen(user.username, user.email);
- 
+
     try {
         // Adding user to Database
         const user_data = await createUser(user, refresh_token);
-
         console.log(user_data);
         return res.status(201).send("User Created Successfully");
     } catch (error){
@@ -33,14 +31,17 @@ export async function signUpUser(req: Request, res: Response){
     };
 };
 
+
 export async function loginUser(req: Request, res: Response){
 
 }
+
 
 export async function refreshUserToken(req: Request, res: Response){
 
 }
 
+
 export async function logoutUser(req: Request, res: Response){
-    
+
 }
