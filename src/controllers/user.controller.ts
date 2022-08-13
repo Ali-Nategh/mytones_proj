@@ -1,13 +1,15 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
 
 import { createUser } from "../services/user.service";
 import { jwtRefreshGen } from "../utils/jwtGenerate";
+import ApiError from "../models/ApiError";
 import hashPass from "../utils/hashPass";
 import User from "../models/user";
+import { nextTick } from "process";
 
 
-export async function signUpUser(req: Request, res: Response){
+export async function signUpUser(req: Request, res: Response, next: NextFunction){
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -25,9 +27,12 @@ export async function signUpUser(req: Request, res: Response){
         return res.status(201).send("User Created Successfully");
     } catch (error){
         if (String(error).includes('email')){
-            res.status(400).send("Email already exists");
+            // res.status(400).send("Email already exists");
+            next(ApiError.badRequest('Email already exists'));
+            return;
         }
-        return res.status(500).send();
+        next(ApiError.internalError('Something went wrong creating user')); 
+        return;
     };
 };
 

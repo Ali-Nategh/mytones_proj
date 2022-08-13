@@ -3,39 +3,40 @@ require('dotenv').config()
 
 // Importing Express, Bcrypt & JWT 
 import express, {Application, Request, Response, NextFunction} from 'express';
-import jwt, { VerifyErrors} from 'jsonwebtoken';
+import jwt, { VerifyErrors } from 'jsonwebtoken';
 
 // Initialize the App and Port
 const app: Application = express();
 const PORT = process.env.PORT || 5000;
 
-// This is used so we can get json request body
+// Used so we can get json request body
 app.use(express.json());
 
+// Logger
+import morgan from 'morgan';
+app.use(morgan('dev'))
 
+
+// home page Router
+import homeRoute from './routes/home.routes';
+app.use('/', homeRoute);
+
+// user Router
 import userRoute from './routes/user.routes';
 app.use('/user', userRoute)
 
 
-import homeRoute from './routes/home.routes';
-app.use('/', homeRoute);
+// Error handling
+import {apiErrorHandler} from './middleware/apiErrorHandler.middleware'
+import ApiError from './models/ApiError'
 
-// // Error handling
-import morgan from 'morgan';
-app.use(morgan('dev'))
-// app.use((req: Request, res: Response, next: NextFunction) => {
-//     let error = new Error('Not Found');
-//     error. = 404;
-//     next(error);
-// })
-// app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
-//     res.status(error.status || 500);
-//     res.json({
-//         error: {
-//             message: error.message
-//         }
-//     })
-// })
+app.use((req: Request, res: Response, next: NextFunction) => {
+    next(ApiError.badRequest('Page not found'));
+})
+app.use(apiErrorHandler)
+
+
+
 
 // // GET '/admin/get_members' to bring back all the members (JUST FOR TESTING)
 // app.get('/admin/get_members', authenticateToken, async (req: Request, res: Response) => {
