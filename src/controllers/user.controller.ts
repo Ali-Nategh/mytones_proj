@@ -6,13 +6,12 @@ import { jwtRefreshGen } from "../utils/jwtGenerate";
 import ApiError from "../models/ApiError";
 import hashPass from "../utils/hashPass";
 import User from "../models/user";
-import { nextTick } from "process";
 
 
 export async function signUpUser(req: Request, res: Response, next: NextFunction){
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({ errors: errors.array() });
     }
     const hashedPassword = await hashPass(req.body.password);
     // Get user info from request body and create a user object

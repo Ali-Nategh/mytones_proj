@@ -1,7 +1,7 @@
 import ApiError from "../models/ApiError";
 import { Request, Response, NextFunction } from 'express';
 
-export function apiErrorHandler(err: { code: number; message: any; }, req: Request, res: Response, next: NextFunction) {
+export function apiErrorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
     // better use library winston or bunja
     console.error(err);
 
