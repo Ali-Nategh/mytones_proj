@@ -27,13 +27,14 @@ app.use('/user', userRoute)
 
 
 // Error handling
-import {apiErrorHandler} from './middleware/apiErrorHandler.middleware'
-import ApiError from './models/ApiError'
+import { logError, returnError } from './errors/errorHandler';
+import Api400Error from './errors/api400Error'
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-    next(ApiError.badRequest('Page not found'));
+    next(new Api400Error('Page not found'));
 })
-app.use(apiErrorHandler)
+app.use(logError)
+app.use(returnError)
 
 
 

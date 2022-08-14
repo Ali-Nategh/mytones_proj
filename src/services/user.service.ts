@@ -2,10 +2,23 @@ import { PrismaUserCreation } from "../repositories/user.repository";
 import { check } from 'express-validator';
 import User from "../models/user";
 
+
+
+
+
+
+
+
+
+
+
 export async function createUser(user: User, refresh_token: string){
     const user_data = await PrismaUserCreation(user.username, user.email, user.password, refresh_token, user?.age);
     return user_data;
 }
+
+
+
 
 export function validateUsername(){
     return check('username', 'The username must be atleast 3 characters long.')
@@ -27,8 +40,8 @@ export function validateAge(age: number){
     return (100 > age && age > 10)
 }
 
-export function validateRefreshToken(){
-    return check('token', 'Refresh token was invalid or not found.')
+export function validateToken(){
+    return check('token', 'Token was invalid or not found.')
         .isJWT()
         .exists()
 }

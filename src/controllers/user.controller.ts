@@ -3,7 +3,8 @@ import { validationResult } from "express-validator";
 
 import { createUser } from "../services/user.service";
 import { jwtRefreshGen } from "../utils/jwtGenerate";
-import ApiError from "../models/ApiError";
+import Api400Error from "../errors/api400Error";
+import Api500Error from "../errors/api400Error";
 import hashPass from "../utils/hashPass";
 import User from "../models/user";
 
@@ -27,10 +28,10 @@ export async function signUpUser(req: Request, res: Response, next: NextFunction
     } catch (error){
         if (String(error).includes('email')){
             // res.status(400).send("Email already exists");
-            next(ApiError.badRequest('Email already exists'));
+            next(new Api400Error('Email already exists'));
             return;
         }
-        next(ApiError.internalError('Something went wrong creating user')); 
+        next(new Api500Error('Something went wrong creating user')); 
         return;
     };
 };
