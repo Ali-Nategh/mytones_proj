@@ -1,6 +1,6 @@
+import { signUpUserService } from "../services/user.service";
 import { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
-import { signUpUserService, createUser } from "../services/user.service";
 
 
 
