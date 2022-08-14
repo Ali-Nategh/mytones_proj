@@ -3,11 +3,11 @@ import { httpStatusCodes } from "./httpStatusCodes";
 
 export default class Api404Error extends BaseError {
     constructor(
-        name: string,
+        description: string,
+        name = "404 Not Found",
         statusCode = httpStatusCodes.NOT_FOUND,
-        description = "404 Not Found",
         isOperational = true
         ) { 
-            super(name, statusCode, isOperational, description)
+            super(description, name, statusCode, isOperational)
         }
 }

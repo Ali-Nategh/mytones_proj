@@ -3,11 +3,11 @@ import { httpStatusCodes } from "./httpStatusCodes";
 
 export default class Api500Error extends BaseError {
     constructor(
-        name: string,
+        description: string,
+        name = "500 Internal Server Error",
         statusCode = httpStatusCodes.INTERNAL_SERVER_ERROR,
-        description = "500 Internal Server Error",
         isOperational = true
         ) { 
-            super(name, statusCode, isOperational, description)
+            super(description, name, statusCode, isOperational)
         }
 }

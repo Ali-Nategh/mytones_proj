@@ -3,7 +3,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 const urlencodedparser = bodyParser.urlencoded({ extended: false });
 
-import { validateUsername, validateEmail, validatePassword, validateRefreshToken } from '../services/user.service';
+import { validateUsername, validateEmail, validatePassword, validateToken } from '../services/user.service';
 import { signUpUser, loginUser, refreshUserToken, logoutUser } from '../controllers/user.controller';
 
 const router = express.Router();
@@ -16,9 +16,9 @@ router.post('/signup', urlencodedparser, [validateUsername(), validateEmail(), v
 // router.post('/login', [validateEmail(), validatePassword()], loginUser);
 
 // // POST '/user/refreshtoken'
-// router.post('/refreshtoken', [validateRefreshToken()], refreshUserToken);
+// router.post('/refreshtoken', [validateToken()], refreshUserToken);
 
 // // DELETE '/user/logout'
-// router.delete('/logout', [validateRefreshToken()], logoutUser);
+// router.delete('/logout', [validateToken()], logoutUser);
 
 export default router;
