@@ -13,7 +13,7 @@ app.use(express.json());
 
 
 // Initialize and use routes
-import appRouter from './routes'
+import appRouter from './routes/index'
 app.use(appRouter)
 
 
