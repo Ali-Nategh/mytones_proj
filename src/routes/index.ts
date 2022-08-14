@@ -1,5 +1,5 @@
 const router = require('express').Router();
-import { Request, Response, NextFunction} from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 
 
