@@ -12,13 +12,12 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 
-
 // Initialize and use routes
 import appRouter from './routes'
 app.use(appRouter)
 
 
-// PORT listen
+// PORT listen and start server
 app.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`);
 });
