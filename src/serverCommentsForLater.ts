@@ -1,41 +1,4 @@
-// Importing .env
-require('dotenv').config()
-
-// Importing Express, Bcrypt & JWT 
-import express, {Application, Request, Response, NextFunction} from 'express';
 import jwt, { VerifyErrors } from 'jsonwebtoken';
-
-// Initialize the App and Port
-const app: Application = express();
-const PORT = process.env.PORT || 5000;
-
-// Used so we can get json request body
-app.use(express.json());
-
-// Logger
-import morgan from 'morgan';
-app.use(morgan('dev'))
-
-
-// home page Router
-import homeRoute from './routes/home.routes';
-app.use('/', homeRoute);
-
-// user Router
-import userRoute from './routes/user.routes';
-app.use('/user', userRoute)
-
-
-// Error handling
-import { logError, returnError } from './errors/errorHandler';
-import Api400Error from './errors/api400Error'
-
-app.use((req: Request, res: Response, next: NextFunction) => {
-    next(new Api400Error('Page not found'));
-})
-app.use(logError)
-app.use(returnError)
-
 
 
 
@@ -134,9 +97,3 @@ import authenticateToken from './middleware/authenticateToken.middleware';
 // Token Generation function
 import { jwtAccessGen as generateToken } from './utils/jwtGenerate'
 import { request } from 'http';
-
-
-// PORT listen
-app.listen(PORT, () => {
-    console.log(`Server listening on ${PORT}`);
-});

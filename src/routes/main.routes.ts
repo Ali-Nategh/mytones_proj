@@ -1,5 +1,4 @@
-import express from 'express';
-const router = express.Router();
+const router = require('express').Router();
 
 import { getHome } from '../controllers/home.controller'
 
