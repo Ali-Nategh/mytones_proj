@@ -38,6 +38,12 @@ export async function PrismaFindByEmail(email: string) {
     return user;
 };
 
+export async function PrismaFindRefreshToken(sentRefreshToken: string) {
+    const refreshtoken = await prisma.refreshToken.findUnique({
+        where: { id: sentRefreshToken }
+    });
+    return refreshtoken;
+};
 
 export async function PrismaDeleteAllUsers() {
     await prisma.user.deleteMany({});

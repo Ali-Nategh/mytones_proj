@@ -1,4 +1,7 @@
-import { PrismaActivateRefreshToken, PrismaFindByEmail, PrismaUserCreation } from "../repositories/user.repository";
+import {
+    PrismaActivateRefreshToken, PrismaDeactivateRefreshToken, PrismaFindByEmail,
+    PrismaFindRefreshToken, PrismaUserCreation
+} from "../repositories/user.repository";
 import { logError, isOperationalError } from "../errors/errorHandler";
 import { jwtRefreshGen, jwtAccessGen } from "../utils/jwtToken";
 import { httpStatusCodes } from "../errors/httpStatusCodes";
@@ -60,7 +63,7 @@ export async function loginUserService(req: Request, res: Response) {
         }
     } catch (err) {
         console.error(err);
-        sendError(httpStatusCodes.INTERNAL_SERVER_ERROR, 'Something went wrong creating user', res)
+        return sendError(httpStatusCodes.INTERNAL_SERVER_ERROR, 'Something went wrong creating user', res)
     };
 }
 
@@ -68,12 +71,37 @@ export async function loginUserService(req: Request, res: Response) {
 
 export async function logoutUserService(req: Request, res: Response) {
 
+    const sentRefreshToken = req.body.token
+    if (sentRefreshToken == null) return sendError(httpStatusCodes.BAD_REQUEST, "Please include a refresh token", res)
+
+    const refreshtoken = await PrismaFindRefreshToken(sentRefreshToken)
+
+    if (refreshtoken == null) return res.status(404).send("Refresh token not found");
+    else if (refreshtoken.valid == false) return res.status(403).send("Already logged out");
+
+    await PrismaDeactivateRefreshToken(sentRefreshToken)
+    return res.status(200).send("Logged out successfully");
 }
 
 
 
 export async function refreshUserTokenService(req: Request, res: Response) {
+    // // POST '/user/refreshtoken'
+    // app.post('/user/refreshtoken', async (req: Request, res: Response) =>{
+    //     const refreshToken = req.body.token;
+    //     if (refreshToken == null) return res.status(400).send("Please include a refresh token");
+    //     const refresh_token = await prisma.refreshToken.findUnique({
+    //         where: {id: refreshToken}
+    //     });
+    //     if (refresh_token == null) return res.status(404).send("Refresh token not found");
+    //     if (refresh_token.valid == false) return res.status(403).send("Refresh token is not active, please login");
 
+    //     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string, (err: VerifyErrors | null, user: any) => {
+    //         if (err) return res.sendStatus(403);
+    //         const accessToken = generateToken(user);
+    //         res.json({accessToken: accessToken});
+    //     });
+    // });
 }
 
 
