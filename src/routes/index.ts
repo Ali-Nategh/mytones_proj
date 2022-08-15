@@ -19,7 +19,7 @@ import adminRoute from '../routes/admin.routes';
 router.use('/admin', adminRoute);
 
 
-// Error handling
+// Uncought Errors handling
 import { logError, returnError } from '../errors/errorHandler';
 import Api400Error from '../errors/api400Error'
 
