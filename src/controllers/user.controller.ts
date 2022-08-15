@@ -1,6 +1,5 @@
 import { loginUserService, signUpUserService, logoutUserService, refreshUserTokenService, verifyEmailService } from "../services/user.service";
 import { Request, Response, NextFunction } from "express";
-import { validationResult } from "express-validator";
 
 
 
@@ -24,5 +23,5 @@ export async function refreshUserToken(req: Request, res: Response) {
 }
 
 export async function validateUserOtp(req: Request, res: Response) {
-    if (!verifyEmailService(req.body.email, req.body.password, res)) return false;
+    if (!verifyEmailService(req.body.email, req.body.otp, res)) return;
 }
