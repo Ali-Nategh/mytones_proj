@@ -2,13 +2,14 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
-export async function PrismaUserCreation(name: string, email: string, password: string, refresh_token: string, age?: any) {
+export async function PrismaUserCreation(name: string, email: string, password: string, refresh_token: string, otp: string, age?: any) {
     const user = await prisma.user.create({
         data: {
             username: name,
             email: email,
             password: password,
             age: age,
+            otp: otp,
             refreshToken: {
                 create: {
                     id: refresh_token
