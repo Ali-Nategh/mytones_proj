@@ -12,9 +12,13 @@ model User {
   username     String
   password     String
   email        String        @unique
+  otp          String
+  active       Boolean       @default(false)
   age          Int?
   role         Role          @default(BASIC)
   refreshToken RefreshToken?
+  created_at   DateTime      @default(now())
+  last_active  DateTime?
 
   @@index([id])
   @@index([email])
@@ -22,7 +26,7 @@ model User {
 
 model RefreshToken {
   id     String  @id
-  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
   valid  Boolean @default(false)
   userId String  @unique
 
