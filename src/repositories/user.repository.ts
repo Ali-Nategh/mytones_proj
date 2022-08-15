@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export async function PrismaUserCreation(name: string, email: string, password: string, refresh_token: string, age?: any) {
-    const user = await prisma.user.create({   
+    const user = await prisma.user.create({
         data: {
             username: name,
             email: email,
@@ -15,7 +15,7 @@ export async function PrismaUserCreation(name: string, email: string, password: 
                 }
             }
         },
-        include: {refreshToken: true}
+        include: { refreshToken: true }
     });
     return user;
 };
@@ -31,6 +31,13 @@ export async function PrismaGetAllUsers() {
 };
 
 
+export async function PrismaFindByEmail(email: string) {
+    const user = await prisma.user.findUnique({
+        where: { email: email }
+    });
+    return user;
+};
+
 
 export async function PrismaDeleteAllUsers() {
     await prisma.user.deleteMany({});
@@ -38,15 +45,16 @@ export async function PrismaDeleteAllUsers() {
 
 
 export async function PrismaActivateRefreshToken(id: string) {
-    await prisma.refreshToken.update({
-        where: {userId: id},
-        data: {valid: true}
+    const refresh_token = await prisma.refreshToken.update({
+        where: { userId: id },
+        data: { valid: true }
     });
+    return refresh_token;
 };
 
 export async function PrismaDeactivateRefreshToken(refreshToken: string) {
     prisma.refreshToken.update({
-        where: {id: refreshToken},
-        data: {valid: false}
+        where: { id: refreshToken },
+        data: { valid: false }
     });
 };

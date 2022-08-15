@@ -16,30 +16,7 @@ import jwt, { VerifyErrors } from 'jsonwebtoken';
 
 
 
-// // POST '/user/login'
-// app.post('/user/login', async (req: Request, res: Response) => {
-//     const user = null || await prisma.user.findUnique({
-//         where: {email: req.body.email}
-//     });
-//     if (user == null){
-//         return res.status(400).send('Cannot find user');
-//     };
-//     try {
-//         if (await bcrypt.compare(req.body.password, user.password)){
-//             const accessToken = generateToken(user.id)
-//             const refresh_token = await prisma.refreshToken.update({
-//                 where: {userId: user.id},
-//                 data: {valid: true}
-//             });
-//             res.json({accessToken: accessToken, refresh_token: refresh_token.id});
-//         } else {
-//             res.send('Not Allowed');
-//         }
-//     } catch (err) {
-//         console.log(err);
-//         res.status(500).send("Server Error");
-//     };
-// });
+
 
 // // POST '/user/refreshtoken'
 // app.post('/user/refreshtoken', async (req: Request, res: Response) =>{
@@ -50,7 +27,7 @@ import jwt, { VerifyErrors } from 'jsonwebtoken';
 //     });
 //     if (refresh_token == null) return res.status(404).send("Refresh token not found");
 //     if (refresh_token.valid == false) return res.status(403).send("Refresh token is not active, please login");
-    
+
 //     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string, (err: VerifyErrors | null, user: any) => {
 //         if (err) return res.sendStatus(403);
 //         const accessToken = generateToken(user);
@@ -84,7 +61,7 @@ import authenticateToken from './middleware/authenticateToken.middleware';
 //     const authHeader = req.headers['authorization']
 //     const token = authHeader && authHeader.split(' ')[1]
 //     if (token == null) return res.sendStatus(401)
-    
+
 //     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string, (err, user) =>{
 //         if (err) {
 //             return res.status(403).send("Token is invalid or has expired, please login again")
@@ -95,5 +72,5 @@ import authenticateToken from './middleware/authenticateToken.middleware';
 // };
 
 // Token Generation function
-import { jwtAccessGen as generateToken } from './utils/jwtGenerate'
+import { jwtAccessGen as generateToken } from './utils/jwtToken'
 import { request } from 'http';

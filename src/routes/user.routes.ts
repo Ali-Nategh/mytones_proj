@@ -9,15 +9,15 @@ import { signUpUser, loginUser, refreshUserToken, logoutUser } from '../controll
 
 
 // POST '/user/signup' adding a member to the Database
-router.post('/signup', urlencodedparser, [validateUsername(), validateEmail(), validatePassword()] ,signUpUser);
+router.post('/signup', urlencodedparser, [validateUsername(), validateEmail(), validatePassword()], signUpUser);
 
-// // POST '/user/login'
-// router.post('/login', [validateEmail(), validatePassword()], loginUser);
+// POST '/user/login'
+router.post('/login', [validateEmail(), validatePassword()], loginUser);
 
-// // POST '/user/refreshtoken'
-// router.post('/refreshtoken', [validateToken()], refreshUserToken);
+// POST '/user/refreshtoken'
+router.post('/refreshtoken', [validateToken()], refreshUserToken);
 
-// // DELETE '/user/logout'
-// router.delete('/logout', [validateToken()], logoutUser);
+// DELETE '/user/logout'
+router.delete('/logout', [validateToken()], logoutUser);
 
 export default router;
