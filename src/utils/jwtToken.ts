@@ -7,12 +7,13 @@ export function jwtRefreshGen(name: string, email: string) {
 }
 
 export function jwtAccessGen(id: string) {
-    return jwt.sign({ id }, process.env.REFRESH_TOKEN_SECRET as string, { expiresIn: '30m' });
+    return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: '30m' });
 }
 
 export function jwtVerifyAccessToken(token: string) {
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string, (err: VerifyErrors | null, user) => {
         if (err) {
+            console.error(err);
             throw new Error(err.message)
         }
         return user

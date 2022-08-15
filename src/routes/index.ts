@@ -14,7 +14,9 @@ router.use('/', homeRoute);
 // inject user routes
 import userRoute from '../routes/user.routes';
 router.use('/user', userRoute)
-
+// inject admin routes
+import adminRoute from '../routes/admin.routes';
+router.use('/admin', adminRoute);
 
 
 // Error handling

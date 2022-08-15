@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
-import { PrismaGetAllUsers, PrismaDeleteAllUsers } from "../repositories/user.repository";
+import { PrismaDeleteAllUsers } from "../repositories/user.repository";
 
-export async function getHome(req: Request, res: Response){
-    res.send(await PrismaGetAllUsers());
+export async function getHome(req: Request, res: Response) {
+    res.send("WELCOME TO THE HOME PAGE");
 };
