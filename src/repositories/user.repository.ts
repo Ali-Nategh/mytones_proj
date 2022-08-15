@@ -59,7 +59,7 @@ export async function PrismaActivateRefreshToken(id: string) {
 };
 
 export async function PrismaDeactivateRefreshToken(refreshToken: string) {
-    prisma.refreshToken.update({
+    await prisma.refreshToken.update({
         where: { id: refreshToken },
         data: { valid: false }
     });
