@@ -3,7 +3,7 @@ import { getAdmin } from "../controllers/admin.controller";
 const router = require('express').Router();
 
 // Authentication function
-import authenticateToken from '../middleware/authenticateToken.middleware';
+import authenticateToken from '../middlewares/authenticateToken.middleware';
 
 
 // // GET '/admin/get_members'
