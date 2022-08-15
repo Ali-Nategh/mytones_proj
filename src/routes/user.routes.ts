@@ -3,7 +3,7 @@ const router = require('express').Router();
 import bodyParser from 'body-parser';
 const urlencodedparser = bodyParser.urlencoded({ extended: false });
 
-import { validateUsername, validateEmail, validatePassword, validateToken } from '../services/user.service';
+import { validateUsername, validateEmail, validatePassword, validateToken } from '../services/validation.service';
 import { signUpUser, loginUser, refreshUserToken, logoutUser } from '../controllers/user.controller';
 
 
