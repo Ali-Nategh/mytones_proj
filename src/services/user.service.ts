@@ -2,9 +2,9 @@ import { logError, isOperationalError } from "../errors/errorHandler";
 import { PrismaUserCreation } from "../repositories/user.repository";
 import { Request, Response, NextFunction } from "express";
 import { jwtRefreshGen } from "../utils/jwtGenerate";
-import Api400Error from "../errors/api400Error";
-import Api500Error from "../errors/api400Error";
-import { check } from 'express-validator';
+import { httpStatusCodes } from "../errors/httpStatusCodes";
+import { sendError } from "../errors/errorHandler";
+import { check } from "express-validator";
 import hashPass from "../utils/hashPass";
 import User from "../models/user";
 
@@ -22,12 +22,12 @@ export async function signUpUserService(req: Request, res: Response, next: NextF
         console.log(user_data);
         return res.status(201).send("User Created Successfully");
     } catch (error){
-        if (String(error).includes('email')){
+        if (String(error).includes("email")){
             // res.status(400).send("Email already exists");
-            next(new Api400Error('Email already exists'));
-            return;
+            return sendError(httpStatusCodes.BAD_REQUEST, "Email already exists", res)
         }
-        next(new Api500Error('Something went wrong creating user'));
+        sendError(httpStatusCodes.INTERNAL_SERVER_ERROR, 'Something went wrong creating user', res)
+        
 
         // if the Promise is rejected this will catch it
         process.on('unhandledRejection', error => {
@@ -40,7 +40,6 @@ export async function signUpUserService(req: Request, res: Response, next: NextF
                 process.exit(1);
             }
         })
-        return;
     };
 };
 
