@@ -65,3 +65,10 @@ export async function PrismaDeactivateRefreshToken(refreshToken: string) {
         data: { valid: false }
     });
 };
+
+export async function PrismaVerifyEmail(id: string) {
+    await prisma.user.update({
+        where: { id: id },
+        data: { active: true }
+    });
+};
