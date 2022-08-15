@@ -1,6 +1,6 @@
 import {
     PrismaActivateRefreshToken, PrismaDeactivateRefreshToken, PrismaFindByEmail,
-    PrismaFindRefreshToken, PrismaUserCreation
+    PrismaFindRefreshToken, PrismaUserCreation, PrismaVerifyEmail
 } from "../repositories/user.repository";
 import { logError, isOperationalError } from "../errors/errorHandler";
 import { jwtRefreshGen, jwtAccessGen, refreshToken, jwtVerifyRefreshToken } from "../utils/jwtToken";
@@ -51,7 +51,9 @@ export async function verifyEmailService(email: string, otp: string, res: Respon
     const user = await PrismaFindByEmail(email)
     if (!user) return sendError(httpStatusCodes.NOT_FOUND, "Email Not found", res);
     if (otp !== user.otp) return sendError(httpStatusCodes.UNAUTHORIZED, "Password incorrect", res);
-    return true
+    if (user.active) return sendError(httpStatusCodes.BAD_REQUEST, "Email already active", res);
+    await PrismaVerifyEmail(user.id)
+    return res.status(httpStatusCodes.OK).send("Email successfully verified");
 }
 
 export async function loginUserService(req: Request, res: Response) {
