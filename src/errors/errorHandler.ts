@@ -21,6 +21,6 @@ export function isOperationalError(error: Error) {
     return false
 }
 
-export function sendError(status: number, message: string, res: Response) {
-    res.status(status || 500).send(message)
+export function sendError(stat: number, message: string, res: Response) {
+    res.status(stat || 500).send(message)
 }
