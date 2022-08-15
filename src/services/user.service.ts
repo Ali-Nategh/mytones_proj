@@ -5,7 +5,7 @@ import {
 import { logError, isOperationalError } from "../errors/errorHandler";
 import { jwtRefreshGen, jwtAccessGen, refreshToken, jwtVerifyRefreshToken } from "../utils/jwtToken";
 import { httpStatusCodes } from "../errors/httpStatusCodes";
-import { Request, Response, NextFunction, response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { sendMail } from '../services/email.service';
 import generateOTP from '../services/otp.service';
 import { sendError } from "../errors/errorHandler";
@@ -23,12 +23,10 @@ export async function signUpUserService(req: Request, res: Response) {
     // Adding user to Database
     try {
         const isExisting = await PrismaFindByEmail(user.email)
-        if (isExisting) {
-            return sendError(httpStatusCodes.BAD_REQUEST, "Email already exists", res)
-        }
+        if (isExisting) return sendError(httpStatusCodes.BAD_REQUEST, "Email already exists", res)
         const user_data = await createUser(user, refresh_token);
         console.log(user_data);
-        sendMail({ to: user.email, OTP: generateOTP() });
+        sendMail({ to: user_data.email, OTP: user_data.otp });
         return res.status(201).send("User Created Successfully");
     } catch (error) {
         console.error(error);
@@ -49,8 +47,11 @@ export async function signUpUserService(req: Request, res: Response) {
 };
 
 
-export function verifyEmailService() {
-
+export async function verifyEmailService(email: string, otp: string, res: Response) {
+    const user = await PrismaFindByEmail(email)
+    if (!user) return sendError(httpStatusCodes.NOT_FOUND, "Email Not found", res);
+    if (otp !== user.otp) return sendError(httpStatusCodes.UNAUTHORIZED, "Password incorrect", res);
+    return true
 }
 
 export async function loginUserService(req: Request, res: Response) {
@@ -111,6 +112,6 @@ async function checkRefreshToken(sentRefreshToken: string, res: Response) {
 
 
 export async function createUser(user: User, refresh_token: string) {
-    const user_data = await PrismaUserCreation(user.username, user.email, user.password, refresh_token, user?.age);
+    const user_data = await PrismaUserCreation(user.username, user.email, user.password, refresh_token, generateOTP(), user?.age);
     return user_data;
 }
