@@ -25,3 +25,7 @@ export function validateToken() {
         .isJWT()
         .exists()
 }
+export function validateOtp() {
+    return check("otp", "OTP not found or incorrect.")
+        .isLength({ min: 6, max: 6 })
+}
