@@ -3,9 +3,9 @@ import {
     PrismaFindRefreshToken, PrismaUserCreation
 } from "../repositories/user.repository";
 import { logError, isOperationalError } from "../errors/errorHandler";
-import { jwtRefreshGen, jwtAccessGen } from "../utils/jwtToken";
+import { jwtRefreshGen, jwtAccessGen, refreshToken, jwtVerifyRefreshToken } from "../utils/jwtToken";
 import { httpStatusCodes } from "../errors/httpStatusCodes";
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction, response } from "express";
 import { sendError } from "../errors/errorHandler";
 import { authorizePass } from "../utils/authPass";
 import { check } from "express-validator";
@@ -51,7 +51,7 @@ export async function signUpUserService(req: Request, res: Response) {
 export async function loginUserService(req: Request, res: Response) {
     let user = null || await PrismaFindByEmail(req.body.email);
     if (user == null) {
-        return sendError(400, 'Cannot find user', res)
+        return sendError(httpStatusCodes.BAD_REQUEST, 'Cannot find user', res)
     };
     try {
         if (await authorizePass(req.body.password, user.password)) {
@@ -70,14 +70,16 @@ export async function loginUserService(req: Request, res: Response) {
 
 
 export async function logoutUserService(req: Request, res: Response) {
-
     const sentRefreshToken = req.body.token
     if (sentRefreshToken == null) return sendError(httpStatusCodes.BAD_REQUEST, "Please include a refresh token", res)
-
+    try {
+        jwtVerifyRefreshToken(sentRefreshToken)
+    } catch (err) {
+        return sendError(403, "Token is invalid, please login again", res)
+    }
     const refreshtoken = await PrismaFindRefreshToken(sentRefreshToken)
-
-    if (refreshtoken == null) return res.status(404).send("Refresh token not found");
-    else if (refreshtoken.valid == false) return res.status(403).send("Already logged out");
+    if (refreshtoken == null) return sendError(httpStatusCodes.NOT_FOUND, "Refresh token not found", res)
+    else if (refreshtoken.valid == false) return sendError(httpStatusCodes.BAD_REQUEST, "Already logged out", res)
 
     await PrismaDeactivateRefreshToken(sentRefreshToken)
     return res.status(200).send("Logged out successfully");
@@ -86,22 +88,18 @@ export async function logoutUserService(req: Request, res: Response) {
 
 
 export async function refreshUserTokenService(req: Request, res: Response) {
-    // // POST '/user/refreshtoken'
-    // app.post('/user/refreshtoken', async (req: Request, res: Response) =>{
-    //     const refreshToken = req.body.token;
-    //     if (refreshToken == null) return res.status(400).send("Please include a refresh token");
-    //     const refresh_token = await prisma.refreshToken.findUnique({
-    //         where: {id: refreshToken}
-    //     });
-    //     if (refresh_token == null) return res.status(404).send("Refresh token not found");
-    //     if (refresh_token.valid == false) return res.status(403).send("Refresh token is not active, please login");
+    const sentRefreshToken = req.body.token;
+    if (sentRefreshToken == null) return sendError(httpStatusCodes.BAD_REQUEST, "Please include a refresh token", res)
+    try {
+        jwtVerifyRefreshToken(sentRefreshToken)
+    } catch (err) {
+        return sendError(403, "Token is invalid, please login again", res)
+    }
+    const refresh_token = await PrismaFindRefreshToken(sentRefreshToken)
+    if (refresh_token == null) return sendError(httpStatusCodes.NOT_FOUND, "Refresh token not found", res)
+    if (refresh_token.valid == false) return sendError(httpStatusCodes.UNAUTHORIZED, "Refresh token is not active, please login", res)
 
-    //     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string, (err: VerifyErrors | null, user: any) => {
-    //         if (err) return res.sendStatus(403);
-    //         const accessToken = generateToken(user);
-    //         res.json({accessToken: accessToken});
-    //     });
-    // });
+    refreshToken(sentRefreshToken, res);
 }
 
 

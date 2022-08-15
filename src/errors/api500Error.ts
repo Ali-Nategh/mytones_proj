@@ -7,7 +7,7 @@ export default class Api500Error extends BaseError {
         name = "500 Internal Server Error",
         statusCode = httpStatusCodes.INTERNAL_SERVER_ERROR,
         isOperational = true
-        ) { 
-            super(description, name, statusCode, isOperational)
-        }
+    ) {
+        super(description, name, statusCode, isOperational)
+    }
 }

@@ -7,7 +7,7 @@ export default class Api401Error extends BaseError {
         name = "401 Unauthorized",
         statusCode = httpStatusCodes.BAD_REQUEST,
         isOperational = true
-        ) { 
-            super(description, name, statusCode, isOperational)
-        }
+    ) {
+        super(description, name, statusCode, isOperational)
+    }
 }
