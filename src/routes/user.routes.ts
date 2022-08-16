@@ -3,8 +3,8 @@ const router = require('express').Router();
 import bodyParser from 'body-parser';
 const urlencodedparser = bodyParser.urlencoded({ extended: false });
 
+import { signUpUser, loginUser, refreshUserToken, logoutUser, validateUserOtp, resendUserOtp } from '../controllers/user.controller';
 import { validateUsername, validateEmail, validatePassword, validateToken, validateOtp } from '../services/validation.service';
-import { signUpUser, loginUser, refreshUserToken, logoutUser, validateUserOtp } from '../controllers/user.controller';
 import validationMiddleware from '../middlewares/validateResults.middleware';
 
 
@@ -20,6 +20,9 @@ router.post('/refreshtoken', [validateToken()], validationMiddleware, refreshUse
 
 // POST '/user/validateEmail'
 router.post('/validateEmail', [validateEmail(), validateOtp()], validationMiddleware, validateUserOtp);
+
+// POST '/user/validateEmail'
+router.post('/resendEmail', [validateEmail()], validationMiddleware, resendUserOtp);
 
 // DELETE '/user/logout'
 router.delete('/logout', [validateToken()], validationMiddleware, logoutUser);

@@ -72,3 +72,10 @@ export async function PrismaVerifyEmail(id: string) {
         data: { active: true }
     });
 };
+
+export async function PrismaUpdateOtp(email: string, otp: string) {
+    await prisma.user.update({
+        where: { email: email },
+        data: { otp: otp }
+    });
+};

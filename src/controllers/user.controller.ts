@@ -1,4 +1,5 @@
-import { loginUserService, signUpUserService, logoutUserService, refreshUserTokenService, verifyEmailService } from "../services/user.service";
+import { loginUserService, signUpUserService, logoutUserService, refreshUserTokenService } from "../services/user.service";
+import { resendEmailService, verifyEmailService } from "../services/email.service";
 import { Request, Response, NextFunction } from "express";
 
 
@@ -24,4 +25,8 @@ export async function refreshUserToken(req: Request, res: Response) {
 
 export async function validateUserOtp(req: Request, res: Response) {
     if (!verifyEmailService(req.body.email, req.body.otp, res)) return;
+}
+
+export async function resendUserOtp(req: Request, res: Response) {
+    if (!resendEmailService(req.body.email, res)) return;
 }
