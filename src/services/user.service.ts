@@ -26,7 +26,7 @@ export async function signUpUserService(req: Request, res: Response) {
         if (isExisting) return sendError(httpStatusCodes.BAD_REQUEST, "Email already exists", res)
         const user_data = await createUser(user, refresh_token);
         console.log(user_data);
-        sendMail({ to: user_data.email, OTP: user_data.otp });
+        sendMail({ to: user_data.email, OTP: user_data.otp })
         return res.status(201).send("User Created Successfully");
     } catch (error) {
         console.error(error);
@@ -47,14 +47,6 @@ export async function signUpUserService(req: Request, res: Response) {
 };
 
 
-export async function verifyEmailService(email: string, otp: string, res: Response) {
-    const user = await PrismaFindByEmail(email)
-    if (!user) return sendError(httpStatusCodes.NOT_FOUND, "Email Not found", res);
-    if (otp !== user.otp) return sendError(httpStatusCodes.UNAUTHORIZED, "Password incorrect", res);
-    if (user.active) return sendError(httpStatusCodes.BAD_REQUEST, "Email already active", res);
-    await PrismaVerifyEmail(user.id)
-    return res.status(httpStatusCodes.OK).send("Email successfully verified");
-}
 
 export async function loginUserService(req: Request, res: Response) {
     let user = null || await PrismaFindByEmail(req.body.email);
