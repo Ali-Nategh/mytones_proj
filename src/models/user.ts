@@ -1,13 +1,13 @@
 export default class User {
     id: any = undefined;
-    username:string;
-    password:string;
-    email:string;
-    age:any;
+    username: string;
+    password: string;
+    email: string;
+    age: any;
     role: string = "BASIC";
-    refreshToken:string = "";
+    refreshToken: string = "";
 
-    constructor(name:string, email:string, password:string, age?:number) {
+    constructor(name: string, email: string, password: string, age?: number) {
         this.username = name;
         this.password = password;
         this.email = email;

@@ -1,9 +1,9 @@
 # Testing
 
 User:
-  id: null
-  username: null
-  password: null
-  email: null
-  age: null
-  refreshToken: null
+    id: null
+    username: null
+    password: null
+    email: null
+    age: null
+    refreshToken: null
