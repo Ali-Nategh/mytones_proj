@@ -74,8 +74,8 @@ export async function logoutUserService(req: Request, res: Response) {
 
     if (! await checkRefreshToken(sentRefreshToken, res)) return
     const refreshtoken = await PrismaFindRefreshToken(sentRefreshToken)
-    if (refreshtoken)
-        await PrismaDeactivateRefreshToken(refreshtoken.id)
+    if (!refreshtoken) return sendError(httpStatusCodes.UNAUTHORIZED, "Refresh token not found", res)
+    await PrismaDeactivateRefreshToken(refreshtoken.id)
     return res.status(200).send("Logged out successfully");
 }
 
