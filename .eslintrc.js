@@ -11,6 +11,7 @@ module.exports = {
         sourceType: 'module',
     },
     rules: {
+        'multiline-comment-style': ['error', 'shared-block'],
         'spaced-comment': ['error', 'always'],
         semi: ['error', 'always'],
         'semi-spacing': 'error',
