@@ -234,7 +234,7 @@ router.post('/resendEmail', [validateEmail()], validationMiddleware, resendUserO
 /**
  * @swagger
  * /user/logout:
- *  post:
+ *  delete:
  *      tags: [Users]
  *      summary: Log out and Deactivate the Refresh Token
  *      consumes:
@@ -260,7 +260,7 @@ router.post('/resendEmail', [validateEmail()], validationMiddleware, resendUserO
  *          '400':
  *              description: Bad Request, information invalid
  *          '403':
- *              description: Password wrong or Information invalid
+ *              description: Refresh token not found
  *          '500': 
  *              description: Something went wrong
  */
