@@ -77,6 +77,43 @@ import validationMiddleware from '../middlewares/validateResults.middleware';
 // POST '/user/signup' adding a member to the Database
 router.post('/signup', urlencodedparser, [validateUsername(), validateEmail(), validatePassword()], validationMiddleware, signUpUser);
 
+/**
+ * @swagger
+ * /user/login:
+ *  post:
+ *      tags: [Users]
+ *      summary: Login with a username and password
+ *      consumes:
+ *          - application/json
+ *      parameters:
+ *        - in: body
+ *          name: user
+ *          description: The user to login
+ *          schema:
+ *              type: object
+ *              required:
+ *                  - email
+ *                  - password
+ *              properties:
+ *                  email:
+ *                      type: string
+ *                  password:
+ *                      type: string
+ *      responses:
+ *          '201': 
+ *              description: User was successfully created
+ *              content: 
+ *                  apllication/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/User' 
+ *          '400':
+ *              description: Bad Request, information invalid
+ *          '403':
+ *              description: Password wrong or Information invalid
+ *          '500': 
+ *              description: Something went wrong
+ */
+
 // POST '/user/login'
 router.post('/login', [validateEmail(), validatePassword()], validationMiddleware, loginUser);
 
