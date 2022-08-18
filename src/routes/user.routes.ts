@@ -7,7 +7,72 @@ import { signUpUser, loginUser, refreshUserToken, logoutUser, validateUserOtp, r
 import { validateUsername, validateEmail, validatePassword, validateToken, validateOtp } from '../services/validation.service';
 import validationMiddleware from '../middlewares/validateResults.middleware';
 
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *      User:
+ *          type: object
+ *          required:
+ *              - username
+ *              - email
+ *              - password
+ *          properties:
+ *              username:
+ *                  type: string
+ *                  description: User name
+ *              email:
+ *                  type: string
+ *                  description: User email
+ *              password:
+ *                  type: string
+ *                  description: User password
+ *          example:
+ *              username: JohnDoe
+ *              email: JohnDoe@examle.com
+ *              password: Password
+ *      Token:
+ *          type: string
+ *          required: true
+ *          example:
+ *              token: afjlkd2jflsi4fghs7jg.sdfisjgp4sodk7lskfhpwej.sdpjfi7sjp4gosdgpsm
+ */
 
+/**
+ * @swagger
+ * tags:
+ *  - name: HomePage
+ *    description:
+ *  - name: Users
+ *    description: The Users managing API
+ *  - name: Admin
+ *    description: The Admin API
+ */
+
+/**
+ * @swagger
+ * /user/signup:
+ *  post:
+ *      tags: [Users]
+ *      summary: Create a new User
+ *      requestBody:
+ *          required: true
+ *          content: 
+ *                  apllication/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/User'
+ *      responses:
+ *          '201': 
+ *              description: User was successfully created
+ *              content: 
+ *                  apllication/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/User' 
+ *          '400':
+ *              description: Bad Request, information invalid
+ *          '500': 
+ *              description: Something went wrong creating user
+ */
 
 // POST '/user/signup' adding a member to the Database
 router.post('/signup', urlencodedparser, [validateUsername(), validateEmail(), validatePassword()], validationMiddleware, signUpUser);

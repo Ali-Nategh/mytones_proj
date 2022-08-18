@@ -2,6 +2,21 @@ const router = require('express').Router();
 
 import { getHome } from '../controllers/home.controller'
 
+
+/**
+ * @swagger
+ * /:
+ *  get:
+ *      tags: [HomePage]
+ *      responses:
+ *          '200': 
+ *              description: Welcome
+ *          '400':
+ *              description: Bad Request
+ *          '500': 
+ *              description: Something went wrong
+ */
+
 // GET '/' route (HomePage)
 router.get('/', getHome);
 

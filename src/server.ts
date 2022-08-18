@@ -1,7 +1,6 @@
 // Importing .env
 require('dotenv').config()
 
-// Importing Express, Bcrypt & JWT 
 import express, { Application } from 'express';
 
 // Initialize the App and Port

@@ -7,6 +7,33 @@ import { Request, Response, NextFunction } from 'express';
 import morgan from 'morgan';
 router.use(morgan('dev'))
 
+// Documentation
+import swaggerJsDoc from 'swagger-jsdoc'
+import swaggerUi from 'swagger-ui-express'
+const swaggerOptions = {
+    definition: {
+        openapi: "3.0.0",
+        info: {
+            title: 'Mytones API',
+            version: "1.0.0",
+            description: 'Mytones API information',
+            contact: {
+                name: "Ali Nategh"
+            },
+        },
+        servers: [
+            {
+                url: "http://localhost:5000/"
+            },
+            {
+                url: __dirname
+            },
+        ],
+    },
+    apis: ["src/routes/*.ts"]
+}
+const specs = swaggerJsDoc(swaggerOptions);
+router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // inject home page routes
 import homeRoute from '../routes/main.routes';
