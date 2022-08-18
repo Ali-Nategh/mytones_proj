@@ -17,11 +17,11 @@ Features:
 -Verify Email
 
 ```
-    Coming soon ...
+    an email verification otp service
 ```
 
 -Resend Email verification
 
 ```
-    Coming soon ...
+    resend the otp if user didn't receive it
 ```
