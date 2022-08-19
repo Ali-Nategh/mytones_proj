@@ -54,42 +54,42 @@ Other sections will be added.
 
 # APIs:
 
-/:
+/ :
 
     home page
 
 
-/user/signup:
+/user/signup :
 
     signup with a username, email, and password
 
 
-/user/login:
+/user/login :
 
     login after user has validated their email (activates their refresh token)
 
 
-/user/refreshToken:
+/user/refreshToken :
 
     generate a new access token for the user using they'r refresh token
 
 
-/user/validateEmail:
+/user/validateEmail :
 
     validate user's email with a one time password sent to their email
 
 
-/user/resendEmail:
+/user/resendEmail :
 
     resends a new password to user if they haven't received the first one
 
 
-/user/logout:
+/user/logout :
 
     logouts user using their refresh token (deactivates their refresh token)
 
 
-/admin/get_members:
+/admin/get_members :
 
-    gets an authentication head with an access token (Bearer accesstoken), displays a list of all users if token is valid
+    gets an authentication header with an access token (Bearer token), displays a list of all users if token is valid and not expired
 
