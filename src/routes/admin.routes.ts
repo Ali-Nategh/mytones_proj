@@ -11,28 +11,24 @@ import authenticateToken from '../middlewares/authenticateToken.middleware';
  * /admin/getUsers:
  *  get:
  *      tags: [Admin]
- *      summary: Get a list of users
- *      requestBody:
- *          required: true
- *          content: 
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/AccessToken'
+ *      security:
+ *          - bearerAuth: []
+ *          - ApiKeyAuth: []
+ *      summary: Get a list of users (Put The Bearer Token In The Authorization Section At The Top Right Corner)
  *      responses:
- *          '200': 
+ *          '200':
  *              description: The list of users
  *              content: 
  *                  apllication/json:
  *                      schema:
  *                          type: array
  *                          items: 
- *                              $ref: '#/components/schemas/User' 
+ *                              $ref: '#/components/schemas/User'
  *          '400':
  *              description: Token not found
- *          '403': 
+ *          '403':
  *              description: Token invalid or expired
  */
-
 router.get('/getUsers', authenticateToken, adminGetAllUsers);
 
 
