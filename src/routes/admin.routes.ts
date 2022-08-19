@@ -8,7 +8,7 @@ import authenticateToken from '../middlewares/authenticateToken.middleware';
 
 /**
  * @swagger
- * /admin/get_members:
+ * /admin/getUsers:
  *  get:
  *      tags: [Admin]
  *      summary: Get a list of users
@@ -33,7 +33,7 @@ import authenticateToken from '../middlewares/authenticateToken.middleware';
  *              description: Token invalid or expired
  */
 
-router.get('/get_members', authenticateToken, getAdmin);
+router.get('/getUsers', authenticateToken, getAdmin);
 
 
 
