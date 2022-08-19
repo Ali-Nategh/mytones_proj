@@ -55,6 +55,15 @@ router.use(returnError)
 /**
  * @swagger
  * components:
+ *  securitySchemes:
+ *      bearerAuth:
+ *          type: http
+ *          scheme: bearer
+ *          bearerFormat: JWT
+ *      ApiKeyAuth:
+ *          type: apiKey
+ *          in: header
+ *          name: Authorization
  *  schemas:
  *      User:
  *          type: object
