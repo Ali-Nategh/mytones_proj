@@ -24,7 +24,7 @@ export async function refreshUserToken(req: Request, res: Response) {
 }
 
 export async function validateUserOtp(req: Request, res: Response) {
-    if (!verifyEmailService(req.body.email, req.body.otp, res)) return;
+    if (!verifyEmailService(req.body.email, `${req.body.otp}`, res)) return;
 }
 
 export async function resendUserOtp(req: Request, res: Response) {
