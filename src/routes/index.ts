@@ -76,6 +76,7 @@ router.use(returnError)
  *              username: JohnDoe
  *              email: JohnDoe@examle.com
  *              password: Password
+ *              age: 22 (optional)
  *      UserLogin:
  *          type: object
  *          required:
