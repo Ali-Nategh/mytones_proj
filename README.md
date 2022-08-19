@@ -40,31 +40,38 @@ You might also need to generate the prisma client(not sure if this is required):
 
 3 - After setting things up you can play around and test the API, the API DOCUMENTATION is located at:
 
-    ``` 
+    
         /api-docs
-    ```
+    
 
 
-# Features:
+Other sections will be added.
 
--Signup:
 
-```
-    jwt and authentication
 
-    access and refresh tokens
+# APIs:
 
-    login and logout to Activate or Deactivate refresh tokens
-```
+/:
+    home page
 
--Verify Email
+/user/signup:
+    signup with a username, email, and password
 
-```
-    an email verification otp service
-```
+/user/login:
+    login after user has validated their email (activates their refresh token)
 
--Resend Email verification
+/user/refreshToken:
+    generate a new access token for the user using they'r refresh token
 
-```
-    resend the otp if user didn't receive it
-```
+/user/validateEmail:
+    validate user's email with a one time password sent to their email
+
+/user/resendEmail:
+    resends a new password to user if they haven't received the first one
+
+/user/logout:
+    logouts user using their refresh token (deactivates their refresh token)
+
+/admin/get_members:
+    gets an authentication head with an access token (Bearer accesstoken), displays a list of all users if token is valid
+
