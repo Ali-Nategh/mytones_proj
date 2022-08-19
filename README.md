@@ -4,7 +4,7 @@ The backend of a music streaming website
 
 Being built little by little
 
-For practicing and learning backend, using nodejs and express
+For practicing and learning backend, using node.js and express
 
 
 # How to use:
@@ -89,7 +89,7 @@ Other sections will be added.
     logouts user using their refresh token (deactivates their refresh token)
 
 
-/admin/get_members :
+/admin/getUsers :
 
     gets an authentication header with an access token (Bearer token), displays a list of all users if token is valid and not expired
 
