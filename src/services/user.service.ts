@@ -14,11 +14,13 @@ import hashPass from "../utils/hashPass";
 import User from "../models/user";
 
 export async function signUpUserService(req: Request, res: Response) {
-    // Hash the password
     const hashedPassword = await hashPass(req.body.password);
-    // Get user info from request body
+    if (req.body.age) {
+        const userAge = parseInt(req.body.age);
+        if (userAge < 0 || userAge == NaN) return sendError(httpStatusCodes.BAD_REQUEST, "age is invalid", res)
+        req.body.age = userAge
+    }
     const user = new User(req.body.username, req.body.email, hashedPassword, req.body.age);
-    // Generate a refreshToken for this user
     const refresh_token: string = jwtRefreshGen(user.username, user.email);
     // Adding user to Database
     try {
