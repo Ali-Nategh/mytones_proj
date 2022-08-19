@@ -104,6 +104,8 @@ import validationMiddleware from '../middlewares/validateResults.middleware';
  *    description: The Admin API
  */
 
+
+
 /**
  * @swagger
  * /user/signup:
@@ -119,16 +121,13 @@ import validationMiddleware from '../middlewares/validateResults.middleware';
  *      responses:
  *          '201': 
  *              description: User was successfully created
- *              content: 
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/User' 
  *          '400':
  *              description: Bad Request, information invalid
  *          '500': 
  *              description: Something went wrong creating user
  */
 router.post('/signup', urlencodedparser, [validateUsername(), validateEmail(), validatePassword()], validationMiddleware, signUpUser);
+
 
 /**
  * @swagger
@@ -148,7 +147,7 @@ router.post('/signup', urlencodedparser, [validateUsername(), validateEmail(), v
  *              content: 
  *                  apllication/json:
  *                      schema:
- *                          $ref: '#/components/schemas/User' 
+ *                          $ref: '#/components/schemas/Token'
  *          '400':
  *              description: Bad Request, information invalid
  *          '403':
@@ -177,7 +176,7 @@ router.post('/login', [validateEmail(), validatePassword()], validationMiddlewar
  *              content: 
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/User' 
+ *                          $ref: '#/components/schemas/Token'
  *          '400':
  *              description: Bad Request, information invalid
  *          '403':
@@ -203,10 +202,6 @@ router.post('/refreshtoken', [validateToken()], validationMiddleware, refreshUse
  *      responses:
  *          '200': 
  *              description: Email activated successfully
- *              content: 
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/User' 
  *          '400':
  *              description: Bad Request, information invalid
  *          '403':
