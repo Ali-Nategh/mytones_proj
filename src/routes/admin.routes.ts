@@ -11,14 +11,13 @@ import authenticateToken from '../middlewares/authenticateToken.middleware';
  * /admin/get_members:
  *  get:
  *      tags: [Admin]
- *      summary: Use to request all users
- *      parameters:
- *      - name: Authorization
- *        in: header
- *        description: The refresh Token.
- *        required: true
- *        type: string
- *        example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmV6YSIsImVtYWlsIjoiYmlhc2Fna2hvcmRAZ21haWwuY29tIiwiaWF0IjoxNjYwNTkyNTY3fQ.dYa6AaKOwIV3TEdE3QQUQdbDBNJvS3bSCQGK5OZzEL0
+ *      summary: Get a list of users
+ *      requestBody:
+ *          required: true
+ *          content: 
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/AccessToken'
  *      responses:
  *          '200': 
  *              description: The list of users
