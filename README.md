@@ -1,8 +1,11 @@
-# mytones_proj
+# MyTones Project
 
-The backend of a website
+The backend of a music streaming website
 
 Being built little by little
+
+For practicing and learning backend, using nodejs and express
+
 
 # How to use:
 
