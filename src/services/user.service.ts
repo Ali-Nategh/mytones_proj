@@ -53,6 +53,7 @@ export async function loginUserService(req: Request, res: Response) {
     if (user == null) {
         return sendError(httpStatusCodes.BAD_REQUEST, 'Cannot find user', res)
     };
+    if (!user.active) return sendError(httpStatusCodes.UNAUTHORIZED, "Email is not active", res)
     try {
         if (await authorizePass(req.body.password, user.password)) {
             const accessToken = jwtAccessGen(user.id)
