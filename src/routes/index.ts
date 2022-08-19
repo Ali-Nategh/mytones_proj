@@ -1,15 +1,18 @@
 const router = require('express').Router();
 import { Request, Response, NextFunction } from 'express';
-
-
+import morgan from 'morgan';
+import swaggerJsDoc from 'swagger-jsdoc'
+import swaggerUi from 'swagger-ui-express'
+import homeRoute from './main.routes';
+import userRoute from './user.routes';
+import adminRoute from './admin.routes';
+import { logError, returnError } from '../errors/errorHandler';
+import Api400Error from '../errors/api400Error'
 
 // Logger
-import morgan from 'morgan';
 router.use(morgan('dev'))
 
 // Documentation
-import swaggerJsDoc from 'swagger-jsdoc'
-import swaggerUi from 'swagger-ui-express'
 const swaggerOptions = {
     definition: {
         openapi: "3.0.0",
@@ -35,21 +38,12 @@ const swaggerOptions = {
 const specs = swaggerJsDoc(swaggerOptions);
 router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-// inject home page routes
-import homeRoute from './main.routes';
 router.use('/', homeRoute);
-// inject user routes
-import userRoute from './user.routes';
 router.use('/user', userRoute)
-// inject admin routes
-import adminRoute from './admin.routes';
 router.use('/admin', adminRoute);
 
 
 // Uncought Errors handling
-import { logError, returnError } from '../errors/errorHandler';
-import Api400Error from '../errors/api400Error'
-
 router.use((req: Request, res: Response, next: NextFunction) => {
     next(new Api400Error('Page not found'));
 })

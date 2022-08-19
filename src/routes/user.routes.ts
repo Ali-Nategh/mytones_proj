@@ -31,6 +31,21 @@ import validationMiddleware from '../middlewares/validateResults.middleware';
  *              username: JohnDoe
  *              email: JohnDoe@examle.com
  *              password: Password
+ *      UserLogin:
+ *          type: object
+ *          required:
+ *              - email
+ *              - password
+ *          properties:
+ *              email:
+ *                  type: string
+ *                  description: User email
+ *              password:
+ *                  type: string
+ *                  description: User password
+ *          example:
+ *              email: JohnDoe@examle.com
+ *              password: Password
  *      Token:
  *          type: string
  *          required: true
@@ -74,7 +89,7 @@ import validationMiddleware from '../middlewares/validateResults.middleware';
  *              description: Something went wrong creating user
  */
 
-// POST '/user/signup' adding a member to the Database
+
 router.post('/signup', urlencodedparser, [validateUsername(), validateEmail(), validatePassword()], validationMiddleware, signUpUser);
 
 /**
@@ -83,25 +98,12 @@ router.post('/signup', urlencodedparser, [validateUsername(), validateEmail(), v
  *  post:
  *      tags: [Users]
  *      summary: Login with a username and password
- *      consumes:
- *          - application/json
- *      parameters:
- *        - in: body
- *          name: user
- *          description: The user to login
- *          schema:
- *              type: object
- *              required:
- *                  - email
- *                  - password
- *              properties:
- *                  email:
- *                      type: string
- *                  password:
- *                      type: string
- *              example:
- *                  username: JohnDoe
- *                  email: JohnDoe@examle.com
+ *      requestBody:
+ *          required: true
+ *          content: 
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/UserLogin'
  *      responses:
  *          '201': 
  *              description: User was successfully created
@@ -117,7 +119,7 @@ router.post('/signup', urlencodedparser, [validateUsername(), validateEmail(), v
  *              description: Something went wrong
  */
 
-// POST '/user/login'
+
 router.post('/login', [validateEmail(), validatePassword()], validationMiddleware, loginUser);
 
 /**
@@ -156,7 +158,7 @@ router.post('/login', [validateEmail(), validatePassword()], validationMiddlewar
  *              description: Something went wrong
  */
 
-// POST '/user/refreshtoken'
+
 router.post('/refreshtoken', [validateToken()], validationMiddleware, refreshUserToken);
 
 /**
@@ -199,7 +201,7 @@ router.post('/refreshtoken', [validateToken()], validationMiddleware, refreshUse
  *              description: Something went wrong
  */
 
-// POST '/user/validateEmail'
+
 router.post('/validateEmail', [validateEmail(), validateOtp()], validationMiddleware, validateUserOtp);
 
 /**
@@ -238,7 +240,7 @@ router.post('/validateEmail', [validateEmail(), validateOtp()], validationMiddle
  *              description: Something went wrong
  */
 
-// POST '/user/validateEmail'
+
 router.post('/resendEmail', [validateEmail()], validationMiddleware, resendUserOtp);
 
 /**
@@ -277,7 +279,7 @@ router.post('/resendEmail', [validateEmail()], validationMiddleware, resendUserO
  *              description: Something went wrong
  */
 
-// DELETE '/user/logout'
+
 router.delete('/logout', [validateToken()], validationMiddleware, logoutUser);
 
 

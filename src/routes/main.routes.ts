@@ -17,7 +17,7 @@ import { getHome } from '../controllers/home.controller'
  *              description: Something went wrong
  */
 
-// GET '/' route (HomePage)
+
 router.get('/', getHome);
 
 export default router;

@@ -34,7 +34,6 @@ import authenticateToken from '../middlewares/authenticateToken.middleware';
  *              description: Token invalid or expired
  */
 
-// GET '/admin/get_members'
 router.get('/get_members', authenticateToken, getAdmin);
 
 

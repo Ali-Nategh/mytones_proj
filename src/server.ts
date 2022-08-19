@@ -1,9 +1,9 @@
-// Importing .env
 require('dotenv').config()
 
 import express, { Application } from 'express';
+import appRouters from './routes/index'
 
-// Initialize the App and Port
+
 const app: Application = express();
 const PORT = process.env.PORT || 5000;
 
@@ -11,12 +11,9 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 
-// Initialize and use routes
-import appRouter from './routes/index'
-app.use(appRouter)
+app.use(appRouters)
 
 
-// PORT listen and start server
 app.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`);
 });
