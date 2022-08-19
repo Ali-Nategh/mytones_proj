@@ -1,4 +1,4 @@
-import { getAdmin } from "../controllers/admin.controller";
+import { adminGetAllUsers } from "../controllers/admin.controller";
 
 const router = require('express').Router();
 
@@ -33,7 +33,7 @@ import authenticateToken from '../middlewares/authenticateToken.middleware';
  *              description: Token invalid or expired
  */
 
-router.get('/getUsers', authenticateToken, getAdmin);
+router.get('/getUsers', authenticateToken, adminGetAllUsers);
 
 
 
