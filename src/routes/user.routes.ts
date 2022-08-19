@@ -181,6 +181,9 @@ router.post('/refreshtoken', [validateToken()], validationMiddleware, refreshUse
  *                      type: string
  *                  otp:
  *                      type: string
+ *              example:
+ *                  email: JohnDoe@examle.com
+ *                  otp: "156482"
  *      responses:
  *          '201': 
  *              description: User was successfully created
@@ -218,6 +221,8 @@ router.post('/validateEmail', [validateEmail(), validateOtp()], validationMiddle
  *              properties:
  *                  email:
  *                      type: string
+ *              example:
+ *                  email: JohnDoe@examle.com
  *      responses:
  *          '201': 
  *              description: Email sent successfully
