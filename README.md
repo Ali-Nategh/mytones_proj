@@ -23,11 +23,11 @@ You can clone this project and use it in a local environment, the things you got
     ```
         npm install
     ```
-    And after that you can run the server with nodemon useing the command:
+    Then that you can run the server with nodemon useing the command:
     ```
         npm run dev
     ```
-    You might also need to generate the prisma client(not sure if this is required):
+You might also need to generate the prisma client(not sure if this is required):
     ```
         npx prisma generate
     ```
