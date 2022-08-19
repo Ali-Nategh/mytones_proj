@@ -18,6 +18,7 @@ import authenticateToken from '../middlewares/authenticateToken.middleware';
  *        description: The refresh Token.
  *        required: true
  *        type: string
+ *        example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmV6YSIsImVtYWlsIjoiYmlhc2Fna2hvcmRAZ21haWwuY29tIiwiaWF0IjoxNjYwNTkyNTY3fQ.dYa6AaKOwIV3TEdE3QQUQdbDBNJvS3bSCQGK5OZzEL0
  *      responses:
  *          '200': 
  *              description: The list of users

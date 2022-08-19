@@ -58,14 +58,14 @@ import validationMiddleware from '../middlewares/validateResults.middleware';
  *      requestBody:
  *          required: true
  *          content: 
- *                  apllication/json:
+ *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/User'
  *      responses:
  *          '201': 
  *              description: User was successfully created
  *              content: 
- *                  apllication/json:
+ *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/User' 
  *          '400':
@@ -99,6 +99,9 @@ router.post('/signup', urlencodedparser, [validateUsername(), validateEmail(), v
  *                      type: string
  *                  password:
  *                      type: string
+ *              example:
+ *                  username: JohnDoe
+ *                  email: JohnDoe@examle.com
  *      responses:
  *          '201': 
  *              description: User was successfully created
@@ -136,11 +139,13 @@ router.post('/login', [validateEmail(), validatePassword()], validationMiddlewar
  *              properties:
  *                  token:
  *                      type: string
+ *              example:
+ *                  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmV6YSIsImVtYWlsIjoiYmlhc2Fna2hvcmRAZ21haWwuY29tIiwiaWF0IjoxNjYwNTkyNTY3fQ.dYa6AaKOwIV3TEdE3QQUQdbDBNJvS3bSCQGK5OZzEL0
  *      responses:
  *          '200': 
  *              description: Access token generated
  *              content: 
- *                  apllication/json:
+ *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/User' 
  *          '400':
@@ -165,7 +170,7 @@ router.post('/refreshtoken', [validateToken()], validationMiddleware, refreshUse
  *      parameters:
  *        - in: body
  *          name: user
- *          description: Email validation wih one time password
+ *          description: Email validation with one time password
  *          schema:
  *              type: object
  *              required:
@@ -180,7 +185,7 @@ router.post('/refreshtoken', [validateToken()], validationMiddleware, refreshUse
  *          '201': 
  *              description: User was successfully created
  *              content: 
- *                  apllication/json:
+ *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/User' 
  *          '400':
@@ -217,7 +222,7 @@ router.post('/validateEmail', [validateEmail(), validateOtp()], validationMiddle
  *          '201': 
  *              description: Email sent successfully
  *              content: 
- *                  apllication/json:
+ *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/User' 
  *          '400':
@@ -250,11 +255,13 @@ router.post('/resendEmail', [validateEmail()], validationMiddleware, resendUserO
  *              properties:
  *                  token:
  *                      type: string
+ *              example:
+ *                  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmV6YSIsImVtYWlsIjoiYmlhc2Fna2hvcmRAZ21haWwuY29tIiwiaWF0IjoxNjYwNTkyNTY3fQ.dYa6AaKOwIV3TEdE3QQUQdbDBNJvS3bSCQGK5OZzEL0
  *      responses:
  *          '200': 
  *              description: Logged out successfully
  *              content: 
- *                  apllication/json:
+ *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/User' 
  *          '400':
