@@ -36,13 +36,13 @@ const specs = swaggerJsDoc(swaggerOptions);
 router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // inject home page routes
-import homeRoute from '../routes/main.routes';
+import homeRoute from './main.routes';
 router.use('/', homeRoute);
 // inject user routes
-import userRoute from '../routes/user.routes';
+import userRoute from './user.routes';
 router.use('/user', userRoute)
 // inject admin routes
-import adminRoute from '../routes/admin.routes';
+import adminRoute from './admin.routes';
 router.use('/admin', adminRoute);
 
 
