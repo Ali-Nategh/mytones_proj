@@ -160,7 +160,7 @@ router.post('/login', [validateEmail(), validatePassword()], validationMiddlewar
 
 /**
  * @swagger
- * /user/refreshtoken:
+ * /user/refreshToken:
  *  post:
  *      tags: [Users]
  *      summary: Login with a username and password
@@ -184,7 +184,7 @@ router.post('/login', [validateEmail(), validatePassword()], validationMiddlewar
  *          '500': 
  *              description: Something went wrong
  */
-router.post('/refreshtoken', [validateToken()], validationMiddleware, refreshUserToken);
+router.post('/refreshToken', [validateToken()], validationMiddleware, refreshUserToken);
 
 
 /**
