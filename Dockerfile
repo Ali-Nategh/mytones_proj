@@ -9,7 +9,7 @@ RUN npm install
 COPY . .
 
 RUN npx prisma generate
-RUN npx prisma migrate dev --name whateverName
+# RUN npx prisma migrate dev --name whateverName
 
 ENV PORT=5000
 
