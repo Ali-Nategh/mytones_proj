@@ -3,3 +3,5 @@ dist
 package-lock.json
 .env
 .vscode
+docker-compose.yml
+pgdata
