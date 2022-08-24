@@ -7,7 +7,7 @@ import homeRoute from './main.routes';
 import userRoute from './user.routes';
 import adminRoute from './admin.routes';
 import { logError, returnError } from '../errors/errorHandler';
-import Api400Error from '../errors/api400Error'
+import Api404Error from '../errors/api404Error'
 
 // Logger
 router.use(morgan('dev'))
@@ -45,7 +45,7 @@ router.use('/admin', adminRoute);
 
 // Uncought Errors handling
 router.use((req: Request, res: Response, next: NextFunction) => {
-    next(new Api400Error('Page not found'));
+    next(new Api404Error('Page not found'));
 })
 router.use(logError)
 router.use(returnError)
