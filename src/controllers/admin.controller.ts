@@ -4,14 +4,14 @@ import { exec } from 'child_process';
 
 export async function adminGetAllUsers(req: Request, res: Response) {
     const users = await PrismaGetAllUsers()
-    return res.send(users);
+    return res.status(200).send(users);
 }
 
 export function adminMigratePrisma(req: Request, res: Response) {
     exec('npx prisma migrate dev --name whateverName', (err, stdout, stderr) => {
         if (err) {
             //some err occurred    
-            console.error(err)
+            console.error(err);
             return res.status(500).send('migration failed');
         } else {
             // the *entire* stdout and stderr (buffered)   
