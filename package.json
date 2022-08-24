@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./dist/server",
-    "tstart": "ts-node ./src/server",
+    "start": "ts-node ./src/server",
     "dev": "nodemon -L ./src/server.ts",
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "jstart": "node ./dist/server"
   },
   "repository": {
     "type": "git",
