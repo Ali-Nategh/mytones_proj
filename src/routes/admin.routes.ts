@@ -59,7 +59,7 @@ router.get('/getUsersTokenless', adminGetAllUsers); // For Testing
  * /admin/migratePrisma:
  *  get:
  *      tags: [Admin]
- *      summary: Get a list of users without token for tests
+ *      summary: Migrate prisma schema to database
  *      responses:
  *          '200':
  *              description: Updates the DataBase schema
