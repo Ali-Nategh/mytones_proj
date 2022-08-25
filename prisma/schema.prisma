@@ -19,6 +19,7 @@ model User {
   updated_at  DateTime  @default(now()) @updatedAt
   deleted_at  DateTime?
   last_active DateTime? @updatedAt
+  // personalPlaylists Playlist[]
 
   @@index([id])
 }
@@ -52,8 +53,95 @@ model Email {
   @@index([email])
 }
 
+/////////////////////////////////////////////////////
+
+model Favorites {
+  id      String @id @unique @default(uuid())
+  user_id String @unique
+  type    Type
+  // songs   Song[]
+}
+
+model Song {
+  id             String   @id @unique @default(uuid())
+  song_name      String
+  artist_name    String
+  album_name     String
+  copyright_info String
+  ISRC           String
+  writers        String[]
+  engineers      String[]
+  producers      String[]
+  publisher      String
+  release_date   DateTime
+  genres         Genres[]
+  duration       String
+}
+
+model Playlist {
+  id      String @id @unique @default(uuid())
+  name    String
+  user_id String @unique
+  // songs   Song[]
+}
+
+model Artist {
+  id   String @id @unique @default(uuid())
+  name String
+  // albums Album[]
+  // songs   Song[]
+}
+
+model Album {
+  id           String   @id @unique @default(uuid())
+  name         String
+  artist_name  String
+  release_date DateTime
+  genres       Genres[]
+  // songs   Song[]
+}
+
+/////////////////////////////////////////////////////
+
 enum Role {
   BASIC
   EDITOR
   ADMIN
+}
+
+enum Type {
+  SONGS
+  ARTISTS
+  ALBUMS
+  DOWNLOADS
+}
+
+enum Genres {
+  POP
+  COUNTRY
+  ELECTRONIC
+  BLUES
+  ROCK
+  HIPHOP
+  JAZZ
+  METAL
+  INDIE
+  DANCE
+  SOUL
+  LATIN
+  KPOP
+  DUBSTEP
+  TECHNO
+  FOLK
+  INSTRUMENTAL
+  EMO
+  GOSPEL
+  HOUSE
+  RnB
+  PSYCHEDELIC
+  RAP
+  DISCO
+  PUNK
+  COVER
+  CLASSICAL
 }
