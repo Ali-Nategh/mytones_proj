@@ -61,6 +61,10 @@ then go to the ``` /api-docs ``` page and use ``` GET /admin/migratePrisma ``` a
 
 That's it, you're all setup!
 
+Just gotta add the .env file, you can look the settings of it in step 1 of the ```How to use``` above.
+
+I also included the DATABASE_URL path you need to use in .env in the docker-compose file, just copy and paste it to .env and you're done.
+
 If something goes wrong repeat step 1 XD
 
 When you're done you can either ``` docker compose down ``` or close the container from the app.
