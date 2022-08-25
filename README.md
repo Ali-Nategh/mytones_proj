@@ -74,35 +74,35 @@ When you're done you can either ``` docker compose down ``` or close the contain
 
 /user/signup :
 
-    signup with a username, email, and password
+    signup with a username, email, and password, sends a 6 digit password to user email afterwards.
 
 
 /user/login :
 
-    login after user has validated their email (activates their refresh token)
+    login after user has validated their email (activates their refresh token).
 
 
 /user/refreshToken :
 
-    generate a new access token for the user using their refresh token
+    generate a new access token for the user using their refresh token.
 
 
 /user/validateEmail :
 
-    validate user's email with a one time password sent to their email
+    validate user's email with the one time password sent to their email.
 
 
 /user/resendEmail :
 
-    resends a new password to user if they haven't received the first one
+    resends a new password to user if they haven't received the last one.
 
 
 /user/logout :
 
-    logouts user using their refresh token (deactivates their refresh token)
+    logouts user using their refresh token (deactivates their refresh token).
 
 
 /admin/getUsers :
 
-    gets an authentication header with an access token (Bearer token), displays a list of all users if token is valid and not expired
+    gets an authentication header with an access token (Bearer token), displays a list of all users if token is valid and not expired.
 
