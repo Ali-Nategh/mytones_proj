@@ -43,9 +43,9 @@ You might also need to generate the prisma client(not sure if this is required):
 
 3 - After setting things up you can play around and test the API, the API DOCUMENTATION is located at:
 
-    
-        /api-docs
-    
+```
+/api-docs
+``` 
 
 
 Other sections will be added soon.
@@ -55,6 +55,7 @@ Other sections will be added soon.
 # How to use (With Docker):
 
 (You should have Docker Desktop Installed)
+
 1 - Clone the project, run ``` docker compose up -d (-d is optional to start docker container in background and hide logs from cmd) ``` ,
 then go to the ``` /api-docs ``` page and use ``` get /admin/migratePrisma ```.
 
