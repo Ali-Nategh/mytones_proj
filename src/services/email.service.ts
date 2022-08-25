@@ -2,7 +2,7 @@ import { Response } from 'express';
 import nodemailer from 'nodemailer';
 import { sendError } from '../errors/errorHandler';
 import { httpStatusCodes } from '../errors/httpStatusCodes';
-import { PrismaFindByEmail, PrismaUpdateOtp, PrismaVerifyEmail } from '../repositories/user.repository';
+import { PrismaFindOTP, PrismaFindEmail, PrismaUpdateOtp, PrismaVerifyEmail } from '../repositories/user.repository';
 import generateOTP from './otp.service';
 
 
@@ -44,19 +44,25 @@ export const sendMail = async (params: { to: any; OTP: any; }) => {
 
 
 export async function verifyEmailService(email: string, otp: string, res: Response) {
-    const user = await PrismaFindByEmail(email)
-    if (!user) return sendError(httpStatusCodes.NOT_FOUND, "Email Not found", res);
-    if (otp !== user.otp) return sendError(httpStatusCodes.UNAUTHORIZED, "Password incorrect", res);
-    if (user.active) return sendError(httpStatusCodes.BAD_REQUEST, "Email already active", res);
-    await PrismaVerifyEmail(user.id)
+    const userEmail = await PrismaFindEmail(email)
+    if (!userEmail) return sendError(httpStatusCodes.NOT_FOUND, "Email Not Found", res);
+
+    const userOTP = await PrismaFindOTP(userEmail.user_id);
+    if (!userOTP) return sendError(httpStatusCodes.NOT_FOUND, "User Not Found", res);
+
+    if (otp !== userOTP.otp) return sendError(httpStatusCodes.UNAUTHORIZED, "Password incorrect", res);
+    if (userEmail.verified) return sendError(httpStatusCodes.BAD_REQUEST, "Email already active", res);
+
+    await PrismaVerifyEmail(userEmail.id)
     return res.status(httpStatusCodes.OK).send("Email successfully verified");
 }
 
 
 export async function resendEmailService(email: string, res: Response) {
-    const user = await PrismaFindByEmail(email)
-    if (!user) return sendError(httpStatusCodes.NOT_FOUND, "Email Not found", res);
-    if (user.active) return sendError(httpStatusCodes.BAD_REQUEST, "Email already active", res);
+    const userEmail = await PrismaFindEmail(email)
+    if (!userEmail) return sendError(httpStatusCodes.NOT_FOUND, "Email Not found", res);
+    if (userEmail.verified) return sendError(httpStatusCodes.BAD_REQUEST, "Email already active", res);
+
     const OTP = generateOTP()
     PrismaUpdateOtp(email, OTP)
     sendMail({ to: email, OTP: OTP });
