@@ -48,17 +48,19 @@ You might also need to generate the prisma client(not sure if this is required):
     
 
 
-Other sections will be added.
+Other sections will be added soon.
+
 
 
 # How to use (With Docker):
 
-Clone the project, run ``` docker compose up (optional -d to hide logs from cmd) ``` , 
+1 - Clone the project, run ``` docker compose up -d (-d is optional to start docker container in background and hide logs from cmd) ``` ,
 then go to the ``` /api-docs ``` page and use ``` get /admin/migratePrisma ```.
 
-You're all setup!
+That's it, you're all setup!
 
-if something goes wrong repeat this XD
+if something goes wrong repeat step 1 XD
+
 
 
 # APIs:
@@ -80,7 +82,7 @@ if something goes wrong repeat this XD
 
 /user/refreshToken :
 
-    generate a new access token for the user using they'r refresh token
+    generate a new access token for the user using their refresh token
 
 
 /user/validateEmail :
