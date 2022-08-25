@@ -8,30 +8,48 @@ datasource db {
 }
 
 model User {
-  id           String        @id @unique @default(uuid())
-  username     String
-  password     String
-  email        String        @unique
-  otp          String
-  active       Boolean       @default(false)
-  age          Int?
-  role         Role          @default(BASIC)
-  refreshToken RefreshToken?
-  created_at   DateTime      @default(now())
-  last_active  DateTime?
+  id          String    @id @unique @default(uuid())
+  username    String
+  name        String
+  lastname    String
+  password    String
+  age         Int?
+  role        Role      @default(BASIC)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now()) @updatedAt
+  deleted_at  DateTime?
+  last_active DateTime? @updatedAt
 
   @@index([id])
-  @@index([email])
 }
 
 model RefreshToken {
-  id     String  @id
-  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  valid  Boolean @default(false)
-  userId String  @unique
+  id      String  @id @unique
+  valid   Boolean @default(false)
+  user_id String  @unique
 
   @@index([id])
-  @@index([userId])
+  @@index([user_id])
+}
+
+model Otp {
+  id         String   @id @unique @default(uuid())
+  user_id    String   @unique
+  otp        String
+  created_at DateTime @default(now())
+
+  @@index([user_id])
+}
+
+model Email {
+  id         String   @id @unique @default(uuid())
+  user_id    String   @unique
+  email      String   @unique
+  updated_at DateTime @default(now()) @updatedAt
+  verified   Boolean  @default(false)
+
+  @@index([user_id])
+  @@index([email])
 }
 
 enum Role {
