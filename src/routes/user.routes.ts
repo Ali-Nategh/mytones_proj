@@ -33,6 +33,56 @@ router.post('/signup', urlencodedparser, [validateUsername(), validateEmail(), v
 
 /**
  * @swagger
+ * /user/resendEmail:
+ *  post:
+ *      tags: [Users]
+ *      summary: Resend the otp email if user hasn't received it
+ *      requestBody:
+ *          required: true
+ *          content: 
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Email'
+ *      responses:
+ *          '200': 
+ *              description: Email sent successfully
+ *          '400':
+ *              description: Bad Request, information invalid
+ *          '403':
+ *              description: Information invalid
+ *          '500': 
+ *              description: Something went wrong
+ */
+router.post('/resendEmail', [validateEmail()], validationMiddleware, resendUserOtp);
+
+
+/**
+ * @swagger
+ * /user/validateEmail:
+ *  post:
+ *      tags: [Users]
+ *      summary: Validate email with the sent otp
+ *      requestBody:
+ *          required: true
+ *          content: 
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/EmailValid'
+ *      responses:
+ *          '200': 
+ *              description: Email activated successfully
+ *          '400':
+ *              description: Bad Request, information invalid
+ *          '403':
+ *              description: Password wrong or Information invalid
+ *          '500': 
+ *              description: Something went wrong
+ */
+router.post('/validateEmail', [validateEmail(), validateOtp()], validationMiddleware, validateUserOtp);
+
+
+/**
+ * @swagger
  * /user/login:
  *  post:
  *      tags: [Users]
@@ -87,56 +137,6 @@ router.post('/login', [validateEmail(), validatePassword()], validationMiddlewar
  *              description: Something went wrong
  */
 router.post('/refreshToken', [validateToken()], validationMiddleware, refreshUserToken);
-
-
-/**
- * @swagger
- * /user/validateEmail:
- *  post:
- *      tags: [Users]
- *      summary: Validate email with the sent otp
- *      requestBody:
- *          required: true
- *          content: 
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/EmailValid'
- *      responses:
- *          '200': 
- *              description: Email activated successfully
- *          '400':
- *              description: Bad Request, information invalid
- *          '403':
- *              description: Password wrong or Information invalid
- *          '500': 
- *              description: Something went wrong
- */
-router.post('/validateEmail', [validateEmail(), validateOtp()], validationMiddleware, validateUserOtp);
-
-
-/**
- * @swagger
- * /user/resendEmail:
- *  post:
- *      tags: [Users]
- *      summary: Resend the otp email if user hasn't received it
- *      requestBody:
- *          required: true
- *          content: 
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/Email'
- *      responses:
- *          '200': 
- *              description: Email sent successfully
- *          '400':
- *              description: Bad Request, information invalid
- *          '403':
- *              description: Information invalid
- *          '500': 
- *              description: Something went wrong
- */
-router.post('/resendEmail', [validateEmail()], validationMiddleware, resendUserOtp);
 
 
 /**
