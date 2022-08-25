@@ -1,4 +1,4 @@
-import { adminGetAllUsers, adminMigratePrisma } from "../controllers/admin.controller";
+import { adminGetAllUsers, adminMigratePrisma, adminDeleteDatabase } from "../controllers/admin.controller";
 
 const router = require('express').Router();
 
@@ -70,5 +70,20 @@ router.get('/getUsersTokenless', adminGetAllUsers); // For Testing
  */
 router.get('/migratePrisma', adminMigratePrisma);
 
+/**
+ * @swagger
+ * /admin/deleteDatabase:
+ *  delete:
+ *      tags: [Admin]
+ *      summary: Delete everything from the database
+ *      responses:
+ *          '200':
+ *              description: Updates the DataBase schema
+ *          '400':
+ *              description: Token not found
+ *          '403':
+ *              description: Token invalid or expired
+ */
+router.delete('/deleteDatabase', adminDeleteDatabase);
 
 export default router;
