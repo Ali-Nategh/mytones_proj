@@ -51,6 +51,17 @@ You might also need to generate the prisma client(not sure if this is required):
 Other sections will be added.
 
 
+# How to use (Docker):
+
+Clone the project, run 
+``` 
+    docker compose up (optional -d to hide logs from cmd)
+``` 
+, then go to the ``` /api-docs ``` page and use ``` get /admin/migratePrisma ```.
+
+You're all setup!
+if something goes wrong repeat this XD
+
 
 # APIs:
 
