@@ -57,7 +57,7 @@ Other sections will be added soon.
 (You should have Docker Desktop Installed)
 
 1 - Clone the project, run ``` docker compose up -d (-d is optional to start docker container in background and hide logs from cmd) ``` ,
-then go to the ``` /api-docs ``` page and use ``` get /admin/migratePrisma ```.
+then go to the ``` /api-docs ``` page and use ``` GET /admin/migratePrisma ```.
 
 That's it, you're all setup!
 
