@@ -1,6 +1,6 @@
 import {
-    PrismaActivateRefreshToken, PrismaDeactivateRefreshToken, PrismaFindByEmail,
-    PrismaFindRefreshToken, PrismaUserCreation, PrismaVerifyEmail
+    PrismaActivateRefreshToken, PrismaDeactivateRefreshToken, PrismaFindEmail,
+    PrismaFindRefreshToken, PrismaUserCreation, PrismaFindUserByEmail, PrismaFindOTP
 } from "../repositories/user.repository";
 import { logError, isOperationalError } from "../errors/errorHandler";
 import { jwtRefreshGen, jwtAccessGen, refreshToken, jwtVerifyRefreshToken } from "../utils/jwtToken";
@@ -15,20 +15,31 @@ import User from "../models/user";
 
 export async function signUpUserService(req: Request, res: Response) {
     const hashedPassword = await hashPass(req.body.password);
+
     if (req.body.age) {
         const userAge = parseInt(req.body.age);
-        if (userAge < 0 || userAge == NaN) return sendError(httpStatusCodes.BAD_REQUEST, "age is invalid", res)
+        if (userAge < 0 || userAge == NaN) return sendError(httpStatusCodes.BAD_REQUEST, "Age Is Invalid", res)
         req.body.age = userAge
     }
-    const user = new User(req.body.username, req.body.email, hashedPassword, req.body.age);
+
+    const user = new User(req.body.username, req.body.name, req.body.lastname, req.body.email, hashedPassword, req.body.age);
     const refresh_token: string = jwtRefreshGen(user.username, user.email);
+
     // Adding user to Database
     try {
-        const isExisting = await PrismaFindByEmail(user.email)
-        if (isExisting) return sendError(httpStatusCodes.BAD_REQUEST, "Email already exists", res)
+        const emailExisting = await PrismaFindEmail(user.email)
+        if (emailExisting) return sendError(httpStatusCodes.BAD_REQUEST, "Email Already Exists", res)
+
         const user_data = await createUser(user, refresh_token);
         console.log(user_data);
-        sendMail({ to: user_data.email, OTP: user_data.otp })
+
+        const user_id = await PrismaFindUserByEmail(user.email)
+        if (!user_id) return sendError(httpStatusCodes.INTERNAL_SERVER_ERROR, "User Not Found", res)
+
+        const userOTP = await PrismaFindOTP(user_id.id)
+        if (!userOTP) return sendError(httpStatusCodes.INTERNAL_SERVER_ERROR, "Something went wrong sending password to email", res)
+
+        sendMail({ to: user.email, OTP: userOTP.otp })
         return res.status(201).send("User Created Successfully");
     } catch (error) {
         console.error(error);
@@ -51,11 +62,14 @@ export async function signUpUserService(req: Request, res: Response) {
 
 
 export async function loginUserService(req: Request, res: Response) {
-    let user = null || await PrismaFindByEmail(req.body.email);
+    let user = await PrismaFindUserByEmail(req.body.email);
     if (user == null) {
         return sendError(httpStatusCodes.BAD_REQUEST, 'Cannot find user', res)
     };
-    if (!user.active) return sendError(httpStatusCodes.UNAUTHORIZED, "Email is not active", res)
+
+    const userEmail = await PrismaFindEmail(req.body.email)
+    if (!userEmail?.verified) return sendError(httpStatusCodes.UNAUTHORIZED, "Email is not active", res)
+
     try {
         if (await authorizePass(req.body.password, user.password)) {
             const accessToken = jwtAccessGen(user.id)
@@ -66,7 +80,7 @@ export async function loginUserService(req: Request, res: Response) {
         }
     } catch (err) {
         console.error(err);
-        return sendError(httpStatusCodes.INTERNAL_SERVER_ERROR, 'Something went wrong creating user', res)
+        return sendError(httpStatusCodes.INTERNAL_SERVER_ERROR, 'Something went wrong in user login', res)
     };
 }
 
@@ -109,6 +123,6 @@ async function checkRefreshToken(sentRefreshToken: string, res: Response) {
 
 
 export async function createUser(user: User, refresh_token: string) {
-    const user_data = await PrismaUserCreation(user.username, user.email, user.password, refresh_token, generateOTP(), user?.age);
+    const user_data = await PrismaUserCreation(user.username, user.name, user.lastname, user.email, user.password, refresh_token, generateOTP(), user?.age);
     return user_data;
 }
