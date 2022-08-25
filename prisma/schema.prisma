@@ -8,18 +8,17 @@ datasource db {
 }
 
 model User {
-  id          String    @id @unique @default(uuid())
-  username    String
-  name        String
-  lastname    String
-  password    String
-  age         Int?
-  role        Role      @default(BASIC)
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @default(now()) @updatedAt
-  deleted_at  DateTime?
-  last_active DateTime? @updatedAt
-  // personalPlaylists Playlist[]
+  id                String     @id @unique @default(uuid())
+  username          String
+  name              String
+  lastname          String
+  password          String
+  age               Int?
+  role              Role       @default(BASIC)
+  created_at        DateTime   @default(now())
+  updated_at        DateTime?  @default(now()) @updatedAt
+  deleted_at        DateTime?
+  personalPlaylists Playlist[]
 
   @@index([id])
 }
@@ -56,49 +55,53 @@ model Email {
 /////////////////////////////////////////////////////
 
 model Favorites {
-  id      String @id @unique @default(uuid())
-  user_id String @unique
-  type    Type
-  // songs   Song[]
+  id       String   @id @unique @default(uuid())
+  user_id  String
+  type     Type
+  songs_id String[] @default([])
 }
 
 model Song {
-  id             String   @id @unique @default(uuid())
+  id             String    @id @unique @default(uuid())
   song_name      String
-  artist_name    String
-  album_name     String
-  copyright_info String
-  ISRC           String
-  writers        String[]
-  engineers      String[]
-  producers      String[]
-  publisher      String
-  release_date   DateTime
-  genres         Genres[]
+  file_path      String
+  artist_id      String
+  album_id       String?
+  copyright_info String?
+  ISRC           String?
+  writers        String[]  @default([])
+  engineers      String[]  @default([])
+  producers      String[]  @default([])
+  publisher      String?
+  release_date   DateTime?
+  genres         Genres[]  @default([])
   duration       String
 }
 
 model Playlist {
-  id      String @id @unique @default(uuid())
-  name    String
-  user_id String @unique
-  // songs   Song[]
+  id       String   @unique @default(uuid())
+  name     String
+  User     User?    @relation(fields: [user_id], references: [id])
+  user_id  String   @unique
+  songs_id String[] @default([])
+
+  @@id([id, user_id])
 }
 
 model Artist {
-  id   String @id @unique @default(uuid())
-  name String
-  // albums Album[]
-  // songs   Song[]
+  id        String   @id @unique @default(uuid())
+  name      String
+  albums_id String[] @default([])
+  songs_id  String[] @default([])
 }
 
 model Album {
   id           String   @id @unique @default(uuid())
   name         String
-  artist_name  String
+  artist_id    String
   release_date DateTime
-  genres       Genres[]
-  // songs   Song[]
+  genres       Genres[] @default([])
+  songs_id     String[]
 }
 
 /////////////////////////////////////////////////////
