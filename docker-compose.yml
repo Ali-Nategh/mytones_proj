@@ -1,0 +1,26 @@
+version: "3.7"
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: test1
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+    - customnetwork
+  web:
+    depends_on:
+      - db
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '5000:5000'
+    networks:
+    - customnetwork
+networks:
+  customnetwork:
