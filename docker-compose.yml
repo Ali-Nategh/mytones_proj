@@ -5,7 +5,8 @@ services:
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: postgres
-      POSTGRES_DB: test1
+      POSTGRES_DB: mytonestest
+    # DATABASE_URL="postgresql://postgres:password@mytones_proj-db-1:5432/mytonestest"
     volumes:
       - ./pgdata:/var/lib/postgresql/data
     ports:
