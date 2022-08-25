@@ -56,12 +56,12 @@ Other sections will be added soon.
 
 (You should have Docker Desktop Installed)
 
-1 - Clone the project, run ``` docker compose up -d ``` in the root folder (-d is optional to start docker container in background and hide logs from cmd),
+1 - Clone the project, add the ```.env``` file, run ``` docker compose up -d ``` in the root folder (-d is optional to start docker container in background and hide logs from cmd),
 then go to the ``` /api-docs ``` page and use ``` GET /admin/migratePrisma ``` and wait for it to be run (this is for setting up the DataBase).
 
 That's it, you're all setup!
 
-- Just gotta add the ```.env``` file, you can look the settings in step 1 of the ```How to use``` above.
+- To add the ```.env``` file, you can look the settings in step 1 of the ```How to use``` above.
 I also included the DATABASE_URL path you need to use in ```.env``` in the ```docker-compose.yml``` file as a comment, just copy and paste it to ```.env``` and you're done.
 
 If something goes wrong repeat step 1 XD
