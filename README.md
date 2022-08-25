@@ -56,7 +56,7 @@ Other sections will be added soon.
 
 (You should have Docker Desktop Installed)
 
-1 - Clone the project, run ``` docker compose up -d (-d is optional to start docker container in background and hide logs from cmd) ``` ,
+1 - Clone the project, run ``` docker compose up -d (-d is optional to start docker container in background and hide logs from cmd) ``` in the root folder,
 then go to the ``` /api-docs ``` page and use ``` GET /admin/migratePrisma ``` and wait for it to be run (this is for setting up the DataBase).
 
 That's it, you're all setup!
