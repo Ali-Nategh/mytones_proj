@@ -69,6 +69,8 @@ router.use(returnError)
  *          type: object
  *          required:
  *              - username
+ *              - name
+ *              - lastname
  *              - email
  *              - password
  *          properties:
@@ -83,6 +85,8 @@ router.use(returnError)
  *                  description: User password
  *          example:
  *              username: JohnDoe
+ *              name: John
+ *              lastname: Doe
  *              email: JohnDoe@examle.com
  *              password: Password
  *              age: 22 (optional)
