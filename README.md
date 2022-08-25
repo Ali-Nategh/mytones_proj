@@ -54,14 +54,15 @@ Other sections will be added soon.
 
 # How to use (With Docker):
 
+(You should have Docker Desktop Installed)
 1 - Clone the project, run ``` docker compose up -d (-d is optional to start docker container in background and hide logs from cmd) ``` ,
 then go to the ``` /api-docs ``` page and use ``` get /admin/migratePrisma ```.
 
 That's it, you're all setup!
 
-if something goes wrong repeat step 1 XD
+If something goes wrong repeat step 1 XD
 
-
+When you're done you can either ``` docker compose down ``` or close the container from the app.
 
 # APIs:
 
