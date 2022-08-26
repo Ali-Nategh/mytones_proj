@@ -1,4 +1,4 @@
-import { adminGetAllUsers, adminMigratePrisma, adminDeleteDatabase } from "../controllers/admin.controller";
+import { adminGetAllUsers, adminMigratePrisma, adminDeleteDatabase, adminGetMusics } from "../controllers/admin.controller";
 
 const router = require('express').Router();
 
@@ -69,6 +69,22 @@ router.get('/getUsersTokenless', adminGetAllUsers); // For Testing
  *              description: Token invalid or expired
  */
 router.get('/migratePrisma', adminMigratePrisma);
+
+/**
+ * @swagger
+ * /admin/getMusics:
+ *  get:
+ *      tags: [Admin]
+ *      summary: Get Literally Everything Music Related
+ *      responses:
+ *          '200':
+ *              description: A list of Songs, Artists, Albums, Playlists, Favorites
+ *          '400':
+ *              description: Token not found
+ *          '403':
+ *              description: Token invalid or expired
+ */
+router.get('/getMusics', adminGetMusics);
 
 /**
  * @swagger
