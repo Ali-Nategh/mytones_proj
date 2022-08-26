@@ -87,7 +87,8 @@ When you're done you can either ``` docker compose down ``` or close the contain
 
 /user/signup :
 
-    signup with a username, email, and password, sends a 6 digit password to user email afterwards.
+    creates a user with a username, name, lastname, email, and password, 
+    sends a 6 digit password to user's email afterwards.
 
 
 /user/resendEmail :
@@ -97,12 +98,13 @@ When you're done you can either ``` docker compose down ``` or close the contain
 
 /user/validateEmail :
 
-    validate user's email with the one time password sent to their email.
+    validate user's email with the one time password sent to their email, so they can login.
 
 
 /user/login :
 
     login after user has validated their email (activates their refresh token).
+    gives a refresh token and an access token.
 
 
 /user/refreshToken :
@@ -120,7 +122,8 @@ When you're done you can either ``` docker compose down ``` or close the contain
 
 /admin/getUsers :
 
-    gets an authentication header with an access token (Bearer token), displays a list of all users if token is valid and not expired.
+    Gets an authentication header with an access token (Bearer token), 
+    displays a list of all users if token is valid and not expired.
 
 
 /admin/getUsersTokenless :
@@ -148,7 +151,7 @@ When you're done you can either ``` docker compose down ``` or close the contain
 
 /music/addMusic :
 
-    Crates a song (required parameters in the /api-docs)
+    Crates a song (required parameters in the /api-docs).
 
 
 /music/queryMusic:
@@ -158,7 +161,7 @@ When you're done you can either ``` docker compose down ``` or close the contain
 
 /music/addArtist:
 
-    Crates an Artist (required parameters in the /api-docs)
+    Crates an Artist (required parameters in the /api-docs).
 
 
 /music/queryArtist:
@@ -168,7 +171,7 @@ When you're done you can either ``` docker compose down ``` or close the contain
 
 /music/addPlaylist:
 
-    Crates a Playlist (required parameters in the /api-docs)
+    Crates a Playlist (required parameters in the /api-docs).
 
 
 /music/queryPlaylist:
@@ -178,7 +181,7 @@ When you're done you can either ``` docker compose down ``` or close the contain
 
 /music/addAlbum:
 
-    Crates an Album (required parameters in the /api-docs)
+    Crates an Album (required parameters in the /api-docs).
 
 
 /music/queryAlbum:
