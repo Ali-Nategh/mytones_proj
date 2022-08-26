@@ -1,14 +1,14 @@
-const router = require('express').Router();
-import { Request, Response, NextFunction } from 'express';
-import morgan from 'morgan';
-import swaggerJsDoc from 'swagger-jsdoc'
-import swaggerUi from 'swagger-ui-express'
-import homeRoute from './main.routes';
-import userRoute from './user.routes';
-import adminRoute from './admin.routes';
-import musicRoute from './music.routes';
 import { logError, returnError } from '../errors/errorHandler';
+import { Request, Response, NextFunction } from 'express';
 import Api404Error from '../errors/api404Error'
+const router = require('express').Router();
+import swaggerUi from 'swagger-ui-express'
+import swaggerJsDoc from 'swagger-jsdoc'
+import musicRoute from './music.routes';
+import adminRoute from './admin.routes';
+import userRoute from './user.routes';
+import homeRoute from './main.routes';
+import morgan from 'morgan';
 
 // Logger
 router.use(morgan('dev'))
@@ -175,11 +175,11 @@ router.use(returnError)
  *      Playlist:
  *          type: object
  *          required:
- *              - name
+ *              - playlist_name
  *              - user_id
  *              - songs_id
  *          properties:
- *              name:
+ *              playlist_name:
  *                  description: User Playlist Name
  *                  type: string
  *              user_id:
@@ -191,7 +191,7 @@ router.use(returnError)
  *                  items: 
  *                      type: string
  *          example:
- *              name: MyPlaylist1
+ *              playlist_name: MyPlaylist1
  *              user_id: d5j4d6hj15d6y5j4d6gh5
  *              songs_id: [oljhkhjl542j4d6hjdfgh, gsldfkmlhsibjsstiojhsl6]
  *      Artist:
@@ -219,12 +219,12 @@ router.use(returnError)
  *      Album:
  *          type: object
  *          required:
- *              - name 
+ *              - album_name 
  *              - artist_id
  *              - release_date
  *              - songs_id
  *          properties:
- *              name:
+ *              album_name:
  *                  description: Album's Name
  *                  type: string
  *              artist_id:
@@ -244,7 +244,7 @@ router.use(returnError)
  *                  items:
  *                      type: string
  *          example:
- *              name: RandomAlbum
+ *              album_name: RandomAlbum
  *              artist_id: 365756yh5gd5356756h
  *              release_date: 2017-07-21
  *              songs_id: [oljhkhjl542j4d6hjdf, gsjf8g6sb5fg357j6f5gd5]
