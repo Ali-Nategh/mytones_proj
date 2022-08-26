@@ -62,20 +62,20 @@ model Favorites {
 }
 
 model Song {
-  id             String    @id @unique @default(uuid())
+  id             String   @id @unique @default(uuid())
   song_name      String
-  file_path      String
+  file_path      String   @unique
   artist_id      String
-  album_id       String?
-  copyright_info String?
-  ISRC           String?
-  writers        String[]  @default([])
-  engineers      String[]  @default([])
-  producers      String[]  @default([])
-  publisher      String?
-  release_date   DateTime?
-  genres         Genres[]  @default([])
   duration       String
+  album_id       String?
+  publisher      String?
+  ISRC           String?  @unique
+  copyright_info String?
+  release_date   String?
+  genres         Genres[] @default([])
+  producers      String[] @default([])
+  writers        String[] @default([])
+  engineers      String[] @default([])
 }
 
 model Playlist {
@@ -100,8 +100,8 @@ model Album {
   name         String
   artist_id    String
   release_date DateTime
-  genres       Genres[] @default([])
   songs_id     String[]
+  genres       Genres[] @default([])
 }
 
 /////////////////////////////////////////////////////
