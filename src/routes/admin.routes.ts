@@ -75,7 +75,7 @@ router.get('/migratePrisma', adminMigratePrisma);
  * /admin/deleteDatabase:
  *  delete:
  *      tags: [Admin]
- *      summary: Delete everything from the database
+ *      summary: Delete everything from the database (User at your own risk!)
  *      responses:
  *          '200':
  *              description: Updates the DataBase schema
