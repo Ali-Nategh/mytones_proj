@@ -68,16 +68,36 @@ If something goes wrong repeat step 1 XD
 
 When you're done you can either ``` docker compose down ``` or close the container from the app.
 
+
+---
+
+
 # APIs:
+
+
+- HOME PAGE
 
 / :
 
     home page
 
+#
+
+- USER APIs
 
 /user/signup :
 
     signup with a username, email, and password, sends a 6 digit password to user email afterwards.
+
+
+/user/resendEmail :
+
+    resends a new password to user if they haven't received the last one.
+
+
+/user/validateEmail :
+
+    validate user's email with the one time password sent to their email.
 
 
 /user/login :
@@ -90,22 +110,83 @@ When you're done you can either ``` docker compose down ``` or close the contain
     generate a new access token for the user using their refresh token.
 
 
-/user/validateEmail :
-
-    validate user's email with the one time password sent to their email.
-
-
-/user/resendEmail :
-
-    resends a new password to user if they haven't received the last one.
-
-
 /user/logout :
 
     logouts user using their refresh token (deactivates their refresh token).
 
+#
+
+- ADMIN APIs
 
 /admin/getUsers :
 
     gets an authentication header with an access token (Bearer token), displays a list of all users if token is valid and not expired.
+
+
+/admin/getUsersTokenless :
+
+    Displays a list of all users without token required.
+
+
+/admin/migratePrisma :
+
+    Migrates and sets up the database (mostly for docker).
+
+
+/admin/getMusic :
+
+    Gets a list of everything music related in the database [Songs, Artists, Albums, Playlists, Favorites].
+
+
+/admin/deleteDatabase :
+
+    Used for clean up or before changing database, will be deleted before deployment.
+
+#
+
+- MUSIC APIs
+
+/music/addMusic :
+
+    Crates a song (required parameters in the /api-docs)
+
+
+/music/queryMusic:
+
+    Gets song name or a part of it, Brings back all matching results.
+
+
+/music/addArtist:
+
+    Crates an Artist (required parameters in the /api-docs)
+
+
+/music/queryArtist:
+
+    Gets artist name or a part of it, Brings back all matching results.
+
+
+/music/addPlaylist:
+
+    Crates a Playlist (required parameters in the /api-docs)
+
+
+/music/queryPlaylist:
+
+    Gets user_id, Brings back all user's playlists.
+
+
+/music/addAlbum:
+
+    Crates an Album (required parameters in the /api-docs)
+
+
+/music/queryAlbum:
+
+    Gets album name or a part of it, Brings back all matching results.
+
+
+/music/queryFavorites:
+
+    Gets user_id and favorite's Type[SONGS/ARTISTS/ALBUMS/DOWNLOADS], Brings back a favorites list.
 
