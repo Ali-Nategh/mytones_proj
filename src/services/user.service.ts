@@ -3,6 +3,7 @@ import {
     PrismaFindRefreshToken, PrismaUserCreation, PrismaFindUserByEmail, PrismaFindOTP
 } from "../repositories/user.repository";
 import { jwtRefreshGen, jwtAccessGen, refreshToken, jwtVerifyRefreshToken } from "../utils/jwtToken";
+import { PrismaCreateUserFavorites } from "../repositories/music.repository";
 import { logError, isOperationalError } from "../errors/errorHandler";
 import { httpStatusCodes } from "../errors/httpStatusCodes";
 import { Request, Response, NextFunction } from "express";
@@ -60,7 +61,6 @@ export async function signUpUserService(req: Request, res: Response) {
 };
 
 
-
 export async function loginUserService(req: Request, res: Response) {
     let user = await PrismaFindUserByEmail(req.body.email);
     if (user == null) {
@@ -74,7 +74,8 @@ export async function loginUserService(req: Request, res: Response) {
         if (await authorizePass(req.body.password, user.password)) {
             const accessToken = jwtAccessGen(user.id)
             const refresh_token = await PrismaActivateRefreshToken(user.id);
-            res.json({ accessToken: accessToken, refresh_token: refresh_token.id });
+            await PrismaCreateUserFavorites(user.id)
+            return res.status(200).json({ accessToken: accessToken, refresh_token: refresh_token.id });
         } else {
             return sendError(httpStatusCodes.UNAUTHORIZED, "Not Allowed", res)
         }
@@ -83,7 +84,6 @@ export async function loginUserService(req: Request, res: Response) {
         return sendError(httpStatusCodes.INTERNAL_SERVER_ERROR, 'Something went wrong in user login', res)
     };
 }
-
 
 
 export async function logoutUserService(req: Request, res: Response) {
@@ -95,7 +95,6 @@ export async function logoutUserService(req: Request, res: Response) {
     await PrismaDeactivateRefreshToken(refreshtoken.id)
     return res.status(200).send("Logged out successfully");
 }
-
 
 
 export async function refreshUserTokenService(req: Request, res: Response) {
@@ -119,7 +118,6 @@ async function checkRefreshToken(sentRefreshToken: string, res: Response) {
 
     return true
 }
-
 
 
 export async function createUser(user: User, refresh_token: string) {
