@@ -68,6 +68,10 @@ If something goes wrong repeat step 1 XD
 
 When you're done you can either ``` docker compose down ``` or close the container from the app.
 
+
+---
+
+
 # APIs:
 
 
@@ -77,7 +81,7 @@ When you're done you can either ``` docker compose down ``` or close the contain
 
     home page
 
-
+#
 
 - USER APIs
 
@@ -110,7 +114,7 @@ When you're done you can either ``` docker compose down ``` or close the contain
 
     logouts user using their refresh token (deactivates their refresh token).
 
-
+#
 
 - ADMIN APIs
 
@@ -138,13 +142,13 @@ When you're done you can either ``` docker compose down ``` or close the contain
 
     Used for clean up or before changing database, will be deleted before deployment.
 
-
+#
 
 - MUSIC APIs
 
 /music/addMusic :
 
-    Crates a song (required parameters in the ```/api-docs```)
+    Crates a song (required parameters in the /api-docs)
 
 
 /music/queryMusic:
@@ -154,7 +158,7 @@ When you're done you can either ``` docker compose down ``` or close the contain
 
 /music/addArtist:
 
-    Crates an Artist (required parameters in the ```/api-docs```)
+    Crates an Artist (required parameters in the /api-docs)
 
 
 /music/queryArtist:
@@ -164,7 +168,7 @@ When you're done you can either ``` docker compose down ``` or close the contain
 
 /music/addPlaylist:
 
-    Crates a Playlist (required parameters in the ```/api-docs```)
+    Crates a Playlist (required parameters in the /api-docs)
 
 
 /music/queryPlaylist:
@@ -174,7 +178,7 @@ When you're done you can either ``` docker compose down ``` or close the contain
 
 /music/addAlbum:
 
-    Crates an Album (required parameters in the ```/api-docs```)
+    Crates an Album (required parameters in the /api-docs)
 
 
 /music/queryAlbum:
