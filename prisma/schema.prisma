@@ -104,7 +104,7 @@ model Album {
 model Playlist {
   id       String   @unique @default(uuid())
   name     String
-  User     User     @relation(fields: [user_id], references: [id])
+  User     User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id  String   @unique
   songs_id String[] @default([])
 
