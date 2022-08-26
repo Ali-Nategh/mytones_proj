@@ -176,28 +176,16 @@ export default router;
  *              producers: [Allin, some doctor Dre guy, Havoc, Jdilla]
  *              writers: [John, Doe]
  *              engineers: [John, DoeJr]
- *      Playlist:
+ *      SongQuery:
  *          type: object
  *          required:
- *              - playlist_name
- *              - user_id
- *              - songs_id
+ *              - song_name
  *          properties:
- *              playlist_name:
- *                  description: User Playlist Name
+ *              song_name:
  *                  type: string
- *              user_id:
- *                  description: User's id
- *                  type: string
- *              songs_id:
- *                  description: An array of playlist songs id
- *                  type: array
- *                  items: 
- *                      type: string
+ *                  description: Song's official name or a part of it
  *          example:
- *              playlist_name: MyPlaylist1
- *              user_id: d5j4d6hj15d6y5j4d6gh5
- *              songs_id: [oljhkhjl542j4d6hjdfgh, gsldfkmlhsibjsstiojhsl6]
+ *              song_name: RandomSong
  *      Artist:
  *          type: object
  *          required:
@@ -220,6 +208,16 @@ export default router;
  *              artist_name: JohnDoeTheTrickster
  *              albums_id: [365756yhkhjfsdhss67, 3h56h5g7j6f5gd5356756h]
  *              songs_id: [oljhkhjl542j4d6hjdf, gsjf8g6sb5fg357j6f5gd5]
+ *      ArtistQuery:
+ *          type: object
+ *          required:
+ *              - artist_name
+ *          properties:
+ *              artist_name:
+ *                  description: Artist Name or a part of it
+ *                  type: string
+ *          example:
+ *              artist_name: JohnDoeTheTrickster
  *      Album:
  *          type: object
  *          required:
@@ -253,6 +251,48 @@ export default router;
  *              release_date: 2017-07-21
  *              songs_id: [oljhkhjl542j4d6hjdf, gsjf8g6sb5fg357j6f5gd5]
  *              genres: [HIPHOP, RAP]
+ *      AlbumQuery:
+ *          type: object
+ *          required:
+ *              - album_name 
+ *          properties:
+ *              album_name:
+ *                  description: Album's Name or a part of it
+ *                  type: string
+ *          example:
+ *              album_name: RandomAlbum
+ *      Playlist:
+ *          type: object
+ *          required:
+ *              - playlist_name
+ *              - user_id
+ *              - songs_id
+ *          properties:
+ *              playlist_name:
+ *                  description: User Playlist Name
+ *                  type: string
+ *              user_id:
+ *                  description: User's id
+ *                  type: string
+ *              songs_id:
+ *                  description: An array of playlist songs id
+ *                  type: array
+ *                  items: 
+ *                      type: string
+ *          example:
+ *              playlist_name: MyPlaylist1
+ *              user_id: d5j4d6hj15d6y5j4d6gh5
+ *              songs_id: [oljhkhjl542j4d6hjdfgh, gsldfkmlhsibjsstiojhsl6]
+ *      PlaylistQuery:
+ *          type: object
+ *          required:
+ *              - user_id
+ *          properties:
+ *              user_id:
+ *                  description: User's id
+ *                  type: string
+ *          example:
+ *              user_id: d5j4d6hj15d6y5j4d6gh5
  *      Favorites:
  *          type: object
  *          required:
@@ -274,6 +314,21 @@ export default router;
  *              type: DOWNLOADS  
  *              user_id: 365756yh5gd5356756h
  *              songs_id: [oljhkhjl542j4d6hjdf, gsjf8g6sb5fg357j6f5gd5]
+ *      FavoritesQuery:
+ *          type: object
+ *          required:
+ *              - type
+ *              - user_id
+ *          properties:
+ *              type:
+ *                  description: Favorite Type [SONGS/ARTISTS/ALBUMS/DOWNLOADS]
+ *                  type: string
+ *              user_id:
+ *                  description: Album Artist's id
+ *                  type: string
+ *          example:
+ *              type: DOWNLOADS  
+ *              user_id: 365756yh5gd5356756h
  *      UserLogin:
  *          type: object
  *          required:
