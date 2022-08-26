@@ -43,10 +43,20 @@ export async function PrismaUserCreation(username: string, name: string, lastnam
 };
 
 export async function PrismaGetAllUsers() {
-    const users = await prisma.user.findMany({});
+    const users = await prisma.user.findMany({
+        select: {
+            id: true,
+            username: true,
+            name: true,
+            lastname: true,
+            age: true,
+            updated_at: true,
+            personalPlaylists: true,
+        }
+    });
     const usersEmail = await prisma.email.findMany({});
     const usersOTP = await prisma.otp.findMany({});
-    const userRefreshToken = await prisma.refreshToken.findMany({})
+    const userRefreshToken = await prisma.refreshToken.findMany({});
     return [users, userRefreshToken, usersEmail, usersOTP];
 };
 
@@ -128,7 +138,7 @@ export async function PrismaUpdateOtp(email: string, otp: string) {
         where: {
             email: email
         }
-    })
+    });
     await prisma.otp.update({
         where: { user_id: user?.id },
         data: { otp: otp }
