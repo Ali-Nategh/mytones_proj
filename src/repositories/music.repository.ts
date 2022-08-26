@@ -22,7 +22,7 @@ export async function PrismaCreateSong(song_name: string, file_path: string, art
             writers: writers,
             engineers: engineers,
         }
-    })
+    });
     return song;
 }
 export async function PrismaFindSong(song_id: string) {
@@ -94,11 +94,39 @@ export async function PrismaCreatePlaylist(playlist_name: string, user_id: strin
     return playlist;
 }
 
+export async function PrismaCreateUserFavorites(user_id: string) {
+    const favoriteSongs = await prisma.favorites.create({
+        data: {
+            user_id: user_id,
+            type: "SONGS"
+        }
+    });
+    const favoriteArtists = await prisma.favorites.create({
+        data: {
+            user_id: user_id,
+            type: "ARTISTS"
+        }
+    });
+    const favoriteAlbums = await prisma.favorites.create({
+        data: {
+            user_id: user_id,
+            type: "ALBUMS"
+        }
+    });
+    const downloads = await prisma.favorites.create({
+        data: {
+            user_id: user_id,
+            type: "DOWNLOADS"
+        }
+    });
+    return [favoriteSongs, favoriteArtists, favoriteAlbums, downloads]
+}
+
 export async function PrismaGetAllMusic() {
-    const songs = await prisma.song.findMany({})
-    const albums = await prisma.album.findMany({})
-    const artists = await prisma.artist.findMany({})
-    const playlists = await prisma.playlist.findMany({})
-    const favorites = await prisma.favorites.findMany({})
+    const songs = await prisma.song.findMany({});
+    const albums = await prisma.album.findMany({});
+    const artists = await prisma.artist.findMany({});
+    const playlists = await prisma.playlist.findMany({});
+    const favorites = await prisma.favorites.findMany({});
     return [songs, albums, artists, playlists, favorites];
 }
