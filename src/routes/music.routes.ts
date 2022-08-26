@@ -26,30 +26,6 @@ const router = require('express').Router();
  */
 router.post('/addMusic', addMusic);
 
-
-/**
- * @swagger
- * /music/addPlaylist:
- *  post:
- *      tags: [Music]
- *      summary: Create a new Playlist
- *      requestBody:
- *          required: true
- *          content: 
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/Playlist'
- *      responses:
- *          '201': 
- *              description: Song was successfully created
- *          '400':
- *              description: Bad Request, information invalid
- *          '500': 
- *              description: Something went wrong creating song
- */
-router.post('/addPlaylist', addPlaylist);
-
-
 /**
  * @swagger
  * /music/addArtist:
@@ -72,6 +48,27 @@ router.post('/addPlaylist', addPlaylist);
  */
 router.post('/addArtist', addArtist);
 
+/**
+ * @swagger
+ * /music/addPlaylist:
+ *  post:
+ *      tags: [Music]
+ *      summary: Create a new Playlist
+ *      requestBody:
+ *          required: true
+ *          content: 
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Playlist'
+ *      responses:
+ *          '201': 
+ *              description: Song was successfully created
+ *          '400':
+ *              description: Bad Request, information invalid
+ *          '500': 
+ *              description: Something went wrong creating song
+ */
+router.post('/addPlaylist', addPlaylist);
 
 /**
  * @swagger
