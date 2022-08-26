@@ -2,8 +2,8 @@ import {
     PrismaActivateRefreshToken, PrismaDeactivateRefreshToken, PrismaFindEmail,
     PrismaFindRefreshToken, PrismaUserCreation, PrismaFindUserByEmail, PrismaFindOTP
 } from "../repositories/user.repository";
-import { logError, isOperationalError } from "../errors/errorHandler";
 import { jwtRefreshGen, jwtAccessGen, refreshToken, jwtVerifyRefreshToken } from "../utils/jwtToken";
+import { logError, isOperationalError } from "../errors/errorHandler";
 import { httpStatusCodes } from "../errors/httpStatusCodes";
 import { Request, Response, NextFunction } from "express";
 import { sendMail } from '../services/email.service';

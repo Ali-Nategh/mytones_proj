@@ -1,9 +1,9 @@
-import { Response } from 'express';
-import nodemailer from 'nodemailer';
-import { sendError } from '../errors/errorHandler';
-import { httpStatusCodes } from '../errors/httpStatusCodes';
 import { PrismaFindOTP, PrismaFindEmail, PrismaUpdateOtp, PrismaVerifyEmail } from '../repositories/user.repository';
+import { httpStatusCodes } from '../errors/httpStatusCodes';
+import { sendError } from '../errors/errorHandler';
 import generateOTP from './otp.service';
+import nodemailer from 'nodemailer';
+import { Response } from 'express';
 
 
 const MAIL_SETTINGS = {

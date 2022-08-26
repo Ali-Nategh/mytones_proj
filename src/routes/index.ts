@@ -39,6 +39,7 @@ const swaggerOptions = {
 const specs = swaggerJsDoc(swaggerOptions);
 router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
+
 router.use('/', homeRoute);
 router.use('/user', userRoute)
 router.use('/admin', adminRoute);
@@ -51,6 +52,9 @@ router.use((req: Request, res: Response, next: NextFunction) => {
 })
 router.use(logError)
 router.use(returnError)
+
+
+export default router;
 
 
 // Documentation Schemas
@@ -344,6 +348,3 @@ router.use(returnError)
  *  - name: Music
  *    description: The Music management API
  */
-
-
-export default router;

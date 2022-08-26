@@ -1,12 +1,12 @@
-import { Genres } from "@prisma/client";
-import { Request, Response } from "express";
-import { sendError } from "../errors/errorHandler";
-import { httpStatusCodes } from "../errors/httpStatusCodes";
-import { PrismaFindUser } from "../repositories/user.repository";
 import {
     PrismaCreateSong, PrismaFindSongFilepath, PrismaFindSongISRC, PrismaFindSong, PrismaCreatePlaylist,
     PrismaFindAlbum, PrismaCreateArtist, PrismaCreateAlbum, PrismaFindArtist,
 } from "../repositories/music.repository";
+import { PrismaFindUser } from "../repositories/user.repository";
+import { httpStatusCodes } from "../errors/httpStatusCodes";
+import { sendError } from "../errors/errorHandler";
+import { Request, Response } from "express";
+import { Genres } from "@prisma/client";
 
 
 export async function addMusicService(req: Request, res: Response) {
