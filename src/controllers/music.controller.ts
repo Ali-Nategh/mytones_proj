@@ -1,9 +1,5 @@
 import { Request, Response } from "express";
-import { addMusicService, addArtistService } from "../services/music.service";
-
-export async function addArtist(req: Request, res: Response) {
-    addArtistService(req, res)
-};
+import { addMusicService, addArtistService, addAlbumService, addPlaylistService } from "../services/music.service";
 
 
 export async function addMusic(req: Request, res: Response) {
@@ -11,11 +7,16 @@ export async function addMusic(req: Request, res: Response) {
 };
 
 
+export async function addArtist(req: Request, res: Response) {
+    addArtistService(req, res)
+};
+
+
 export async function addPlaylist(req: Request, res: Response) {
-    res.status(200).send("Add some playlist");
+    addPlaylistService(req, res);
 };
 
 
 export async function addAlbum(req: Request, res: Response) {
-    res.status(200).send("Add some playlist");
+    addAlbumService(req, res);
 };
