@@ -1,6 +1,5 @@
 // Initializing PrismaClient
 import { PrismaClient } from '@prisma/client';
-import { refreshToken } from '../utils/jwtToken';
 const prisma = new PrismaClient();
 
 export async function PrismaUserCreation(username: string, name: string, lastname: string, email: string, password: string, refresh_token: string, otp: string, age?: any) {
@@ -11,6 +10,8 @@ export async function PrismaUserCreation(username: string, name: string, lastnam
             lastname: lastname,
             password: password,
             age: age,
+        }, include: {
+            personalPlaylists: true,
         }
     });
     const userEmail = await prisma.email.create({
@@ -86,6 +87,11 @@ export async function PrismaDeleteEverything() {
     await prisma.email.deleteMany({});
     await prisma.refreshToken.deleteMany({});
     await prisma.otp.deleteMany({});
+    await prisma.song.deleteMany({});
+    await prisma.favorites.deleteMany({});
+    await prisma.playlist.deleteMany({});
+    await prisma.artist.deleteMany({});
+    await prisma.album.deleteMany({});
 };
 
 export async function PrismaActivateRefreshToken(id: string) {
