@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { PrismaGetAllUsers } from "../repositories/user.repository";
 import { PrismaDeleteEverything } from "../repositories/user.repository";
 import { exec } from 'child_process';
+import { PrismaGetAllMusic } from "../repositories/music.repository";
 
 export async function adminGetAllUsers(req: Request, res: Response) {
     const users = await PrismaGetAllUsers()
@@ -21,6 +22,11 @@ export function adminMigratePrisma(req: Request, res: Response) {
             return res.status(200).send('migrated successfully');
         }
     });
+}
+
+export async function adminGetMusics(req: Request, res: Response) {
+    const musics = await PrismaGetAllMusic()
+    return res.status(200).send(musics);
 }
 
 export async function adminDeleteDatabase(req: Request, res: Response) {
