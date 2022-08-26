@@ -56,17 +56,6 @@ model Otp {
 
 ////////////////////////////////////////////////////////////////////////
 
-model Favorites {
-  id         String   @id @unique @default(uuid())
-  user_id    String
-  type       Type
-  songs_id   String[] @default([])
-  artists_id String[] @default([])
-  albums_id  String[] @default([])
-}
-
-////////////////////////////////////////////////////////////////////////
-
 model Song {
   id             String   @id @unique @default(uuid())
   song_name      String
@@ -82,6 +71,10 @@ model Song {
   producers      String[] @default([])
   writers        String[] @default([])
   engineers      String[] @default([])
+  plays          BigInt   @default(0)
+
+  @@index([id])
+  @@index([song_name])
 }
 
 model Artist {
@@ -89,6 +82,10 @@ model Artist {
   name      String
   albums_id String[] @default([])
   songs_id  String[] @default([])
+  plays     BigInt   @default(0)
+
+  @@index([id])
+  @@index([name])
 }
 
 model Album {
@@ -98,6 +95,10 @@ model Album {
   release_date String
   songs_id     String[]
   genres       Genres[] @default([])
+  plays        BigInt   @default(0)
+
+  @@index([id])
+  @@index([name])
 }
 
 model Playlist {
@@ -108,6 +109,26 @@ model Playlist {
   songs_id String[] @default([])
 
   @@id([id, user_id])
+  @@index([id])
+}
+
+model Genre {
+  id    Genres @unique
+  plays BigInt @default(0)
+
+  @@index([id])
+}
+
+model Favorites {
+  id         String   @id @unique @default(uuid())
+  user_id    String
+  type       Type
+  songs_id   String[] @default([])
+  artists_id String[] @default([])
+  albums_id  String[] @default([])
+
+  @@index([id])
+  @@index([user_id])
 }
 
 ////////////////////////////////////////////////////////////////////////
