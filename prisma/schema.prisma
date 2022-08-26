@@ -81,7 +81,7 @@ model Song {
 model Playlist {
   id       String   @unique @default(uuid())
   name     String
-  User     User?    @relation(fields: [user_id], references: [id])
+  User     User     @relation(fields: [user_id], references: [id])
   user_id  String   @unique
   songs_id String[] @default([])
 
@@ -99,7 +99,7 @@ model Album {
   id           String   @id @unique @default(uuid())
   name         String
   artist_id    String
-  release_date DateTime
+  release_date String
   songs_id     String[]
   genres       Genres[] @default([])
 }
