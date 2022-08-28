@@ -134,13 +134,13 @@ export async function PrismaVerifyEmail(id: string) {
 };
 
 export async function PrismaUpdateOtp(email: string, otp: string) {
-    const user = await prisma.email.findUnique({
+    const userEmail = await prisma.email.findUnique({
         where: {
             email: email
         }
     });
     await prisma.otp.update({
-        where: { user_id: user?.id },
+        where: { user_id: userEmail?.user_id },
         data: { otp: otp }
     });
 };
