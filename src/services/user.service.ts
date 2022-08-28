@@ -24,7 +24,7 @@ export async function signUpUserService(req: Request, res: Response) {
     }
 
     const user = new User(req.body.username, req.body.name, req.body.lastname, req.body.email, hashedPassword, req.body.age);
-    const refresh_token: string = jwtRefreshGen(user.username, user.email);
+    const refresh_token: string = jwtRefreshGen(user.email);
 
     // Adding user to Database
     try {
