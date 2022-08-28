@@ -64,7 +64,10 @@ export async function resendEmailService(email: string, res: Response) {
     if (userEmail.verified) return sendError(httpStatusCodes.BAD_REQUEST, "Email already active", res);
 
     const OTP = generateOTP()
-    PrismaUpdateOtp(email, OTP)
+    await PrismaUpdateOtp(email, OTP)
+
     sendMail({ to: email, OTP: OTP });
+    console.log([email, OTP]);
+
     return res.status(httpStatusCodes.OK).send("Email successfully sent again");
 }
