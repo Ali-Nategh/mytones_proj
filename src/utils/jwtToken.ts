@@ -2,8 +2,8 @@ import jwt, { VerifyErrors } from 'jsonwebtoken';
 import { sendError } from '../errors/errorHandler';
 import { Response } from 'express';
 
-export function jwtRefreshGen(name: string, email: string) {
-    return jwt.sign({ name: name, email: email }, process.env.REFRESH_TOKEN_SECRET as string);
+export function jwtRefreshGen(email: string) {
+    return jwt.sign({ email: email }, process.env.REFRESH_TOKEN_SECRET as string);
 }
 
 export function jwtAccessGen(id: string) {
@@ -11,21 +11,21 @@ export function jwtAccessGen(id: string) {
 }
 
 export function jwtVerifyAccessToken(token: string) {
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string, (err: VerifyErrors | null, user) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string, (err: VerifyErrors | null, id) => {
         if (err) {
             console.error(err);
             throw new Error(err.message)
         }
-        return user
+        return id
     });
 }
 
 export function jwtVerifyRefreshToken(token: string) {
-    jwt.verify(token, process.env.REFRESH_TOKEN_SECRET as string, (err: VerifyErrors | null, user) => {
+    jwt.verify(token, process.env.REFRESH_TOKEN_SECRET as string, (err: VerifyErrors | null, email) => {
         if (err) {
             throw new Error(err.message)
         }
-        return user
+        return email
     });
 }
 
