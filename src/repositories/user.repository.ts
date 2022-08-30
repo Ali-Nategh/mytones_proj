@@ -43,7 +43,6 @@ export async function PrismaUserCreation(username: string, name: string, lastnam
 
 export async function RedisCreateRefreshToken(refresh_token: string, user_id: string) {
     const userRefreshToken = {
-        id: refresh_token,
         user_id: user_id,
     }
     await redisClient.setEx(refresh_token, EXPIRATION_TIME, JSON.stringify(userRefreshToken));

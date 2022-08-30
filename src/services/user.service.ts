@@ -2,8 +2,7 @@ import {
     RedisFindRefreshToken, PrismaUserCreation, PrismaFindUserByEmail, PrismaFindOTP,
     RedisDeactivateRefreshToken, RedisCreateRefreshToken, PrismaFindEmail,
 } from "../repositories/user.repository";
-import { jwtRefreshGen, jwtAccessGen, refreshToken, jwtVerifyRefreshToken } from "../utils/jwtToken";
-import { PrismaCreateUserFavorites } from "../repositories/music.repository";
+import { jwtRefreshGen, jwtAccessGen, refreshToken } from "../utils/jwtToken";
 import { logError, isOperationalError } from "../errors/errorHandler";
 import jwt, { VerifyErrors } from 'jsonwebtoken';
 import { httpStatusCodes } from "../errors/httpStatusCodes";
@@ -74,11 +73,11 @@ export async function loginUserService(req: Request, res: Response) {
     try {
         if (await authorizePass(req.body.password, user.password)) {
             const accessToken = jwtAccessGen(user.id)
-            const refresh_token = await RedisCreateRefreshToken(jwtRefreshGen(user.id), user.id)
-            console.log([accessToken, refresh_token]);
+            const refresh_token = jwtRefreshGen(user.id)
+            const create_token = await RedisCreateRefreshToken(refresh_token, user.id)
+            console.log(["Access", accessToken, "Refresh", refresh_token]);
 
-            await PrismaCreateUserFavorites(user.id)
-            return res.status(200).json({ accessToken: accessToken, refresh_token: refresh_token.id });
+            return res.status(200).json({ accessToken: accessToken, refresh_token: refresh_token });
         } else {
             return sendError(httpStatusCodes.UNAUTHORIZED, "Not Allowed", res)
         }
