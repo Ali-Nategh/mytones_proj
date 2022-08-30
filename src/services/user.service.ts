@@ -13,6 +13,10 @@ import { sendError } from "../errors/errorHandler";
 import { authorizePass } from "../utils/authPass";
 import hashPass from "../utils/hashPass";
 import User from "../models/user";
+import * as Redis from "redis";
+
+const redisClient = Redis.createClient()
+redisClient.connect()
 
 export async function signUpUserService(req: Request, res: Response) {
     const hashedPassword = await hashPass(req.body.password);
