@@ -1,9 +1,9 @@
-import jwt, { VerifyErrors } from 'jsonwebtoken';
+import jwt, { VerifyErrors, VerifyOptions } from 'jsonwebtoken';
 import { sendError } from '../errors/errorHandler';
 import { Response } from 'express';
 
-export function jwtRefreshGen(email: string) {
-    return jwt.sign({ email: email }, process.env.REFRESH_TOKEN_SECRET as string);
+export function jwtRefreshGen(id: string) {
+    return jwt.sign({ id }, process.env.REFRESH_TOKEN_SECRET as string);
 }
 
 export function jwtAccessGen(id: string) {
@@ -11,30 +11,31 @@ export function jwtAccessGen(id: string) {
 }
 
 export function jwtVerifyAccessToken(token: string) {
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string, (err: VerifyErrors | null, id) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string, (err: VerifyErrors | null, user_id) => {
         if (err) {
             console.error(err);
             throw new Error(err.message)
         }
-        return id
+        return user_id
     });
 }
 
 export function jwtVerifyRefreshToken(token: string) {
-    jwt.verify(token, process.env.REFRESH_TOKEN_SECRET as string, (err: VerifyErrors | null, email) => {
+    jwt.verify(token, process.env.REFRESH_TOKEN_SECRET as string, (err: VerifyErrors | null, user_id) => {
         if (err) {
             throw new Error(err.message)
         }
-        return email
+        return user_id
     });
 }
 
 export function refreshToken(refreshToken: string, res: Response) {
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string, (err: VerifyErrors | null, user: any) => {
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string, (err: VerifyErrors | null, user_id: any) => {
         if (err) {
             return sendError(403, "Token is invalid or is deactivated, please login again", res)
         }
-        const accessToken = jwtAccessGen(user);
-        res.json({ accessToken: accessToken });
+        const accessToken = jwtAccessGen(user_id);
+        return res.status(200).json({ accessToken: accessToken });
     });
+    return
 }
