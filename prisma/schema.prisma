@@ -36,15 +36,6 @@ model Email {
   @@index([email])
 }
 
-model RefreshToken {
-  id      String  @id @unique
-  valid   Boolean @default(false)
-  user_id String  @unique
-
-  @@index([id])
-  @@index([user_id])
-}
-
 model Otp {
   id         String   @id @unique @default(uuid())
   user_id    String   @unique
