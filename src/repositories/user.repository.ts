@@ -2,7 +2,14 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
-export async function PrismaUserCreation(username: string, name: string, lastname: string, email: string, password: string, refresh_token: string, otp: string, age?: any) {
+
+import * as Redis from "redis";
+const redisClient = Redis.createClient()
+redisClient.connect()
+
+const EXPIRATION_TIME = 2592000 // 30 days
+
+export async function PrismaUserCreation(username: string, name: string, lastname: string, email: string, password: string, otp: string, age?: any) {
     const user = await prisma.user.create({
         data: {
             username: username,
@@ -31,16 +38,17 @@ export async function PrismaUserCreation(username: string, name: string, lastnam
             otp: true,
         }
     })
-    const userRefreshToken = await prisma.refreshToken.create({
-        data: {
-            id: refresh_token,
-            user_id: user.id,
-        }, select: {
-            id: true,
-        }
-    })
-    return [user, userRefreshToken, userEmail, userOTP];
+    return [user, userEmail, userOTP];
 };
+
+export async function RedisCreateRefreshToken(refresh_token: string, user_id: string) {
+    const userRefreshToken = {
+        id: refresh_token,
+        user_id: user_id,
+    }
+    await redisClient.setEx(user_id, EXPIRATION_TIME, JSON.stringify(userRefreshToken));
+    return userRefreshToken
+}
 
 export async function PrismaGetAllUsers() {
     const users = await prisma.user.findMany({
@@ -56,8 +64,8 @@ export async function PrismaGetAllUsers() {
     });
     const usersEmail = await prisma.email.findMany({});
     const usersOTP = await prisma.otp.findMany({});
-    const userRefreshToken = await prisma.refreshToken.findMany({});
-    return [users, userRefreshToken, usersEmail, usersOTP];
+    const usersRefreshToken = await redisClient.keys('*') // -------------------------------------------------
+    return [users, usersRefreshToken, usersEmail, usersOTP];
 };
 
 
@@ -92,17 +100,10 @@ export async function PrismaFindOTP(user_id: string) {
     return userOTP;
 };
 
-export async function PrismaFindRefreshToken(sentRefreshToken: string) {
-    const refreshtoken = await prisma.refreshToken.findUnique({
-        where: { id: sentRefreshToken }
-    });
-    return refreshtoken;
-};
-
 export async function PrismaDeleteEverything() {
     await prisma.user.deleteMany({});
     await prisma.email.deleteMany({});
-    await prisma.refreshToken.deleteMany({});
+    await redisClient.flushAll(); // Whole Redis DataBase
     await prisma.otp.deleteMany({});
     await prisma.song.deleteMany({});
     await prisma.favorites.deleteMany({});
@@ -111,19 +112,16 @@ export async function PrismaDeleteEverything() {
     await prisma.album.deleteMany({});
 };
 
-export async function PrismaActivateRefreshToken(id: string) {
-    const refresh_token = await prisma.refreshToken.update({
-        where: { user_id: id },
-        data: { valid: true }
-    });
-    return refresh_token;
+export async function RedisFindRefreshToken(id: string) {
+    const rtExists = await redisClient.get(id)
+    if (!rtExists) return null;
+    const refreshtoken = JSON.parse(`${rtExists}`)
+    return refreshtoken;
 };
 
-export async function PrismaDeactivateRefreshToken(refreshToken: string) {
-    await prisma.refreshToken.update({
-        where: { id: refreshToken },
-        data: { valid: false }
-    });
+export async function RedisDeactivateRefreshToken(id: string) {
+    const refresh_token = await redisClient.del(id);
+    return refresh_token;
 };
 
 export async function PrismaVerifyEmail(id: string) {
