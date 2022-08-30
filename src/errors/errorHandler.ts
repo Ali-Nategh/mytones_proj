@@ -11,7 +11,7 @@ export function logErrorMiddleware(err: Error, req: Request, res: Response, next
 }
 
 export function returnError(err: any, req: Request, res: Response, next: NextFunction) {
-    res.status(err.statusCode || 500).send(err.message)
+    return res.status(err.statusCode || 500).send(err.message)
 }
 
 export function isOperationalError(error: Error) {
@@ -22,5 +22,5 @@ export function isOperationalError(error: Error) {
 }
 
 export function sendError(status: number, message: string, res: Response) {
-    res.status(status || 500).send(message)
+    return res.status(status || 500).send(message)
 }
