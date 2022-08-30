@@ -111,14 +111,14 @@ model Genre {
 }
 
 model Favorites {
-  id         String   @id @unique @default(uuid())
+  id         String   @unique @default(uuid())
   user_id    String
   type       Type
   songs_id   String[] @default([])
   artists_id String[] @default([])
   albums_id  String[] @default([])
 
-  @@index([id])
+  @@id([user_id, type])
   @@index([user_id])
 }
 
