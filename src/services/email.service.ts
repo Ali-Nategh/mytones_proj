@@ -1,4 +1,5 @@
 import { PrismaFindOTP, PrismaFindEmail, PrismaUpdateOtp, PrismaVerifyEmail } from '../repositories/user.repository';
+import { PrismaCreateUserFavorites } from '../repositories/music.repository';
 import { httpStatusCodes } from '../errors/httpStatusCodes';
 import { sendError } from '../errors/errorHandler';
 import generateOTP from './otp.service';
@@ -54,6 +55,8 @@ export async function verifyEmailService(email: string, otp: string, res: Respon
     if (userEmail.verified) return sendError(httpStatusCodes.BAD_REQUEST, "Email already active", res);
 
     await PrismaVerifyEmail(userEmail.id)
+    await PrismaCreateUserFavorites(userEmail.user_id)
+
     return res.status(httpStatusCodes.OK).send("Email successfully verified");
 }
 
