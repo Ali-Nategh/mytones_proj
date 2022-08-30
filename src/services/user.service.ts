@@ -96,10 +96,10 @@ export async function logoutUserService(req: Request, res: Response) {
         if (err) {
             return sendError(403, 'Token is invalid or has expired, please login again', res)
         }
-        const refreshtoken = await RedisFindRefreshToken(user_id.id)
+        const refreshtoken = await RedisFindRefreshToken(sentRefreshToken)
         if (!refreshtoken) return sendError(httpStatusCodes.UNAUTHORIZED, "Refresh token not found", res)
 
-        await RedisDeactivateRefreshToken(user_id.id)
+        await RedisDeactivateRefreshToken(sentRefreshToken)
         return res.status(200).send("Logged out successfully");
     });
 }
@@ -114,7 +114,7 @@ export async function refreshUserTokenService(req: Request, res: Response) {
         if (err) {
             return sendError(403, 'Token is invalid or has expired, please login again', res)
         }
-        const refreshtoken = await RedisFindRefreshToken(user_id.id)
+        const refreshtoken = await RedisFindRefreshToken(sentRefreshToken)
         if (!refreshtoken) return sendError(httpStatusCodes.UNAUTHORIZED, "Refresh token is not active, please login", res)
 
         return refreshToken(sentRefreshToken, res);

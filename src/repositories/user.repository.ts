@@ -46,7 +46,7 @@ export async function RedisCreateRefreshToken(refresh_token: string, user_id: st
         id: refresh_token,
         user_id: user_id,
     }
-    await redisClient.setEx(user_id, EXPIRATION_TIME, JSON.stringify(userRefreshToken));
+    await redisClient.setEx(refresh_token, EXPIRATION_TIME, JSON.stringify(userRefreshToken));
     return userRefreshToken
 }
 
@@ -112,16 +112,16 @@ export async function PrismaDeleteEverything() {
     await prisma.album.deleteMany({});
 };
 
-export async function RedisFindRefreshToken(id: string) {
-    const rtExists = await redisClient.get(id)
+export async function RedisFindRefreshToken(refresh_token: string) {
+    const rtExists = await redisClient.get(refresh_token)
     if (!rtExists) return null;
     const refreshtoken = JSON.parse(`${rtExists}`)
     return refreshtoken;
 };
 
-export async function RedisDeactivateRefreshToken(id: string) {
-    const refresh_token = await redisClient.del(id);
-    return refresh_token;
+export async function RedisDeactivateRefreshToken(refresh_token: string) {
+    const token_delete = await redisClient.del(refresh_token);
+    return token_delete;
 };
 
 export async function PrismaVerifyEmail(id: string) {
