@@ -329,7 +329,7 @@ export async function updateFavoritesService(req: Request, res: Response) {
         console.log(favorites_update)
         return res.status(200).send("Favorites updated Successfully");
     }
-
+    return sendError(httpStatusCodes.INTERNAL_SERVER_ERROR, 'Something went wrong', res)
 }
 
 export async function queryFavoritesService(req: Request, res: Response) {
