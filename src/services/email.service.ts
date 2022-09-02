@@ -51,8 +51,8 @@ export async function verifyEmailService(email: string, otp: string, res: Respon
     const userOTP = await PrismaFindOTP(userEmail.user_id);
     if (!userOTP) return sendError(httpStatusCodes.NOT_FOUND, "User Not Found", res);
 
-    if (otp !== userOTP.otp) return sendError(httpStatusCodes.UNAUTHORIZED, "Password incorrect", res);
     if (userEmail.verified) return sendError(httpStatusCodes.BAD_REQUEST, "Email already active", res);
+    if (otp !== userOTP.otp) return sendError(httpStatusCodes.UNAUTHORIZED, "Password incorrect", res);
 
     await PrismaVerifyEmail(userEmail.id)
     await PrismaCreateUserFavorites(userEmail.user_id)
