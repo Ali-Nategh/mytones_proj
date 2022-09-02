@@ -433,10 +433,22 @@ export default router;
  *                  type: array
  *                  items:
  *                      type: string
+ *              artists_id:
+ *                  description: An array of Favorite's artists id
+ *                  type: array
+ *                  items:
+ *                      type: string
+ *              albums_id:
+ *                  description: An array of Favorite's albums id
+ *                  type: array
+ *                  items:
+ *                      type: string
  *          example:
  *              type: DOWNLOADS  
  *              user_id: 365756yh5gd5356756h
- *              songs_id: [oljhkhjl542j4d6hjdf, gsjf8g6sb5fg357j6f5gd5]
+ *              songs_id: [oljhkhjl542j4d6hjdf, gsjf8g6sb5fg357j6f5gd5, dfj4d8y51j2d68y49d8y1k]
+ *              artists_id: [sdf456hs51sdfhfd6516]
+ *              albums_id: []
  *      FavoritesQuery:
  *          type: object
  *          required:

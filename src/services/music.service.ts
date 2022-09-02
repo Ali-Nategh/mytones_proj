@@ -14,6 +14,8 @@ import { toJson } from "../utils/toJson";
 import console from "console";
 
 
+// --------------------------------------------------SONGS------------------------------------------------------------- //
+
 export async function addMusicService(req: Request, res: Response) {
     const file_path = await PrismaFindSongFilepath(req.body.file_path);
     if (file_path) {
@@ -72,7 +74,7 @@ export async function queryMusicService(req: Request, res: Response) {
     return res.status(200).send(toJson(songs))  // for big int
 }
 
-
+// --------------------------------------------------ARTISTS------------------------------------------------------------- //
 
 export async function addArtistService(req: Request, res: Response) {
     let noErrors = true;
@@ -145,7 +147,7 @@ export async function queryArtistService(req: Request, res: Response) {
     return res.status(200).send(toJson(artists))
 }
 
-
+// --------------------------------------------------ALBUMS------------------------------------------------------------- //
 
 export async function addAlbumService(req: Request, res: Response) {
     let noErrors = true;
@@ -219,7 +221,7 @@ export async function queryAlbumService(req: Request, res: Response) {
     return res.status(200).send(toJson(albums))
 }
 
-
+// --------------------------------------------------PLAYLISTS------------------------------------------------------------- //
 
 export async function addPlaylistService(req: Request, res: Response) {
     const user_id = req.body.user_id
@@ -276,7 +278,7 @@ export async function queryPlaylistService(req: Request, res: Response) {
     return res.status(200).send(playlists)
 }
 
-
+// ------------------------------------------------FAVORITES----------------------------------------------------------- //
 
 export async function updateFavoritesService(req: Request, res: Response) {
     const user_id = req.body.user_id;
@@ -288,17 +290,45 @@ export async function updateFavoritesService(req: Request, res: Response) {
     if (!type) return sendError(httpStatusCodes.BAD_REQUEST, 'Type is required', res);
     if (!(type in Type)) return sendError(httpStatusCodes.BAD_REQUEST, 'Type not Valid', res);
 
+    let noErrors = true;
     const songs = req.body.songs_id;
     if (songs) {
         for (let i = 0; i < songs.length; i++) {
             const song = await PrismaFindSong(songs[i])
-            if (!song) return sendError(httpStatusCodes.NOT_FOUND, `Song ID (${songs[i]}) Not Found`, res)
+            if (!song) {
+                noErrors = false;
+                return sendError(httpStatusCodes.NOT_FOUND, `Song ID (${songs[i]}) Not Found`, res)
+            }
         }
     }
 
-    const favorites_update = await PrismaUpdateFavorites(user_id, type, songs)
-    console.log(favorites_update)
-    return res.status(200).send("Favorites updated Successfully");
+    const albums = req.body.albums_id;
+    if (albums && noErrors) {
+        for (let i = 0; i < albums.length; i++) {
+            const album = await PrismaFindAlbum(albums[i])
+            if (!album) {
+                noErrors = false;
+                return sendError(httpStatusCodes.NOT_FOUND, `Album ID (${albums[i]}) Not Found`, res)
+            }
+        }
+    }
+
+    const artists = req.body.artists_id;
+    if (artists && noErrors) {
+        for (let i = 0; i < artists.length; i++) {
+            const artist = await PrismaFindArtist(artists[i])
+            if (!artist) {
+                noErrors = false;
+                return sendError(httpStatusCodes.NOT_FOUND, `Album ID (${artists[i]}) Not Found`, res)
+            }
+        }
+    }
+
+    if (noErrors) {
+        const favorites_update = await PrismaUpdateFavorites(user_id, type, songs, albums, artists)
+        console.log(favorites_update)
+        return res.status(200).send("Favorites updated Successfully");
+    }
 
 }
 
