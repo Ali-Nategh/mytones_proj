@@ -3,6 +3,7 @@ import { PrismaGetAllUsers } from "../repositories/user.repository";
 import { PrismaDeleteEverything } from "../repositories/user.repository";
 import { exec } from 'child_process';
 import { PrismaGetAllMusic } from "../repositories/music.repository";
+import { toJson } from "../utils/toJson";
 
 export async function adminGetAllUsers(req: Request, res: Response) {
     const users = await PrismaGetAllUsers()
@@ -14,7 +15,7 @@ export function adminMigratePrisma(req: Request, res: Response) {
         if (err) {
             //some err occurred    
             console.error(err);
-            return res.status(500).send('migration failed');
+            return res.status(500).send('migration failed, check the logs');
         } else {
             // the *entire* stdout and stderr (buffered)   
             console.log(`stdout: ${stdout}`);
@@ -26,7 +27,7 @@ export function adminMigratePrisma(req: Request, res: Response) {
 
 export async function adminGetMusics(req: Request, res: Response) {
     const musics = await PrismaGetAllMusic()
-    return res.status(200).send(musics);
+    return res.status(200).send(toJson(musics));
 }
 
 export async function adminDeleteDatabase(req: Request, res: Response) {
