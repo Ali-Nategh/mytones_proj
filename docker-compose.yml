@@ -13,10 +13,21 @@ services:
       - '5432:5432'
     networks:
     - customnetwork
+  redis:
+    image: redis
+    working_dir: /redis
+    ports:
+      - '6379:6379'
+    networks:
+    - customnetwork
   web:
     depends_on:
       - db
-    build: 
+      - redis
+    links:
+      - db
+      - redis
+    build:
       context: .
       dockerfile: Dockerfile
     ports:
