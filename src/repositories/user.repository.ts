@@ -2,9 +2,13 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
-
 import * as Redis from "redis";
-const redisClient = Redis.createClient()
+const redisClient = Redis.createClient({
+    // socket: {
+    //     host: 'mytones_proj-redis-1',
+    //     port: 6379,
+    // }
+})
 redisClient.connect()
 
 const EXPIRATION_TIME = 2592000 // 30 days
@@ -72,8 +76,9 @@ export async function PrismaFindUserByEmail(email: string) {
     const userEmail = await prisma.email.findUnique({
         where: { email: email }
     });
+    if (!userEmail) return null;
     const user = await prisma.user.findUnique({
-        where: { id: userEmail?.user_id }
+        where: { id: userEmail.user_id }
     });
     return user;
 };
