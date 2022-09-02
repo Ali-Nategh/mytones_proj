@@ -176,6 +176,60 @@ export default router;
  *              producers: [Allin, some doctor Dre guy, Havoc, Jdilla]
  *              writers: [John, Doe]
  *              engineers: [John, DoeJr]
+ *      SongUpdate:
+ *          type: object
+ *          required:
+ *              - song_id
+ *          properties:
+ *              song_id:
+ *                  type: string
+ *                  description: Song's ID
+ *              album_id:
+ *                  type: string
+ *                  description: If the song is in an album
+ *              copyright_info:
+ *                  type: string
+ *                  description: If there is any copyright information
+ *              ISRC:
+ *                  type: string
+ *                  description: International Standard Recording Code
+ *              publisher:
+ *                  description: Song's Publisher
+ *                  type: string
+ *              release_date:
+ *                  description: The release date of the song
+ *                  type: date
+ *              genres:
+ *                  description: An array of genre(s) specified in the database [POP/CLASSICAL/INSTRUMENTAL/ROCK/HIPHOP/RAP/JAZZ/METAL/COUNTRY/ELECTRONIC/BLUES/INDIE/DANCE/SOUL/LATIN/DUBSTEP/TECHNO/FOLK/EMO/GOSPEL/HOUSE/RnB/PSYCHEDELIC/DISCO/PUNK/COVER/KPOP]
+ *                  type: array
+ *                  items: 
+ *                      type: string
+ *              producers:
+ *                  description: An array of producer(s) name(s)
+ *                  type: array
+ *                  items: 
+ *                      type: string
+ *              writers:
+ *                  description: An array of writer(s) name(s)
+ *                  type: array
+ *                  items: 
+ *                      type: string
+ *              engineers:
+ *                  description: An array of engineer(s) name(s)
+ *                  type: array
+ *                  items: 
+ *                      type: string
+ *          example:
+ *              song_id: sgh51st5hs1521h3s5fh
+ *              album_id: hyffnyg546dtfjf5lpo
+ *              copyright_info: Copyright © 2022 All rights reserved (Allin Records)
+ *              publisher: John Doe from Allin Records
+ *              ISRC: CCXXXYYNNNNN
+ *              release_date: 2017-07-21
+ *              genres: [HIPHOP, RAP]
+ *              producers: [Allin, some doctor Dre guy, Havoc, Jdilla]
+ *              writers: [John, Doe]
+ *              engineers: [John, DoeJr]
  *      SongQuery:
  *          type: object
  *          required:
@@ -206,6 +260,28 @@ export default router;
  *                      type: string
  *          example:
  *              artist_name: JohnDoeTheTrickster
+ *              albums_id: [365756yhkhjfsdhss67, 3h56h5g7j6f5gd5356756h]
+ *              songs_id: [oljhkhjl542j4d6hjdf, gsjf8g6sb5fg357j6f5gd5]
+ *      ArtistUpdate:
+ *          type: object
+ *          required:
+ *              - artist_id
+ *          properties:
+ *              artist_id:
+ *                  description: Artist ID
+ *                  type: string
+ *              albums_id:
+ *                  description: An array of Artist's albums id
+ *                  type: array
+ *                  items: 
+ *                      type: string
+ *              songs_id:
+ *                  description: An array of Artist's songs id
+ *                  type: array
+ *                  items: 
+ *                      type: string
+ *          example:
+ *              artist_id: hsjfgd9r557j6f5gd5
  *              albums_id: [365756yhkhjfsdhss67, 3h56h5g7j6f5gd5356756h]
  *              songs_id: [oljhkhjl542j4d6hjdf, gsjf8g6sb5fg357j6f5gd5]
  *      ArtistQuery:
@@ -251,6 +327,28 @@ export default router;
  *              release_date: 2017-07-21
  *              songs_id: [oljhkhjl542j4d6hjdf, gsjf8g6sb5fg357j6f5gd5]
  *              genres: [HIPHOP, RAP]
+ *      AlbumUpdate:
+ *          type: object
+ *          required:
+ *              - album_id
+ *          properties:
+ *              album_id:
+ *                  description: Album's ID
+ *                  type: string
+ *              songs_id:
+ *                  description: An array of Album's songs id
+ *                  type: array
+ *                  items:
+ *                      type: string
+ *              genres:
+ *                  description: An array of Album's genres [POP/CLASSICAL/INSTRUMENTAL/ROCK/HIPHOP/RAP/JAZZ/METAL/COUNTRY/ELECTRONIC/BLUES/INDIE/DANCE/SOUL/LATIN/DUBSTEP/TECHNO/FOLK/EMO/GOSPEL/HOUSE/RnB/PSYCHEDELIC/DISCO/PUNK/COVER/KPOP]
+ *                  type: array
+ *                  items:
+ *                      type: string
+ *          example:
+ *              album_id: sdfh65s16th5sf6gh51s
+ *              songs_id: [oljhkhjl542j4d6hjdf, gsjf8g6sb5fg357j6f5gd5]
+ *              genres: [HIPHOP, RAP]
  *      AlbumQuery:
  *          type: object
  *          required:
@@ -282,6 +380,31 @@ export default router;
  *          example:
  *              playlist_name: MyPlaylist1
  *              user_id: d5j4d6hj15d6y5j4d6gh5
+ *              songs_id: [oljhkhjl542j4d6hjdfgh, gsldfkmlhsibjsstiojhsl6]
+ *      PlaylistUpdate:
+ *          type: object
+ *          required:
+ *              - playlist_id
+ *              - user_id
+ *          properties:
+ *              playlist_id:
+ *                  description: User Playlist ID
+ *                  type: string
+ *              user_id:
+ *                  description: User's id
+ *                  type: string
+ *              playlist_name:
+ *                  description: User Playlist Name
+ *                  type: string
+ *              songs_id:
+ *                  description: An array of playlist songs id
+ *                  type: array
+ *                  items: 
+ *                      type: string
+ *          example:
+ *              playlist_id: dgf65dh16t84d6g5h1
+ *              user_id: d5j4d6hj15d6y5j4d6gh5
+ *              playlist_name: MyPlaylist1-1
  *              songs_id: [oljhkhjl542j4d6hjdfgh, gsldfkmlhsibjsstiojhsl6]
  *      PlaylistQuery:
  *          type: object
