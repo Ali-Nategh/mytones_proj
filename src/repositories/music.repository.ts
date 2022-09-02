@@ -210,13 +210,15 @@ export async function PrismaCreateUserFavorites(user_id: string) {
     });
     return [favoriteSongs, favoriteArtists, favoriteAlbums, downloads]
 }
-export async function PrismaUpdateFavorites(user_id: string, type: Type, songs_id?: string[]) {
+export async function PrismaUpdateFavorites(user_id: string, type: Type, songs_id?: string[], albums_id?: string[], artists_id?: string[]) {
     const favorites = await prisma.favorites.update({
         where: {
             user_id_type: { user_id, type },
         },
         data: {
-            songs_id: songs_id
+            songs_id: songs_id,
+            albums_id: albums_id,
+            artists_id: artists_id,
         }
     });
     return favorites;
