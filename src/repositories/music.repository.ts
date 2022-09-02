@@ -4,6 +4,9 @@ const prisma = new PrismaClient();
 
 import { seperator } from '../utils/seperator';
 
+
+// --------------------------------------------------SONGS------------------------------------------------------------- //
+
 export async function PrismaCreateSong(song_name: string, file_path: string, artist_id: string, duration: string
     , album_id?: string, publisher?: string, ISRC?: string, copyright_info?: string, release_date?: string
     , genres?: Genres[], producers?: string[], writers?: string[], engineers?: string[]) {
@@ -70,6 +73,7 @@ export async function PrismaSongsQuery(song_name: string) {
     return songs;
 }
 
+// --------------------------------------------------ARTISTS------------------------------------------------------------- //
 
 export async function PrismaCreateArtist(artist_name: string, albums_id?: string[], songs_id?: string[]) {
     const artist = await prisma.artist.create({
@@ -106,6 +110,7 @@ export async function PrismaArtistsQuery(artist_name: string) {
     return artists;
 }
 
+// --------------------------------------------------ALBUMS------------------------------------------------------------- //
 
 export async function PrismaCreateAlbum(album_name: string, artist_id: string, release_date: string
     , songs_id?: string[], genres?: Genres[]) {
@@ -145,6 +150,7 @@ export async function PrismaAlbumsQuery(album_name: string) {
     return albums;
 }
 
+// --------------------------------------------------PLAYLISTS------------------------------------------------------------- //
 
 export async function PrismaCreatePlaylist(playlist_name: string, user_id: string, songs_id?: string[]) {
     const playlist = await prisma.playlist.create({
@@ -182,6 +188,7 @@ export async function PrismaPlaylistsQuery(user_id: string) {
     return playlists;
 }
 
+// ------------------------------------------------FAVORITES----------------------------------------------------------- //
 
 export async function PrismaCreateUserFavorites(user_id: string) {
     const favoriteSongs = await prisma.favorites.create({
@@ -230,6 +237,7 @@ export async function PrismaFavoritesQuery(user_id: string, type: Type) {
     return favorites;
 }
 
+// ------------------------------------------------GETALL----------------------------------------------------------- //
 
 export async function PrismaGetAllMusic() {
     const songs = await prisma.song.findMany({});
