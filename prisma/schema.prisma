@@ -60,24 +60,21 @@ model Song {
 }
 
 model Artist {
-  id        String   @id @unique @default(uuid())
-  name      String
-  albums_id String[] @default([])
-  songs_id  String[] @default([])
-  plays     BigInt   @default(0)
+  id   String @id @unique @default(uuid())
+  name String
 
   @@index([id])
   @@index([name])
 }
 
 model Album {
-  id           String   @id @unique @default(uuid())
-  name         String
-  artist_id    String
-  release_date String
-  songs_id     String[]
-  genres       Genres[] @default([])
-  plays        BigInt   @default(0)
+  id              String   @id @unique @default(uuid())
+  name            String
+  artist_id       String
+  feat_artists_id String[]
+  release_date    String
+  songs_id        String[] //  ---------------
+  genres          Genres[] @default([])
 
   @@index([id])
   @@index([name])
@@ -88,21 +85,28 @@ model Playlist {
   name     String
   User     User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id  String   @unique
-  songs_id String[] @default([])
+  songs_id String[] @default([]) //  ---------------
 
   @@id([id, user_id])
   @@index([id])
 }
 
+model Grouping {
+  id         Int    @id @unique @default(autoincrement())
+  group_type Groups // Playlist or Album
+  group_id   String // Playlist or Album
+  creator_id String // User     or Artist
+  song_id    String @unique
+}
+
 model Genre {
-  id    Genres @unique
-  plays BigInt @default(0)
+  id Genres @id @unique
 
   @@index([id])
 }
 
 model Favorites {
-  id         String   @unique @default(uuid())
+  id         String   @unique @default(uuid()) // -------------
   user_id    String
   type       Type
   songs_id   String[] @default([])
@@ -114,11 +118,10 @@ model Favorites {
 }
 
 model Actions {
-  id            Int    @id @unique @default(autoincrement())
-  user_id       String
-  target_id     String
-  playlist_type Type
-  play_or_like  Action
+  id          Int    @id @unique @default(autoincrement())
+  user_id     String
+  target_id   String
+  action_type Action
 
   @@index([user_id])
   @@index([target_id])
@@ -133,7 +136,7 @@ enum Role {
 }
 
 enum Type {
-  SONGS
+  SONGS // ----------------------------------------------
   ARTISTS
   ALBUMS
   DOWNLOADS
@@ -142,6 +145,15 @@ enum Type {
 enum Action {
   LIKE
   PLAY
+  SONGS
+  ARTISTS
+  ALBUMS
+  DOWNLOADS
+}
+
+enum Groups {
+  PLAYLIST
+  ALBUM
 }
 
 enum Genres {
