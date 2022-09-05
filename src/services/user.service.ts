@@ -1,5 +1,5 @@
 import {
-    RedisFindRefreshToken, PrismaUserCreation, PrismaFindUserByEmail, PrismaFindOTP,
+    RedisFindRefreshToken, PrismaUserCreation, PrismaFindUserByEmail, RedisFindOTP,
     RedisDeactivateRefreshToken, RedisCreateRefreshToken, PrismaFindEmail,
 } from "../repositories/user.repository";
 import { jwtRefreshGen, jwtAccessGen, refreshToken } from "../utils/jwtToken";
@@ -37,10 +37,10 @@ export async function signUpUserService(req: Request, res: Response) {
         const user_id = await PrismaFindUserByEmail(user.email)
         if (!user_id) return sendError(httpStatusCodes.INTERNAL_SERVER_ERROR, "User Not Found", res)
 
-        const userOTP = await PrismaFindOTP(user_id.id)
+        const userOTP = await RedisFindOTP(user_id.id)
         if (!userOTP) return sendError(httpStatusCodes.INTERNAL_SERVER_ERROR, "Something went wrong sending password to email", res)
 
-        sendMail({ to: user.email, OTP: userOTP.otp })
+        sendMail({ to: user.email, OTP: userOTP })
         return res.status(201).send("User Created Successfully");
     } catch (error) {
         console.error(error);

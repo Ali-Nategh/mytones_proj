@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 import * as Redis from "redis";
+import { seperator } from '../utils/seperator';
 const redisClient = Redis.createClient({
     // socket: {
     //     host: 'mytones_proj-redis-1',
@@ -11,7 +12,8 @@ const redisClient = Redis.createClient({
 })
 redisClient.connect()
 
-const EXPIRATION_TIME = 2592000 // 30 days
+const REFRESH_EXPIRATION_TIME = 2592000 // 30 days
+const OTP_EXPIRATION_TIME = 120 // 2 minutes
 
 export async function PrismaUserCreation(username: string, name: string, lastname: string, email: string, password: string, otp: string, age?: any) {
     const user = await prisma.user.create({
@@ -34,14 +36,7 @@ export async function PrismaUserCreation(username: string, name: string, lastnam
             verified: true,
         }
     });
-    const userOTP = await prisma.otp.create({
-        data: {
-            otp: otp,
-            user_id: user.id,
-        }, select: {
-            otp: true,
-        }
-    })
+    const userOTP = await RedisCreateOTP(otp, user.id)
     return [user, userEmail, userOTP];
 };
 
@@ -49,8 +44,13 @@ export async function RedisCreateRefreshToken(refresh_token: string, user_id: st
     const userRefreshToken = {
         user_id: user_id,
     }
-    await redisClient.setEx(refresh_token, EXPIRATION_TIME, JSON.stringify(userRefreshToken));
+    await redisClient.setEx(refresh_token, REFRESH_EXPIRATION_TIME, JSON.stringify(userRefreshToken));
     return userRefreshToken
+}
+
+export async function RedisCreateOTP(OTP: string, user_id: string) {
+    await redisClient.setEx(user_id, OTP_EXPIRATION_TIME, OTP);
+    return OTP
 }
 
 export async function PrismaGetAllUsers() {
@@ -66,9 +66,9 @@ export async function PrismaGetAllUsers() {
         }
     });
     const usersEmail = await prisma.email.findMany({});
-    const usersOTP = await prisma.otp.findMany({});
+    const usersOTP = await redisClient.keys('*'); // -------------------------
     const usersRefreshToken = await redisClient.keys('*') // -------------------------------------------------
-    return [users, usersRefreshToken, usersEmail, usersOTP];
+    return [seperator("USERS"), users, seperator("REFRESH_TOKENS"), usersRefreshToken, seperator("EMAILS"), usersEmail, seperator("OTPS"), usersOTP];
 };
 
 
@@ -97,20 +97,12 @@ export async function PrismaFindEmail(email: string) {
     return userEmail;
 };
 
-export async function PrismaFindOTP(user_id: string) {
-    const userOTP = await prisma.otp.findUnique({
-        where: { user_id: user_id }
-    });
-    return userOTP;
-};
-
 export async function PrismaDeleteEverything() {
     await prisma.user.deleteMany({});
     await prisma.email.deleteMany({});
     await redisClient.flushAll(); // Whole Redis DataBase
-    await prisma.otp.deleteMany({});
     await prisma.song.deleteMany({});
-    await prisma.favorites.deleteMany({});
+    // await prisma.favorites.deleteMany({}); -------------------------------------
     await prisma.playlist.deleteMany({});
     await prisma.artist.deleteMany({});
     await prisma.album.deleteMany({});
@@ -135,14 +127,17 @@ export async function PrismaVerifyEmail(id: string) {
     });
 };
 
-export async function PrismaUpdateOtp(email: string, otp: string) {
+export async function RedisUpdateOtp(email: string, otp: string) {
     const userEmail = await prisma.email.findUnique({
         where: {
             email: email
         }
     });
-    await prisma.otp.update({
-        where: { user_id: userEmail?.user_id },
-        data: { otp: otp }
-    });
+    if (!userEmail) return null;
+    await RedisCreateOTP(otp, userEmail.user_id)
+};
+
+export async function RedisFindOTP(user_id: string) {
+    const userOTP = await redisClient.get(user_id);
+    return userOTP;
 };

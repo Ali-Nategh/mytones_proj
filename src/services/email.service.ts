@@ -1,4 +1,4 @@
-import { PrismaFindOTP, PrismaFindEmail, PrismaUpdateOtp, PrismaVerifyEmail } from '../repositories/user.repository';
+import { RedisFindOTP, PrismaFindEmail, PrismaVerifyEmail, RedisUpdateOtp } from '../repositories/user.repository';
 import { PrismaCreateUserFavorites } from '../repositories/music.repository';
 import { httpStatusCodes } from '../errors/httpStatusCodes';
 import { sendError } from '../errors/errorHandler';
@@ -48,29 +48,29 @@ export async function verifyEmailService(email: string, otp: string, res: Respon
     const userEmail = await PrismaFindEmail(email)
     if (!userEmail) return sendError(httpStatusCodes.NOT_FOUND, "Email Not Found", res);
 
-    const userOTP = await PrismaFindOTP(userEmail.user_id);
-    if (!userOTP) return sendError(httpStatusCodes.NOT_FOUND, "User Not Found", res);
+    const userOTP = await RedisFindOTP(userEmail.user_id);
+    if (!userOTP) return sendError(httpStatusCodes.NOT_FOUND, "OTP Has Expired, Try Resending The Email Again", res);
 
-    if (userEmail.verified) return sendError(httpStatusCodes.BAD_REQUEST, "Email already active", res);
-    if (otp !== userOTP.otp) return sendError(httpStatusCodes.UNAUTHORIZED, "Password incorrect", res);
+    if (userEmail.verified) return sendError(httpStatusCodes.BAD_REQUEST, "Email Already Active", res);
+    if (otp !== userOTP) return sendError(httpStatusCodes.UNAUTHORIZED, "Password Incorrect", res);
 
     await PrismaVerifyEmail(userEmail.id)
     await PrismaCreateUserFavorites(userEmail.user_id)
 
-    return res.status(httpStatusCodes.OK).send("Email successfully verified");
+    return res.status(httpStatusCodes.OK).send("Email Successfully Verified");
 }
 
 
 export async function resendEmailService(email: string, res: Response) {
     const userEmail = await PrismaFindEmail(email)
     if (!userEmail) return sendError(httpStatusCodes.NOT_FOUND, "Email Not found", res);
-    if (userEmail.verified) return sendError(httpStatusCodes.BAD_REQUEST, "Email already active", res);
+    if (userEmail.verified) return sendError(httpStatusCodes.BAD_REQUEST, "Email Already Active", res);
 
-    const OTP = generateOTP()
-    await PrismaUpdateOtp(email, OTP)
+    const OTP = generateOTP();
+    await RedisUpdateOtp(email, OTP);
 
     sendMail({ to: email, OTP: OTP });
     console.log([email, OTP]);
 
-    return res.status(httpStatusCodes.OK).send("Email successfully sent again");
+    return res.status(httpStatusCodes.OK).send("Email Successfully Sent Again");
 }
