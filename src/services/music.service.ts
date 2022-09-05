@@ -69,7 +69,7 @@ export async function updateMusicService(req: Request, res: Response) {
 }
 
 export async function queryMusicService(req: Request, res: Response) {
-    const songs = await PrismaSongsQuery(req.body.song_name)
+    const songs = await PrismaSongsQuery(`${req.query.songName}`)
     if (songs.length == 0) return sendError(httpStatusCodes.NOT_FOUND, "No Matching Songs Found", res)
     return res.status(200).send(toJson(songs))  // for big int
 }
@@ -137,12 +137,12 @@ export async function updateArtistService(req: Request, res: Response) {
     if (noErrors) {
         const artist = await PrismaUpdateArtist(artist_id, albums, songs);
         console.log(artist);
-        return res.status(201).send("Artist Created Successfully");
+        return res.status(200).send("Artist Updated Successfully");
     }
 }
 
 export async function queryArtistService(req: Request, res: Response) {
-    const artists = await PrismaArtistsQuery(req.body.artist_name)
+    const artists = await PrismaArtistsQuery(`${req.query.artistName}`)
     if (artists.length == 0) return sendError(httpStatusCodes.NOT_FOUND, "No Matching Artists Found", res)
     return res.status(200).send(toJson(artists))
 }
@@ -216,7 +216,7 @@ export async function updateAlbumService(req: Request, res: Response) {
 }
 
 export async function queryAlbumService(req: Request, res: Response) {
-    const albums = await PrismaAlbumsQuery(req.body.album_name)
+    const albums = await PrismaAlbumsQuery(`${req.query.albumName}`)
     if (albums.length == 0) return sendError(httpStatusCodes.NOT_FOUND, "No Matching Albums Found", res)
     return res.status(200).send(toJson(albums))
 }
@@ -273,7 +273,7 @@ export async function updatePlaylistService(req: Request, res: Response) {
 }
 
 export async function queryPlaylistService(req: Request, res: Response) {
-    const playlists = await PrismaPlaylistsQuery(req.body.user_id)
+    const playlists = await PrismaPlaylistsQuery(req.params.user_id)
     if (playlists.length == 0) return sendError(httpStatusCodes.NOT_FOUND, "No Matching Playlists Found", res)
     return res.status(200).send(playlists)
 }
@@ -333,7 +333,7 @@ export async function updateFavoritesService(req: Request, res: Response) {
 }
 
 export async function queryFavoritesService(req: Request, res: Response) {
-    const favorites = await PrismaFavoritesQuery(req.body.user_id, req.body.type)
+    const favorites = await PrismaFavoritesQuery(`${req.query.userId}`, req.query.type as Type)
     if (favorites.length == 0) return sendError(httpStatusCodes.NOT_FOUND, "No Matching Favorites Found", res)
     return res.status(200).send(favorites)
 }
