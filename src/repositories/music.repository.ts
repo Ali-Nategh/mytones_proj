@@ -190,7 +190,7 @@ export async function PrismaPlaylistsQuery(user_id: string) {
 
 // ------------------------------------------------FAVORITES----------------------------------------------------------- //
 
-export async function PrismaCreateUserFavorites(user_id: string) {
+export async function PrismaCreateUserFavorites(user_id: string) {  //---------------
     const favoriteSongs = await prisma.favorites.create({
         data: {
             user_id: user_id,
@@ -244,7 +244,7 @@ export async function PrismaGetAllMusic() {
     const albums = await prisma.album.findMany({});
     const artists = await prisma.artist.findMany({});
     const playlists = await prisma.playlist.findMany({});
-    const favorites = await prisma.favorites.findMany({});
+    const favorites = await prisma.favorites.findMany({}); // -------------------------
     const genres = await prisma.genre.findMany({});
     return [
         seperator("SONGS"), songs, seperator("ALBUMS"), albums, seperator("ARTISTS"), artists,
