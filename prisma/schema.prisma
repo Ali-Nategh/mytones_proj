@@ -36,15 +36,6 @@ model Email {
   @@index([email])
 }
 
-model Otp {
-  id         String   @id @unique @default(uuid())
-  user_id    String   @unique
-  otp        String
-  created_at DateTime @default(now())
-
-  @@index([user_id])
-}
-
 ////////////////////////////////////////////////////////////////////////
 
 model Song {
@@ -122,6 +113,17 @@ model Favorites {
   @@index([user_id])
 }
 
+model Actions {
+  id            Int    @id @unique @default(autoincrement())
+  user_id       String
+  target_id     String
+  playlist_type Type
+  play_or_like  Action
+
+  @@index([user_id])
+  @@index([target_id])
+}
+
 ////////////////////////////////////////////////////////////////////////
 
 enum Role {
@@ -135,6 +137,11 @@ enum Type {
   ARTISTS
   ALBUMS
   DOWNLOADS
+}
+
+enum Action {
+  LIKE
+  PLAY
 }
 
 enum Genres {
