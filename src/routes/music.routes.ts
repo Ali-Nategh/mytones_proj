@@ -35,7 +35,7 @@ router.post('/addMusic', addMusic);
 /**
  * @swagger
  * /music/updateMusic:
- *  post:
+ *  patch:
  *      tags: [Music]
  *      summary: Update a Song's info ( you can delete unnecessary options from the example )
  *      requestBody:
@@ -52,20 +52,21 @@ router.post('/addMusic', addMusic);
  *          '500': 
  *              description: Something went wrong updating song
  */
-router.post('/updateMusic', updateMusic);
+router.patch('/updateMusic', updateMusic);
 
 /**
  * @swagger
  * /music/queryMusic:
- *  post:
+ *  get:
  *      tags: [Music]
- *      summary: Get a list of songs
- *      requestBody:
- *          required: true
- *          content: 
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/SongQuery'
+ *      summary: Get a list of songs by name
+ *      parameters:
+ *      - in: query
+ *        name: songName
+ *        schema:
+ *          type: string
+ *        description: The name of the Song
+ *        example: RandomSong
  *      responses:
  *          '200': 
  *              description: Songs Found successfully
@@ -74,7 +75,7 @@ router.post('/updateMusic', updateMusic);
  *          '500': 
  *              description: Something went wrong searching for songs
  */
-router.post('/queryMusic', queryMusic);
+router.get('/queryMusic', queryMusic);
 
 
 
@@ -103,7 +104,7 @@ router.post('/addArtist', addArtist);
 /**
  * @swagger
  * /music/updateArtist:
- *  post:
+ *  patch:
  *      tags: [Music]
  *      summary: Update an Artist's info ( you can delete unnecessary options from the example )
  *      requestBody:
@@ -120,20 +121,21 @@ router.post('/addArtist', addArtist);
  *          '500': 
  *              description: Something went wrong updating the artist
  */
-router.post('/updateArtist', updateArtist);
+router.patch('/updateArtist', updateArtist);
 
 /**
  * @swagger
  * /music/queryArtist:
- *  post:
+ *  get:
  *      tags: [Music]
- *      summary: Get a list of Artists
- *      requestBody:
- *          required: true
- *          content: 
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/ArtistQuery'
+ *      summary: Get a list of Artists by name
+ *      parameters:
+ *      - in: query
+ *        name: artistName
+ *        schema:
+ *          type: string
+ *        description: The name of the Artist
+ *        example: JohnDoeTheTrickster
  *      responses:
  *          '200': 
  *              description: Artists found successfully
@@ -142,7 +144,7 @@ router.post('/updateArtist', updateArtist);
  *          '500': 
  *              description: Something went wrong searching for artists
  */
-router.post('/queryArtist', queryArtist);
+router.get('/queryArtist', queryArtist);
 
 
 
@@ -171,7 +173,7 @@ router.post('/addAlbum', addAlbum);
 /**
  * @swagger
  * /music/updateAlbum:
- *  post:
+ *  patch:
  *      tags: [Music]
  *      summary: Update an Album's info ( you can delete unnecessary options from the example )
  *      requestBody:
@@ -188,29 +190,30 @@ router.post('/addAlbum', addAlbum);
  *          '500': 
  *              description: Something went wrong updating Album
  */
-router.post('/updateAlbum', updateAlbum);
+router.patch('/updateAlbum', updateAlbum);
 
 /**
  * @swagger
  * /music/queryAlbum:
- *  post:
+ *  get:
  *      tags: [Music]
- *      summary: Get a list of Albums
- *      requestBody:
- *          required: true
- *          content: 
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/AlbumQuery'
+ *      summary: Get a list of Albums by name
+ *      parameters:
+ *      - in: query
+ *        name: albumName
+ *        schema:
+ *          type: string
+ *        description: The name of the Album
+ *        example: RandomAlbum
  *      responses:
- *          '201': 
+ *          '200': 
  *              description: Albums successfully found
  *          '400':
  *              description: Bad Request, information invalid
  *          '500': 
  *              description: Something went wrong searching for albums
  */
-router.post('/queryAlbum', queryAlbum);
+router.get('/queryAlbum', queryAlbum);
 
 
 
@@ -239,7 +242,7 @@ router.post('/addPlaylist', addPlaylist);
 /**
  * @swagger
  * /music/updatePlaylist:
- *  post:
+ *  patch:
  *      tags: [Music]
  *      summary: Update a Playlist's info ( you can delete unnecessary options from the example )
  *      requestBody:
@@ -256,35 +259,37 @@ router.post('/addPlaylist', addPlaylist);
  *          '500': 
  *              description: Something went wrong updating the playlist
  */
-router.post('/updatePlaylist', updatePlaylist);
+router.patch('/updatePlaylist', updatePlaylist);
 
 /**
  * @swagger
- * /music/queryPlaylist:
- *  post:
+ * /music/queryPlaylist/{userId}:
+ *  get:
  *      tags: [Music]
- *      summary: Get a list of user Playlists
- *      requestBody:
- *          required: true
- *          content: 
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/PlaylistQuery'
+ *      summary: Get a Playlist by user_id
+ *      parameters:
+ *      - in: path
+ *        name: albumName
+ *        required: true
+ *        schema:
+ *          type: string
+ *        description: The ID of the User
+ *        example: fgsd46th5s1t6h8st4h
  *      responses:
- *          '201': 
+ *          '200': 
  *              description: Playlists successfully found
  *          '400':
  *              description: Bad Request, information invalid
  *          '500': 
  *              description: Something went searching for Playlists
  */
-router.post('/queryPlaylist', queryPlaylist);
+router.get('/queryPlaylist/:userId', queryPlaylist);
 
 
 /**
  * @swagger
  * /music/updateFavorites:
- *  post:
+ *  patch:
  *      tags: [Music]
  *      summary: Update songs of a user's favorites
  *      requestBody:
@@ -301,29 +306,36 @@ router.post('/queryPlaylist', queryPlaylist);
  *          '500': 
  *              description: Something went wrong updating the favorites
  */
-router.post('/updateFavorites', updateFavorites);
+router.patch('/updateFavorites', updateFavorites);
 
 /**
  * @swagger
  * /music/queryFavorites:
- *  post:
+ *  get:
  *      tags: [Music]
  *      summary: Get a list of user favorites
- *      requestBody:
- *          required: true
- *          content: 
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/FavoritesQuery'
+ *      parameters:
+ *      - in: query
+ *        name: userId
+ *        schema:
+ *          type: string
+ *        description: The ID of the User
+ *        example: f5h1fgj64dgh6j51
+ *      - in: query
+ *        name: type
+ *        schema:
+ *          type: string
+ *        description: The type of the Playlist
+ *        example: DOWNLOADS
  *      responses:
- *          '201': 
+ *          '200': 
  *              description: Favorites successfully found
  *          '400':
  *              description: Bad Request, information invalid
  *          '500': 
  *              description: Something went wrong searching for Favorites
  */
-router.post('/queryFavorites', queryFavorites);
+router.get('/queryFavorites', queryFavorites);
 
 
 export default router;
