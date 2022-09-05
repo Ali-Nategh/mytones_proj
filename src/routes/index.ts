@@ -230,16 +230,6 @@ export default router;
  *              producers: [Allin, some doctor Dre guy, Havoc, Jdilla]
  *              writers: [John, Doe]
  *              engineers: [John, DoeJr]
- *      SongQuery:
- *          type: object
- *          required:
- *              - song_name
- *          properties:
- *              song_name:
- *                  type: string
- *                  description: Song's official name or a part of it
- *          example:
- *              song_name: RandomSong
  *      Artist:
  *          type: object
  *          required:
@@ -284,16 +274,6 @@ export default router;
  *              artist_id: hsjfgd9r557j6f5gd5
  *              albums_id: [365756yhkhjfsdhss67, 3h56h5g7j6f5gd5356756h]
  *              songs_id: [oljhkhjl542j4d6hjdf, gsjf8g6sb5fg357j6f5gd5]
- *      ArtistQuery:
- *          type: object
- *          required:
- *              - artist_name
- *          properties:
- *              artist_name:
- *                  description: Artist Name or a part of it
- *                  type: string
- *          example:
- *              artist_name: JohnDoeTheTrickster
  *      Album:
  *          type: object
  *          required:
@@ -349,16 +329,6 @@ export default router;
  *              album_id: sdfh65s16th5sf6gh51s
  *              songs_id: [oljhkhjl542j4d6hjdf, gsjf8g6sb5fg357j6f5gd5]
  *              genres: [HIPHOP, RAP]
- *      AlbumQuery:
- *          type: object
- *          required:
- *              - album_name 
- *          properties:
- *              album_name:
- *                  description: Album's Name or a part of it
- *                  type: string
- *          example:
- *              album_name: RandomAlbum
  *      Playlist:
  *          type: object
  *          required:
@@ -406,16 +376,6 @@ export default router;
  *              user_id: d5j4d6hj15d6y5j4d6gh5
  *              playlist_name: MyPlaylist1-1
  *              songs_id: [oljhkhjl542j4d6hjdfgh, gsldfkmlhsibjsstiojhsl6]
- *      PlaylistQuery:
- *          type: object
- *          required:
- *              - user_id
- *          properties:
- *              user_id:
- *                  description: User's id
- *                  type: string
- *          example:
- *              user_id: d5j4d6hj15d6y5j4d6gh5
  *      Favorites:
  *          type: object
  *          required:
@@ -449,21 +409,6 @@ export default router;
  *              songs_id: [oljhkhjl542j4d6hjdf, gsjf8g6sb5fg357j6f5gd5, dfj4d8y51j2d68y49d8y1k]
  *              artists_id: [sdf456hs51sdfhfd6516]
  *              albums_id: []
- *      FavoritesQuery:
- *          type: object
- *          required:
- *              - type
- *              - user_id
- *          properties:
- *              type:
- *                  description: Favorite Type [SONGS/ARTISTS/ALBUMS/DOWNLOADS]
- *                  type: string
- *              user_id:
- *                  description: Album Artist's id
- *                  type: string
- *          example:
- *              type: DOWNLOADS  
- *              user_id: 365756yh5gd5356756h
  *      UserLogin:
  *          type: object
  *          required:
