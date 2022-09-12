@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import {
     addMusicService, addArtistService, addAlbumService, addPlaylistService,
-    queryAlbumService, queryArtistService, queryMusicService, queryPlaylistService, queryFavoritesService,
-    updateMusicService, updateArtistService, updateAlbumService, updatePlaylistService, updateFavoritesService
+    queryAlbumService, queryArtistService, queryMusicService, queryPlaylistService, queryActionsService,
+    updateMusicService, updateArtistService, updateAlbumService, updatePlaylistService, createOrDeleteActionsService
 } from "../services/music.service";
 
 
@@ -50,9 +50,9 @@ export async function queryAlbum(req: Request, res: Response) {
 };
 
 
-export async function queryFavorites(req: Request, res: Response) {
-    queryFavoritesService(req, res);
+export async function queryActions(req: Request, res: Response) {
+    queryActionsService(req, res);
 }
-export async function updateFavorites(req: Request, res: Response) {
-    updateFavoritesService(req, res);
+export async function updateActions(req: Request, res: Response) {
+    createOrDeleteActionsService(req, res);
 }
