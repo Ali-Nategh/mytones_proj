@@ -53,7 +53,6 @@ model Song {
   producers      String[] @default([])
   writers        String[] @default([])
   engineers      String[] @default([])
-  plays          BigInt   @default(0)
 
   @@index([id])
   @@index([song_name])
@@ -71,9 +70,8 @@ model Album {
   id              String   @id @unique @default(uuid())
   name            String
   artist_id       String
-  feat_artists_id String[]
   release_date    String
-  songs_id        String[] //  ---------------
+  feat_artists_id String[] @default([])
   genres          Genres[] @default([])
 
   @@index([id])
@@ -81,11 +79,10 @@ model Album {
 }
 
 model Playlist {
-  id       String   @unique @default(uuid())
-  name     String
-  User     User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id  String   @unique
-  songs_id String[] @default([]) //  ---------------
+  id      String @unique @default(uuid())
+  name    String
+  User    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String @unique
 
   @@id([id, user_id])
   @@index([id])
@@ -93,10 +90,14 @@ model Playlist {
 
 model Grouping {
   id         Int    @id @unique @default(autoincrement())
-  group_type Groups // Playlist or Album
-  group_id   String // Playlist or Album
-  creator_id String // User     or Artist
-  song_id    String @unique
+  group_type Groups // Playlist  or  Album
+  group_id   String // Playlist  or  Album
+  creator_id String // UserID    or  Artist
+  song_id    String
+
+  @@unique([song_id, group_type, group_id])
+  @@index([song_id])
+  @@index([group_type])
 }
 
 model Genre {
@@ -105,24 +106,13 @@ model Genre {
   @@index([id])
 }
 
-model Favorites {
-  id         String   @unique @default(uuid()) // -------------
-  user_id    String
-  type       Type
-  songs_id   String[] @default([])
-  artists_id String[] @default([])
-  albums_id  String[] @default([])
-
-  @@id([user_id, type])
-  @@index([user_id])
-}
-
 model Actions {
   id          Int    @id @unique @default(autoincrement())
   user_id     String
   target_id   String
   action_type Action
 
+  @@unique([user_id, target_id, action_type])
   @@index([user_id])
   @@index([target_id])
 }
@@ -133,13 +123,6 @@ enum Role {
   BASIC
   EDITOR
   ADMIN
-}
-
-enum Type {
-  SONGS // ----------------------------------------------
-  ARTISTS
-  ALBUMS
-  DOWNLOADS
 }
 
 enum Action {
