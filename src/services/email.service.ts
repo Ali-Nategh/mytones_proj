@@ -1,5 +1,4 @@
 import { RedisFindOTP, PrismaFindEmail, PrismaVerifyEmail, RedisUpdateOtp } from '../repositories/user.repository';
-import { PrismaCreateUserFavorites } from '../repositories/music.repository';
 import { httpStatusCodes } from '../errors/httpStatusCodes';
 import { sendError } from '../errors/errorHandler';
 import generateOTP from './otp.service';
@@ -55,7 +54,6 @@ export async function verifyEmailService(email: string, otp: string, res: Respon
     if (otp !== userOTP) return sendError(httpStatusCodes.UNAUTHORIZED, "Password Incorrect", res);
 
     await PrismaVerifyEmail(userEmail.id)
-    await PrismaCreateUserFavorites(userEmail.user_id)
 
     return res.status(httpStatusCodes.OK).send("Email Successfully Verified");
 }
