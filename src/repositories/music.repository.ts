@@ -1,5 +1,5 @@
 // Initializing PrismaClient
-import { Genres, PrismaClient, Type } from '@prisma/client';
+import { Genres, PrismaClient, Action } from '@prisma/client';
 const prisma = new PrismaClient();
 
 import { seperator } from '../utils/seperator';
@@ -73,28 +73,36 @@ export async function PrismaSongsQuery(song_name: string) {
     return songs;
 }
 
+
 // --------------------------------------------------ARTISTS------------------------------------------------------------- //
 
 export async function PrismaCreateArtist(artist_name: string, albums_id?: string[], songs_id?: string[]) {
     const artist = await prisma.artist.create({
         data: {
             name: artist_name,
-            albums_id: albums_id,
-            songs_id: songs_id,
         },
     });
     return artist;
 }
-export async function PrismaUpdateArtist(artist_id: string, albums_id?: string[], songs_id?: string[]) {
-    const artist = await prisma.artist.update({
-        where: {
-            id: artist_id
-        },
-        data: {
-            albums_id: albums_id,
-            songs_id: songs_id,
-        },
-    });
+export async function PrismaUpdateArtist(artist_id: string, songs_id?: string[]) {
+    let artist = []
+    if (songs_id) for (let i = 0; i < songs_id.length; i++) {
+        const song = await prisma.grouping.upsert({
+            where: {
+                song_id_group_type_group_id: { song_id: songs_id[i], group_type: 'ALBUM', group_id: artist_id },
+            },
+            update: {
+                creator_id: artist_id,
+            },
+            create: {
+                song_id: songs_id[i],
+                creator_id: artist_id,
+                group_id: artist_id,
+                group_type: 'ALBUM',
+            }
+        });
+        artist.push(song);
+    }
     return artist;
 }
 export async function PrismaFindArtist(artist_id: string) {
@@ -110,32 +118,44 @@ export async function PrismaArtistsQuery(artist_name: string) {
     return artists;
 }
 
+
 // --------------------------------------------------ALBUMS------------------------------------------------------------- //
 
 export async function PrismaCreateAlbum(album_name: string, artist_id: string, release_date: string
-    , songs_id?: string[], genres?: Genres[]) {
+    , feat_artists_id: string[], genres?: Genres[]) {
     const album = await prisma.album.create({
         data: {
             name: album_name,
             artist_id: artist_id,
             release_date: release_date,
-            songs_id: songs_id,
+            feat_artists_id: feat_artists_id,
             genres: genres,
         },
     });
     return album;
 }
 export async function PrismaUpdateAlbum(album_id: string, songs_id?: string[], genres?: Genres[]) {
-    const album = await prisma.album.update({
-        where: {
-            id: album_id
-        },
-        data: {
-            songs_id: songs_id,
-            genres: genres,
-        },
-    });
-    return album;
+    if (genres) await prisma.album.update({ where: { id: album_id }, data: { genres: genres } });
+    const old_album = await prisma.album.findUnique({ where: { id: album_id } });
+    const albums = [];
+    if (songs_id && old_album) for (let i = 0; i < songs_id.length; i++) {
+        const album = await prisma.grouping.upsert({
+            where: {
+                song_id_group_type_group_id: { song_id: songs_id[i], group_type: 'ALBUM', group_id: album_id },
+            },
+            update: {
+                creator_id: old_album.artist_id,
+            },
+            create: {
+                song_id: songs_id[i],
+                creator_id: old_album.artist_id,
+                group_id: album_id,
+                group_type: 'ALBUM',
+            }
+        });
+        albums.push(album)
+    }
+    return albums
 }
 export async function PrismaFindAlbum(album_id: string) {
     const album = await prisma.album.findUnique({
@@ -149,6 +169,13 @@ export async function PrismaAlbumsQuery(album_name: string) {
     });
     return albums;
 }
+export async function PrismaAlbumSongsQuery(album_id: string) {
+    const songs = await prisma.grouping.findMany({
+        where: { AND: [{ group_id: album_id }, { group_type: 'ALBUM' }] }
+    });
+    return songs;
+}
+
 
 // --------------------------------------------------PLAYLISTS------------------------------------------------------------- //
 
@@ -157,9 +184,24 @@ export async function PrismaCreatePlaylist(playlist_name: string, user_id: strin
         data: {
             name: playlist_name,
             user_id: user_id,
-            songs_id: songs_id
         },
     });
+    if (songs_id) for (let i = 0; i < songs_id.length; i++) {
+        const song = await prisma.grouping.upsert({
+            where: {
+                song_id_group_type_group_id: { song_id: songs_id[i], group_type: 'PLAYLIST', group_id: playlist.id },
+            },
+            update: {
+                creator_id: user_id,
+            },
+            create: {
+                creator_id: user_id,
+                group_id: playlist.id,
+                group_type: 'PLAYLIST',
+                song_id: songs_id[i],
+            }
+        })
+    }
     return playlist;
 }
 export async function PrismaUpdatePlaylist(playlist_id: string, user_id: string, playlist_name?: string, songs_id?: string[]) {
@@ -170,9 +212,24 @@ export async function PrismaUpdatePlaylist(playlist_id: string, user_id: string,
         },
         data: {
             name: playlist_name,
-            songs_id: songs_id
         },
     });
+    if (songs_id) for (let i = 0; i < songs_id.length; i++) {
+        const song = await prisma.grouping.upsert({
+            where: {
+                song_id_group_type_group_id: { song_id: songs_id[i], group_type: 'PLAYLIST', group_id: playlist.id },
+            },
+            update: {
+                creator_id: user_id,
+            },
+            create: {
+                creator_id: user_id,
+                group_id: playlist.id,
+                group_type: 'PLAYLIST',
+                song_id: songs_id[i],
+            }
+        })
+    }
     return playlist;
 }
 export async function PrismaFindPlaylist(playlist_id: string) {
@@ -187,55 +244,51 @@ export async function PrismaPlaylistsQuery(user_id: string) {
     });
     return playlists;
 }
-
-// ------------------------------------------------FAVORITES----------------------------------------------------------- //
-
-export async function PrismaCreateUserFavorites(user_id: string) {  //---------------
-    const favoriteSongs = await prisma.favorites.create({
-        data: {
-            user_id: user_id,
-            type: "SONGS"
-        }
-    });
-    const favoriteArtists = await prisma.favorites.create({
-        data: {
-            user_id: user_id,
-            type: "ARTISTS"
-        }
-    });
-    const favoriteAlbums = await prisma.favorites.create({
-        data: {
-            user_id: user_id,
-            type: "ALBUMS"
-        }
-    });
-    const downloads = await prisma.favorites.create({
-        data: {
-            user_id: user_id,
-            type: "DOWNLOADS"
-        }
-    });
-    return [favoriteSongs, favoriteArtists, favoriteAlbums, downloads]
-}
-export async function PrismaUpdateFavorites(user_id: string, type: Type, songs_id?: string[], albums_id?: string[], artists_id?: string[]) {
-    const favorites = await prisma.favorites.update({
+export async function PrismaPlaylistSongsQuery(user_id: string, playlist_id: string) {
+    const songs = await prisma.grouping.findFirst({
         where: {
-            user_id_type: { user_id, type },
-        },
-        data: {
-            songs_id: songs_id,
-            albums_id: albums_id,
-            artists_id: artists_id,
+            AND: [{ creator_id: user_id }, { group_type: 'PLAYLIST' }, { group_id: playlist_id }],
         }
     });
-    return favorites;
+    return songs;
 }
-export async function PrismaFavoritesQuery(user_id: string, type: Type) {
-    const favorites = await prisma.favorites.findMany({
-        where: { AND: [{ user_id: user_id }, { type: type }] }
+
+
+// -------------------------------------------------ACTIONS------------------------------------------------------------ //
+
+export async function PrismaCreateOrDeleteAction(user_id: string, target_id: string, type: Action) {
+    const prev_favorite = await prisma.actions.findUnique({
+        where: {
+            user_id_target_id_action_type: { user_id: user_id, target_id: target_id, action_type: type }
+        }
+    })
+
+    if (prev_favorite) {
+        await prisma.actions.delete({
+            where: {
+                user_id_target_id_action_type: { user_id: user_id, target_id: target_id, action_type: type }
+            }
+        });
+        return false;
+    }
+
+    const favorite = await prisma.actions.create({
+        data: {
+            user_id: user_id,
+            target_id: target_id,
+            action_type: type,
+        }
+    });
+    return favorite;
+}
+
+export async function PrismaActionsQuery(user_id: string, type: Action) {
+    const favorites = await prisma.actions.findMany({
+        where: { AND: [{ user_id: user_id }, { action_type: type }] }
     });
     return favorites;
 }
+
 
 // ------------------------------------------------GETALL----------------------------------------------------------- //
 
@@ -244,11 +297,11 @@ export async function PrismaGetAllMusic() {
     const albums = await prisma.album.findMany({});
     const artists = await prisma.artist.findMany({});
     const playlists = await prisma.playlist.findMany({});
-    const favorites = await prisma.favorites.findMany({}); // -------------------------
+    const favorites = await prisma.actions.findMany({}); // -------------------------
     const genres = await prisma.genre.findMany({});
     return [
         seperator("SONGS"), songs, seperator("ALBUMS"), albums, seperator("ARTISTS"), artists,
-        seperator("PLAYLISTS"), playlists, seperator("FAVORITES"), favorites, seperator("GENRES"), genres,
+        seperator("PLAYLISTS"), playlists, seperator("ACTIONS"), favorites, seperator("GENRES"), genres,
         seperator("")
     ];
 }
