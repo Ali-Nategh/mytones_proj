@@ -1,15 +1,15 @@
 import {
     PrismaCreateSong, PrismaFindSong, PrismaSongsQuery, PrismaUpdateSong, PrismaFindSongFilepath, PrismaFindSongISRC,
     PrismaCreateArtist, PrismaFindArtist, PrismaArtistsQuery, PrismaUpdateArtist,
-    PrismaFindAlbum, PrismaCreateAlbum, PrismaAlbumsQuery, PrismaUpdateAlbum,
-    PrismaCreatePlaylist, PrismaPlaylistsQuery, PrismaUpdatePlaylist, PrismaFindPlaylist,
-    PrismaFavoritesQuery, PrismaUpdateFavorites,
+    PrismaFindAlbum, PrismaCreateAlbum, PrismaAlbumsQuery, PrismaUpdateAlbum, PrismaAlbumSongsQuery,
+    PrismaCreatePlaylist, PrismaPlaylistsQuery, PrismaUpdatePlaylist, PrismaFindPlaylist, PrismaPlaylistSongsQuery,
+    PrismaCreateOrDeleteAction, PrismaActionsQuery,
 } from "../repositories/music.repository";
 import { PrismaFindUser } from "../repositories/user.repository";
 import { httpStatusCodes } from "../errors/httpStatusCodes";
 import { sendError } from "../errors/errorHandler";
 import { Request, Response } from "express";
-import { Genres, Type } from "@prisma/client";
+import { Action, Genres } from "@prisma/client";
 import { toJson } from "../utils/toJson";
 import console from "console";
 
@@ -31,7 +31,7 @@ export async function addMusicService(req: Request, res: Response) {
     const artistExists = await PrismaFindArtist(artist_id)
     if (!artistExists) return sendError(httpStatusCodes.NOT_FOUND, `Artist ID (${artist_id}) Not Found`, res)
 
-    const album_id = req.body.songs_id;
+    const album_id = req.body.album_id;
     if (album_id) {
         const albumExists = await PrismaFindAlbum(album_id)
         if (!albumExists) return sendError(httpStatusCodes.NOT_FOUND, `Album ID (${album_id}) Not Found`, res)
@@ -102,7 +102,7 @@ export async function addArtistService(req: Request, res: Response) {
     if (noErrors) {
         const artist = await PrismaCreateArtist(req.body.artist_name, albums, songs);
         console.log(artist);
-        return res.status(200).send("Artist Updated Successfully");
+        return res.status(200).send("Artist Created Successfully");
     }
 }
 
@@ -135,7 +135,7 @@ export async function updateArtistService(req: Request, res: Response) {
         }
     }
     if (noErrors) {
-        const artist = await PrismaUpdateArtist(artist_id, albums, songs);
+        const artist = await PrismaUpdateArtist(artist_id, songs);
         console.log(artist);
         return res.status(200).send("Artist Updated Successfully");
     }
@@ -151,18 +151,18 @@ export async function queryArtistService(req: Request, res: Response) {
 
 export async function addAlbumService(req: Request, res: Response) {
     let noErrors = true;
-    const artistid = req.body.artist_id
-    const songs = req.body.songs_id;
+    const artist_id = req.body.artist_id
+    const feat_artists = req.body.feat_artist_id;
     const genres = req.body.genres;
 
-    const artist = await PrismaFindArtist(artistid)
-    if (!artist) return sendError(httpStatusCodes.NOT_FOUND, `Artist ID (${artistid}) Not Found`, res)
-    if (songs) {
-        for (let i = 0; i < songs.length; i++) {
-            const song = await PrismaFindSong(songs[i])
-            if (!song) {
+    const artist = await PrismaFindArtist(artist_id)
+    if (!artist) return sendError(httpStatusCodes.NOT_FOUND, `Artist ID (${artist_id}) Not Found`, res)
+    if (feat_artists) {
+        for (let i = 0; i < feat_artists.length; i++) {
+            const artist = await PrismaFindArtist(feat_artists[i])
+            if (!artist) {
                 noErrors = false;
-                return sendError(httpStatusCodes.NOT_FOUND, `Song ID (${songs[i]}) Not Found`, res)
+                return sendError(httpStatusCodes.NOT_FOUND, `Song ID (${feat_artists[i]}) Not Found`, res)
             }
         }
     }
@@ -175,7 +175,7 @@ export async function addAlbumService(req: Request, res: Response) {
         }
     }
     if (noErrors) {
-        const album = await PrismaCreateAlbum(req.body.album_name, req.body.artist_id, req.body.release_date, songs, genres)
+        const album = await PrismaCreateAlbum(req.body.album_name, artist_id, req.body.release_date, feat_artists, genres)
         console.log(album);
         return res.status(201).send("Album Created Successfully");
     }
@@ -278,62 +278,38 @@ export async function queryPlaylistService(req: Request, res: Response) {
     return res.status(200).send(playlists)
 }
 
-// ------------------------------------------------FAVORITES----------------------------------------------------------- //
+// -------------------------------------------------ACTIONS------------------------------------------------------------ //
 
-export async function updateFavoritesService(req: Request, res: Response) {
+export async function createOrDeleteActionsService(req: Request, res: Response) {
     const user_id = req.body.user_id;
     if (!user_id) return sendError(httpStatusCodes.BAD_REQUEST, 'User ID is required', res);
     const userExists = await PrismaFindUser(user_id);
     if (!userExists) return sendError(httpStatusCodes.NOT_FOUND, 'User ID Not Found', res);
 
-    const type = req.body.type;
-    if (!type) return sendError(httpStatusCodes.BAD_REQUEST, 'Type is required', res);
-    if (!(type in Type)) return sendError(httpStatusCodes.BAD_REQUEST, 'Type not Valid', res);
+    const action_type = req.body.action_type;
+    if (!action_type) return sendError(httpStatusCodes.BAD_REQUEST, 'Action is required', res);
+    if (!(action_type in Action)) return sendError(httpStatusCodes.BAD_REQUEST, 'Action not Valid', res);
 
-    let noErrors = true;
-    const songs = req.body.songs_id;
-    if (songs) {
-        for (let i = 0; i < songs.length; i++) {
-            const song = await PrismaFindSong(songs[i])
-            if (!song) {
-                noErrors = false;
-                return sendError(httpStatusCodes.NOT_FOUND, `Song ID (${songs[i]}) Not Found`, res)
-            }
-        }
-    }
+    const target_id = req.body.target_id;
+    if (!target_id) return sendError(httpStatusCodes.BAD_REQUEST, 'Target ID is required', res);
 
-    const albums = req.body.albums_id;
-    if (albums && noErrors) {
-        for (let i = 0; i < albums.length; i++) {
-            const album = await PrismaFindAlbum(albums[i])
-            if (!album) {
-                noErrors = false;
-                return sendError(httpStatusCodes.NOT_FOUND, `Album ID (${albums[i]}) Not Found`, res)
-            }
-        }
-    }
+    const song = PrismaFindSong(target_id);
+    const artist = PrismaFindArtist(target_id);
+    const album = PrismaFindAlbum(target_id);
+    if (!song || !album || !artist) return sendError(httpStatusCodes.NOT_FOUND, 'Target Not Found', res);
 
-    const artists = req.body.artists_id;
-    if (artists && noErrors) {
-        for (let i = 0; i < artists.length; i++) {
-            const artist = await PrismaFindArtist(artists[i])
-            if (!artist) {
-                noErrors = false;
-                return sendError(httpStatusCodes.NOT_FOUND, `Album ID (${artists[i]}) Not Found`, res)
-            }
-        }
-    }
 
-    if (noErrors) {
-        const favorites_update = await PrismaUpdateFavorites(user_id, type, songs, albums, artists)
-        console.log(favorites_update)
-        return res.status(200).send("Favorites updated Successfully");
-    }
-    return sendError(httpStatusCodes.INTERNAL_SERVER_ERROR, 'Something went wrong', res)
+    const actions_update = await PrismaCreateOrDeleteAction(user_id, target_id, action_type)
+
+    if (actions_update === null) return sendError(httpStatusCodes.INTERNAL_SERVER_ERROR, 'Something went wrong', res)
+
+    console.log(actions_update)
+    if (!actions_update) return res.status(200).send("Actions Deleted Successfully");
+    return res.status(200).send("Action Created Successfully");
 }
 
-export async function queryFavoritesService(req: Request, res: Response) {
-    const favorites = await PrismaFavoritesQuery(`${req.query.userId}`, req.query.type as Type)
-    if (favorites.length == 0) return sendError(httpStatusCodes.NOT_FOUND, "No Matching Favorites Found", res)
+export async function queryActionsService(req: Request, res: Response) {
+    const favorites = await PrismaActionsQuery(`${req.query.userId}`, req.query.type as Action)
+    if (favorites.length == 0) return sendError(httpStatusCodes.NOT_FOUND, "No Matching Actions Found", res)
     return res.status(200).send(favorites)
 }
