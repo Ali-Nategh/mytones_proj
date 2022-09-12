@@ -3,7 +3,7 @@ import {
     addPlaylist, updatePlaylist, queryPlaylist,
     addArtist, updateArtist, queryArtist,
     addAlbum, updateAlbum, queryAlbum,
-    queryFavorites, updateFavorites,
+    queryActions, updateActions,
 } from "../controllers/music.controller";
 
 
@@ -288,32 +288,32 @@ router.get('/queryPlaylist/:userId', queryPlaylist);
 
 /**
  * @swagger
- * /music/updateFavorites:
+ * /music/updateActions:
  *  patch:
  *      tags: [Music]
- *      summary: Update songs of a user's favorites
+ *      summary: Update Actions (Creates / Deletes if it exists)
  *      requestBody:
  *          required: true
  *          content: 
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/Favorites'
+ *                          $ref: '#/components/schemas/Actions'
  *      responses:
  *          '200': 
- *              description: Favorites successfully updated
+ *              description: Actions successfully updated
  *          '400':
  *              description: Bad Request, information invalid
  *          '500': 
- *              description: Something went wrong updating the favorites
+ *              description: Something went wrong updating the Actions
  */
-router.patch('/updateFavorites', updateFavorites);
+router.patch('/updateActions', updateActions);
 
 /**
  * @swagger
- * /music/queryFavorites:
+ * /music/queryActions:
  *  get:
  *      tags: [Music]
- *      summary: Get a list of user favorites
+ *      summary: Get a list of user actions
  *      parameters:
  *      - in: query
  *        name: userId
@@ -329,13 +329,13 @@ router.patch('/updateFavorites', updateFavorites);
  *        example: DOWNLOADS
  *      responses:
  *          '200': 
- *              description: Favorites successfully found
+ *              description: Actions successfully found
  *          '400':
  *              description: Bad Request, information invalid
  *          '500': 
- *              description: Something went wrong searching for Favorites
+ *              description: Something went wrong searching for Actions
  */
-router.get('/queryFavorites', queryFavorites);
+router.get('/queryActions', queryActions);
 
 
 export default router;
