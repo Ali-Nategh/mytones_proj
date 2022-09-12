@@ -2,10 +2,10 @@
 CREATE TYPE "Role" AS ENUM ('BASIC', 'EDITOR', 'ADMIN');
 
 -- CreateEnum
-CREATE TYPE "Type" AS ENUM ('SONGS', 'ARTISTS', 'ALBUMS', 'DOWNLOADS');
+CREATE TYPE "Action" AS ENUM ('LIKE', 'PLAY', 'SONGS', 'ARTISTS', 'ALBUMS', 'DOWNLOADS');
 
 -- CreateEnum
-CREATE TYPE "Action" AS ENUM ('LIKE', 'PLAY');
+CREATE TYPE "Groups" AS ENUM ('PLAYLIST', 'ALBUM');
 
 -- CreateEnum
 CREATE TYPE "Genres" AS ENUM ('POP', 'COUNTRY', 'ELECTRONIC', 'BLUES', 'ROCK', 'HIPHOP', 'JAZZ', 'METAL', 'INDIE', 'DANCE', 'SOUL', 'LATIN', 'KPOP', 'DUBSTEP', 'TECHNO', 'FOLK', 'INSTRUMENTAL', 'EMO', 'GOSPEL', 'HOUSE', 'RnB', 'PSYCHEDELIC', 'RAP', 'DISCO', 'PUNK', 'COVER', 'CLASSICAL');
@@ -53,7 +53,6 @@ CREATE TABLE "Song" (
     "producers" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "writers" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "engineers" TEXT[] DEFAULT ARRAY[]::TEXT[],
-    "plays" BIGINT NOT NULL DEFAULT 0,
 
     CONSTRAINT "Song_pkey" PRIMARY KEY ("id")
 );
@@ -62,9 +61,6 @@ CREATE TABLE "Song" (
 CREATE TABLE "Artist" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "albums_id" TEXT[] DEFAULT ARRAY[]::TEXT[],
-    "songs_id" TEXT[] DEFAULT ARRAY[]::TEXT[],
-    "plays" BIGINT NOT NULL DEFAULT 0,
 
     CONSTRAINT "Artist_pkey" PRIMARY KEY ("id")
 );
@@ -75,9 +71,8 @@ CREATE TABLE "Album" (
     "name" TEXT NOT NULL,
     "artist_id" TEXT NOT NULL,
     "release_date" TEXT NOT NULL,
-    "songs_id" TEXT[],
+    "feat_artists_id" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "genres" "Genres"[] DEFAULT ARRAY[]::"Genres"[],
-    "plays" BIGINT NOT NULL DEFAULT 0,
 
     CONSTRAINT "Album_pkey" PRIMARY KEY ("id")
 );
@@ -87,27 +82,26 @@ CREATE TABLE "Playlist" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
-    "songs_id" TEXT[] DEFAULT ARRAY[]::TEXT[],
 
     CONSTRAINT "Playlist_pkey" PRIMARY KEY ("id","user_id")
 );
 
 -- CreateTable
-CREATE TABLE "Genre" (
-    "id" "Genres" NOT NULL,
-    "plays" BIGINT NOT NULL DEFAULT 0
+CREATE TABLE "Grouping" (
+    "id" SERIAL NOT NULL,
+    "group_type" "Groups" NOT NULL,
+    "group_id" TEXT NOT NULL,
+    "creator_id" TEXT NOT NULL,
+    "song_id" TEXT NOT NULL,
+
+    CONSTRAINT "Grouping_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Favorites" (
-    "id" TEXT NOT NULL,
-    "user_id" TEXT NOT NULL,
-    "type" "Type" NOT NULL,
-    "songs_id" TEXT[] DEFAULT ARRAY[]::TEXT[],
-    "artists_id" TEXT[] DEFAULT ARRAY[]::TEXT[],
-    "albums_id" TEXT[] DEFAULT ARRAY[]::TEXT[],
+CREATE TABLE "Genre" (
+    "id" "Genres" NOT NULL,
 
-    CONSTRAINT "Favorites_pkey" PRIMARY KEY ("user_id","type")
+    CONSTRAINT "Genre_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -115,8 +109,7 @@ CREATE TABLE "Actions" (
     "id" SERIAL NOT NULL,
     "user_id" TEXT NOT NULL,
     "target_id" TEXT NOT NULL,
-    "playlist_type" "Type" NOT NULL,
-    "play_or_like" "Action" NOT NULL,
+    "action_type" "Action" NOT NULL,
 
     CONSTRAINT "Actions_pkey" PRIMARY KEY ("id")
 );
@@ -185,16 +178,22 @@ CREATE UNIQUE INDEX "Playlist_user_id_key" ON "Playlist"("user_id");
 CREATE INDEX "Playlist_id_idx" ON "Playlist"("id");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Grouping_id_key" ON "Grouping"("id");
+
+-- CreateIndex
+CREATE INDEX "Grouping_song_id_idx" ON "Grouping"("song_id");
+
+-- CreateIndex
+CREATE INDEX "Grouping_group_type_idx" ON "Grouping"("group_type");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Grouping_song_id_group_type_group_id_key" ON "Grouping"("song_id", "group_type", "group_id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Genre_id_key" ON "Genre"("id");
 
 -- CreateIndex
 CREATE INDEX "Genre_id_idx" ON "Genre"("id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Favorites_id_key" ON "Favorites"("id");
-
--- CreateIndex
-CREATE INDEX "Favorites_user_id_idx" ON "Favorites"("user_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Actions_id_key" ON "Actions"("id");
@@ -204,6 +203,9 @@ CREATE INDEX "Actions_user_id_idx" ON "Actions"("user_id");
 
 -- CreateIndex
 CREATE INDEX "Actions_target_id_idx" ON "Actions"("target_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Actions_user_id_target_id_action_type_key" ON "Actions"("user_id", "target_id", "action_type");
 
 -- AddForeignKey
 ALTER TABLE "Playlist" ADD CONSTRAINT "Playlist_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
