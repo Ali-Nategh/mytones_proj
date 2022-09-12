@@ -238,20 +238,8 @@ export default router;
  *              artist_name:
  *                  description: Artist Name
  *                  type: string
- *              albums_id:
- *                  description: An array of Artist's albums id
- *                  type: array
- *                  items: 
- *                      type: string
- *              songs_id:
- *                  description: An array of Artist's songs id
- *                  type: array
- *                  items: 
- *                      type: string
  *          example:
  *              artist_name: JohnDoeTheTrickster
- *              albums_id: [365756yhkhjfsdhss67, 3h56h5g7j6f5gd5356756h]
- *              songs_id: [oljhkhjl542j4d6hjdf, gsjf8g6sb5fg357j6f5gd5]
  *      ArtistUpdate:
  *          type: object
  *          required:
@@ -342,11 +330,6 @@ export default router;
  *              user_id:
  *                  description: User's id
  *                  type: string
- *              songs_id:
- *                  description: An array of playlist songs id
- *                  type: array
- *                  items: 
- *                      type: string
  *          example:
  *              playlist_name: MyPlaylist1
  *              user_id: d5j4d6hj15d6y5j4d6gh5
@@ -366,49 +349,30 @@ export default router;
  *              playlist_name:
  *                  description: User Playlist Name
  *                  type: string
- *              songs_id:
- *                  description: An array of playlist songs id
- *                  type: array
- *                  items: 
- *                      type: string
  *          example:
  *              playlist_id: dgf65dh16t84d6g5h1
  *              user_id: d5j4d6hj15d6y5j4d6gh5
  *              playlist_name: MyPlaylist1-1
- *              songs_id: [oljhkhjl542j4d6hjdfgh, gsldfkmlhsibjsstiojhsl6]
- *      Favorites:
+ *      Actions:
  *          type: object
  *          required:
- *              - type
+ *              - action_type
  *              - user_id
+ *              - target_id
  *          properties:
- *              type:
- *                  description: Favorite Type [SONGS/ARTISTS/ALBUMS/DOWNLOADS]
+ *              action_type:
+ *                  description: Actions Type [LIKE/PLAY/SONGS/ARTISTS/ALBUMS/DOWNLOADS]
  *                  type: string
  *              user_id:
- *                  description: Album Artist's id
+ *                  description: User's id
  *                  type: string
- *              songs_id:
- *                  description: An array of Favorite's songs id
- *                  type: array
- *                  items:
- *                      type: string
- *              artists_id:
- *                  description: An array of Favorite's artists id
- *                  type: array
- *                  items:
- *                      type: string
- *              albums_id:
- *                  description: An array of Favorite's albums id
- *                  type: array
- *                  items:
- *                      type: string
+ *              target_id:
+ *                  description: Target's id [A Song/Album/Artist]
+ *                  type: string
  *          example:
- *              type: DOWNLOADS  
+ *              action_type: DOWNLOADS  
  *              user_id: 365756yh5gd5356756h
- *              songs_id: [oljhkhjl542j4d6hjdf, gsjf8g6sb5fg357j6f5gd5, dfj4d8y51j2d68y49d8y1k]
- *              artists_id: [sdf456hs51sdfhfd6516]
- *              albums_id: []
+ *              target_id: oljhkhjl542j4d6hjdf
  *      UserLogin:
  *          type: object
  *          required:
