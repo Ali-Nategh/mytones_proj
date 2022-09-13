@@ -367,7 +367,7 @@ export default router;
  *                  description: User's id
  *                  type: string
  *              target_id:
- *                  description: Target's id [A Song/Album/Artist]
+ *                  description: Target's id [Song/Album/Artist]
  *                  type: string
  *          example:
  *              action_type: DOWNLOADS  
