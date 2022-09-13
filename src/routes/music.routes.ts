@@ -289,7 +289,7 @@ router.get('/queryPlaylist/:userId', queryPlaylist);
 /**
  * @swagger
  * /music/updateActions:
- *  patch:
+ *  put:
  *      tags: [Music]
  *      summary: Update Actions (Creates / Deletes if it exists)
  *      requestBody:
@@ -306,7 +306,7 @@ router.get('/queryPlaylist/:userId', queryPlaylist);
  *          '500': 
  *              description: Something went wrong updating the Actions
  */
-router.patch('/updateActions', updateActions);
+router.put('/updateActions', updateActions);
 
 /**
  * @swagger
