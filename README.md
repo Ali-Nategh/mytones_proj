@@ -23,13 +23,13 @@ You can clone this project and use it in a local environment, the things you got
     
     
 2 - After that you have to install required packages with command:
-    ```
+    
         npm install
-    ```  
+    
 If you're on windows, get your WSL bash terminal, install redis and run it with command:
-    ```
+    
         redis-server
-    ```
+    
     
 You might also need to generate the prisma client and migrate database before running the app, do it with:
 
@@ -39,15 +39,16 @@ You might also need to generate the prisma client and migrate database before ru
         npx prisma generate
     
     
-Then you can run the server with nodemon useing the command:
-    ```
+3 - Then you can run the server with nodemon useing the command:
+
+    
         npm run dev
-    ```  
+    
     
 
 
 
-3 - After setting things up you can play around and test the API, the API DOCUMENTATION is located at:
+After setting things up you can play around and test the API, the API DOCUMENTATION is located at:
 
 ```
     /api-docs
