@@ -24,3 +24,7 @@ export function isOperationalError(error: Error) {
 export function sendError(status: number, message: string, res: Response) {
     return res.status(status || 500).send(message)
 }
+
+export function sendOperationalError(error: BaseError, res: Response) {
+    return res.status(error.statusCode).send(error.message)
+}
