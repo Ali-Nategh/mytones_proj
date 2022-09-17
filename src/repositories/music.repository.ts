@@ -257,13 +257,13 @@ export async function PrismaPlaylistSongsQuery(user_id: string, playlist_id: str
 // -------------------------------------------------ACTIONS------------------------------------------------------------ //
 
 export async function PrismaCreateOrDeleteAction(user_id: string, target_id: string, type: Action) {
-    const prev_favorite = await prisma.actions.findUnique({
+    const prev_actions = await prisma.actions.findUnique({
         where: {
             user_id_target_id_action_type: { user_id: user_id, target_id: target_id, action_type: type }
         }
     })
 
-    if (prev_favorite) {
+    if (prev_actions) {
         await prisma.actions.delete({
             where: {
                 user_id_target_id_action_type: { user_id: user_id, target_id: target_id, action_type: type }
@@ -272,21 +272,21 @@ export async function PrismaCreateOrDeleteAction(user_id: string, target_id: str
         return false;
     }
 
-    const favorite = await prisma.actions.create({
+    const actions = await prisma.actions.create({
         data: {
             user_id: user_id,
             target_id: target_id,
             action_type: type,
         }
     });
-    return favorite;
+    return actions;
 }
 
 export async function PrismaActionsQuery(user_id: string, type: Action) {
-    const favorites = await prisma.actions.findMany({
+    const actions = await prisma.actions.findMany({
         where: { AND: [{ user_id: user_id }, { action_type: type }] }
     });
-    return favorites;
+    return actions;
 }
 
 
