@@ -56,7 +56,7 @@ Other sections will be added soon.
 
 (You should have Docker Desktop Installed)
 
-1 - Clone the project, add the ```.env``` file, run ``` docker compose up -d ``` in the root folder (-d is optional to start docker container in background and hide logs from cmd),
+1 - Clone the project, add the ```.env``` file, go to ```user.repository.ts``` file, uncomment the redisClient (socket) if commented, run ``` docker compose up -d ``` in the root folder (-d is optional to start docker container in background and hide logs from cmd),
 then go to the ``` /api-docs ``` page and use ``` GET /admin/migratePrisma ``` and wait for it to be run (this is for setting up the DataBase).
 
 That's it, you're all setup!
@@ -66,13 +66,13 @@ I also included the DATABASE_URL path you need to use in it in the ```docker-com
 
 If something goes wrong repeat step 1 XD
 
-When you're done you can either ``` docker compose down ``` or close the container from the app.
+When you're done you can either ``` docker compose down ``` or close the container from the UI app.
 
 
 ---
 
 
-# APIs:
+# APIs:  documentation in swagger (/api-docs) 
 
 
 - HOME PAGE
@@ -187,9 +187,14 @@ When you're done you can either ``` docker compose down ``` or close the contain
 /music/queryAlbum:
 
     Gets album name or a part of it, Brings back all matching results.
+    
+    
+/music/updateActions:
+
+    Create/Delete an action by user_id, target_id[song/artist/album], and Type[SONGS/ARTISTS/ALBUMS/DOWNLOADS/PLAY/LIKE].
 
 
-/music/queryFavorites:
+/music/queryActions:
 
-    Gets user_id and favorite's Type[SONGS/ARTISTS/ALBUMS/DOWNLOADS], Brings back a favorites list.
+    Gets user_id and actions's Type[SONGS/ARTISTS/ALBUMS/DOWNLOADS/PLAY/LIKE], Brings back an action list.
 
