@@ -26,19 +26,21 @@ You can clone this project and use it in a local environment, the things you got
     ```
         npm install
     ```  
-    Then that you can run the server with nodemon useing the command:
+    In a bash terminal install redis and do command:
+    ```
+        redis-server
+    ```
+    Then you can run the server with nodemon useing the command:
     ```
         npm run dev
     ```  
     
-You might also need to generate the prisma client(not sure if this is required):
-    ```
-        npx prisma generate
-    ```  
-    Or if you want to change or migrate the database:
+You might also need to generate the prisma client and migrate database before running the app, do it with:
     ```
         npx prisma migrate dev --name whateverName
-    ```  
+        
+        npx prisma generate
+    ```   
 
 
 3 - After setting things up you can play around and test the API, the API DOCUMENTATION is located at:
