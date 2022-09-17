@@ -50,7 +50,7 @@ Then you can run the server with nodemon useing the command:
 3 - After setting things up you can play around and test the API, the API DOCUMENTATION is located at:
 
 ```
-/api-docs
+    /api-docs
 ``` 
 
 
