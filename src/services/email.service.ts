@@ -1,5 +1,5 @@
 import { RedisFindOTP, PrismaFindEmail, PrismaVerifyEmail, RedisUpdateOtp } from '../repositories/user.repository';
-import { httpStatusCodes } from '../errors/httpStatusCodes';
+import { httpStatus } from '../errors/httpStatusCodes';
 import { sendError } from '../errors/errorHandler';
 import generateOTP from './otp.service';
 import nodemailer from 'nodemailer';
@@ -45,24 +45,24 @@ export const sendMail = async (params: { to: any; OTP: any; }) => {
 
 export async function verifyEmailService(email: string, otp: string, res: Response) {
     const userEmail = await PrismaFindEmail(email)
-    if (!userEmail) return sendError(httpStatusCodes.NOT_FOUND, "Email Not Found", res);
+    if (!userEmail) return sendError(httpStatus.NOT_FOUND, "Email Not Found", res);
 
     const userOTP = await RedisFindOTP(userEmail.user_id);
-    if (!userOTP) return sendError(httpStatusCodes.NOT_FOUND, "OTP Has Expired, Try Resending The Email Again", res);
+    if (!userOTP) return sendError(httpStatus.NOT_FOUND, "OTP Has Expired, Try Resending The Email Again", res);
 
-    if (userEmail.verified) return sendError(httpStatusCodes.BAD_REQUEST, "Email Already Active", res);
-    if (otp !== userOTP) return sendError(httpStatusCodes.UNAUTHORIZED, "Password Incorrect", res);
+    if (userEmail.verified) return sendError(httpStatus.BAD_REQUEST, "Email Already Active", res);
+    if (otp !== userOTP) return sendError(httpStatus.UNAUTHORIZED, "Password Incorrect", res);
 
     await PrismaVerifyEmail(userEmail.id)
 
-    return res.status(httpStatusCodes.OK).send("Email Successfully Verified");
+    return res.status(httpStatus.OK).send("Email Successfully Verified");
 }
 
 
 export async function resendEmailService(email: string, res: Response) {
     const userEmail = await PrismaFindEmail(email)
-    if (!userEmail) return sendError(httpStatusCodes.NOT_FOUND, "Email Not found", res);
-    if (userEmail.verified) return sendError(httpStatusCodes.BAD_REQUEST, "Email Already Active", res);
+    if (!userEmail) return sendError(httpStatus.NOT_FOUND, "Email Not found", res);
+    if (userEmail.verified) return sendError(httpStatus.BAD_REQUEST, "Email Already Active", res);
 
     const OTP = generateOTP();
     await RedisUpdateOtp(email, OTP);
@@ -70,5 +70,5 @@ export async function resendEmailService(email: string, res: Response) {
     sendMail({ to: email, OTP: OTP });
     console.log([email, OTP]);
 
-    return res.status(httpStatusCodes.OK).send("Email Successfully Sent Again");
+    return res.status(httpStatus.OK).send("Email Successfully Sent Again");
 }

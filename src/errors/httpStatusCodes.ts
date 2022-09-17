@@ -1,4 +1,4 @@
-export const httpStatusCodes = {
+export const httpStatus = {
     OK: 200,
     BAD_REQUEST: 400,
     UNAUTHORIZED: 401,

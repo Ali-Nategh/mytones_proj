@@ -5,7 +5,7 @@ import {
 import { jwtRefreshGen, jwtAccessGen, refreshToken } from "../utils/jwtToken";
 import { logError, isOperationalError } from "../errors/errorHandler";
 import jwt, { VerifyErrors } from 'jsonwebtoken';
-import { httpStatusCodes } from "../errors/httpStatusCodes";
+import { httpStatus } from "../errors/httpStatusCodes";
 import { Request, Response, NextFunction } from "express";
 import { sendMail } from '../services/email.service';
 import generateOTP from '../services/otp.service';
@@ -20,7 +20,7 @@ export async function signUpUserService(req: Request, res: Response) {
 
     if (req.body.age) {
         const userAge = parseInt(req.body.age);
-        if (userAge < 0 || userAge == NaN) return sendError(httpStatusCodes.BAD_REQUEST, "Age Is Invalid", res)
+        if (userAge < 0 || userAge == NaN) return sendError(httpStatus.BAD_REQUEST, "Age Is Invalid", res)
         req.body.age = userAge
     }
 
@@ -29,22 +29,22 @@ export async function signUpUserService(req: Request, res: Response) {
     // Adding user to Database
     try {
         const emailExisting = await PrismaFindEmail(user.email)
-        if (emailExisting) return sendError(httpStatusCodes.BAD_REQUEST, "Email Already Exists", res)
+        if (emailExisting) return sendError(httpStatus.BAD_REQUEST, "Email Already Exists", res)
 
         const user_data = await createUser(user);
         console.log(user_data);
 
         const user_id = await PrismaFindUserByEmail(user.email)
-        if (!user_id) return sendError(httpStatusCodes.INTERNAL_SERVER_ERROR, "User Not Found", res)
+        if (!user_id) return sendError(httpStatus.INTERNAL_SERVER_ERROR, "User Not Found", res)
 
         const userOTP = await RedisFindOTP(user_id.id)
-        if (!userOTP) return sendError(httpStatusCodes.INTERNAL_SERVER_ERROR, "Something went wrong sending password to email", res)
+        if (!userOTP) return sendError(httpStatus.INTERNAL_SERVER_ERROR, "Something went wrong sending password to email", res)
 
         sendMail({ to: user.email, OTP: userOTP })
         return res.status(201).send("User Created Successfully");
     } catch (error) {
         console.error(error);
-        sendError(httpStatusCodes.INTERNAL_SERVER_ERROR, 'Something went wrong creating user', res)
+        sendError(httpStatus.INTERNAL_SERVER_ERROR, 'Something went wrong creating user', res)
 
         // if the Promise is rejected this will catch it
         process.on('unhandledRejection', error => {
@@ -64,11 +64,11 @@ export async function signUpUserService(req: Request, res: Response) {
 export async function loginUserService(req: Request, res: Response) {
     let user = await PrismaFindUserByEmail(req.body.email);
     if (user == null) {
-        return sendError(httpStatusCodes.BAD_REQUEST, 'Cannot find user', res)
+        return sendError(httpStatus.BAD_REQUEST, 'Cannot find user', res)
     };
 
     const userEmail = await PrismaFindEmail(req.body.email)
-    if (!userEmail?.verified) return sendError(httpStatusCodes.UNAUTHORIZED, "Email is not active", res)
+    if (!userEmail?.verified) return sendError(httpStatus.UNAUTHORIZED, "Email is not active", res)
 
     try {
         if (await authorizePass(req.body.password, user.password)) {
@@ -79,11 +79,11 @@ export async function loginUserService(req: Request, res: Response) {
 
             return res.status(200).json({ accessToken: accessToken, refresh_token: refresh_token });
         } else {
-            return sendError(httpStatusCodes.UNAUTHORIZED, "Not Allowed", res)
+            return sendError(httpStatus.UNAUTHORIZED, "Not Allowed", res)
         }
     } catch (err) {
         console.error(err);
-        return sendError(httpStatusCodes.INTERNAL_SERVER_ERROR, 'Something went wrong in user login', res)
+        return sendError(httpStatus.INTERNAL_SERVER_ERROR, 'Something went wrong in user login', res)
     };
 }
 
@@ -96,7 +96,7 @@ export async function logoutUserService(req: Request, res: Response) {
             return sendError(403, 'Token is invalid or has expired, please login again', res)
         }
         const refreshtoken = await RedisFindRefreshToken(sentRefreshToken)
-        if (!refreshtoken) return sendError(httpStatusCodes.UNAUTHORIZED, "Refresh token not found", res)
+        if (!refreshtoken) return sendError(httpStatus.UNAUTHORIZED, "Refresh token not found", res)
 
         await RedisDeactivateRefreshToken(sentRefreshToken)
         return res.status(200).send("Logged out successfully");
@@ -107,14 +107,14 @@ export async function logoutUserService(req: Request, res: Response) {
 export async function refreshUserTokenService(req: Request, res: Response) {
     const sentRefreshToken = req.body.token;
 
-    if (sentRefreshToken == null) return sendError(httpStatusCodes.BAD_REQUEST, "Please include a refresh token", res)
+    if (sentRefreshToken == null) return sendError(httpStatus.BAD_REQUEST, "Please include a refresh token", res)
 
     jwt.verify(sentRefreshToken, process.env.REFRESH_TOKEN_SECRET as string, async (err: VerifyErrors | null, user_id: any) => {
         if (err) {
             return sendError(403, 'Token is invalid or has expired, please login again', res)
         }
         const refreshtoken = await RedisFindRefreshToken(sentRefreshToken)
-        if (!refreshtoken) return sendError(httpStatusCodes.UNAUTHORIZED, "Refresh token is not active, please login", res)
+        if (!refreshtoken) return sendError(httpStatus.UNAUTHORIZED, "Refresh token is not active, please login", res)
 
         return refreshToken(sentRefreshToken, res);
     });
