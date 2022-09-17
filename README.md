@@ -31,17 +31,20 @@ If you're on windows, get your WSL bash terminal, install redis and run it with 
         redis-server
     ```
     
+You might also need to generate the prisma client and migrate database before running the app, do it with:
+
+    
+        npx prisma migrate dev --name whateverName
+    
+        npx prisma generate
+    
+    
 Then you can run the server with nodemon useing the command:
     ```
         npm run dev
     ```  
     
-You might also need to generate the prisma client and migrate database before running the app, do it with:
-    ```
-        npx prisma migrate dev --name whateverName
-        
-        npx prisma generate
-    ```   
+
 
 
 3 - After setting things up you can play around and test the API, the API DOCUMENTATION is located at:
