@@ -26,11 +26,12 @@ You can clone this project and use it in a local environment, the things you got
     ```
         npm install
     ```  
-    In a bash terminal install redis and do command:
+If you're on windows, get your WSL bash terminal, install redis and run it with command:
     ```
         redis-server
     ```
-    Then you can run the server with nodemon useing the command:
+    
+Then you can run the server with nodemon useing the command:
     ```
         npm run dev
     ```  
