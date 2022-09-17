@@ -6,7 +6,6 @@ import {
     PrismaCreateOrDeleteAction, PrismaActionsQuery,
 } from "../repositories/music.repository";
 import { PrismaFindUser } from "../repositories/user.repository";
-import { httpStatus } from "../errors/httpStatusCodes";
 import { Action, Genres } from "@prisma/client";
 import Api400Error from "../errors/api400Error";
 import Api404Error from "../errors/api404Error";
