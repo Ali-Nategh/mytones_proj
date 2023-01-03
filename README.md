@@ -1,3 +1,8 @@
+You can view the Front End of the website on my friends gituhub: https://sajadzshoki.github.io/Mytones/ 
+
+(The Back End is NOT Implemented on this link)
+
+
 # MyTones Project
 
 The backend of a music streaming website
