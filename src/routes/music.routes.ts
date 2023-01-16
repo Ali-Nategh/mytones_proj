@@ -263,13 +263,13 @@ router.patch('/updatePlaylist', updatePlaylist);
 
 /**
  * @swagger
- * /music/queryPlaylist/{userId}:
+ * /music/queryPlaylist/{user_id}:
  *  get:
  *      tags: [Music]
  *      summary: Get a Playlist by user_id
  *      parameters:
  *      - in: path
- *        name: albumName
+ *        name: user_id
  *        required: true
  *        schema:
  *          type: string
@@ -283,7 +283,7 @@ router.patch('/updatePlaylist', updatePlaylist);
  *          '500': 
  *              description: Something went searching for Playlists
  */
-router.get('/queryPlaylist/:userId', queryPlaylist);
+router.get('/queryPlaylist/:user_id', queryPlaylist);
 
 
 /**

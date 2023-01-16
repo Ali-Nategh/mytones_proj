@@ -161,7 +161,7 @@ export async function updateArtistService(req: Request, res: Response) {
 }
 
 export async function queryArtistService(req: Request, res: Response) {
-    const artistName = req.query.songName
+    const artistName = req.query.artistName
     if (!artistName) throw new Api400Error('Artist Name Is Required', "VALIDATION_ERROR")
     const artistsExist = await PrismaArtistsQuery(`${artistName}`)
     if (artistsExist.length == 0) throw new Api404Error("No Matching Artists Found", "ARTIST_NAME_ERROR")
@@ -247,7 +247,7 @@ export async function updateAlbumService(req: Request, res: Response) {
 }
 
 export async function queryAlbumService(req: Request, res: Response) {
-    const albumName = req.query.songName
+    const albumName = req.query.albumName
     if (!albumName) throw new Api400Error('Album Name Is Required', "VALIDATION_ERROR")
     const albumsExist = await PrismaAlbumsQuery(`${albumName}`)
     if (albumsExist.length == 0) throw new Api404Error("No Matching Albums Found", "ALBUM_ID_ERROR")
@@ -288,7 +288,7 @@ export async function addPlaylistService(req: Request, res: Response) {
 export async function updatePlaylistService(req: Request, res: Response) {
     const playlist_id = req.body.playlist_id;
     if (!playlist_id) throw new Api400Error('Playlist ID is required', "VALIDATION_ERROR")
-    const user_id = req.body.playlist_id;
+    const user_id = req.body.user_id;
     if (!user_id) throw new Api400Error('User ID is required', "VALIDATION_ERROR")
 
     const playlistExists = await PrismaFindPlaylist(playlist_id)
