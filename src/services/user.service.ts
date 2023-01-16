@@ -25,7 +25,7 @@ export async function signUpUserService(req: Request, res: Response) {
 
     if (req.body.age) {
         const userAge = parseInt(req.body.age);
-        if (userAge < 0 || userAge == NaN) throw new Api400Error("Age Is Invalid", "AGE_ERROR")
+        if (userAge <= 0 || Number.isNaN(userAge)) throw new Api400Error("Age Is Invalid", "AGE_ERROR")
         req.body.age = userAge
     }
 
@@ -34,7 +34,7 @@ export async function signUpUserService(req: Request, res: Response) {
     // Adding user to Database
     try {
         const emailExisting = await PrismaFindEmail(user.email)
-        if (emailExisting) throw new Api404Error("Email Already Exists", "EMAIL_ERROR")
+        if (emailExisting) throw new Api400Error("Email Already Exists", "EMAIL_ERROR")
 
         const user_data = await createUser(user);
         console.log(user_data);
@@ -48,6 +48,8 @@ export async function signUpUserService(req: Request, res: Response) {
         sendMail({ to: user.email, OTP: userOTP })
         return res.status(201).send("User Created Successfully");
     } catch (error) {
+        if (error instanceof Api400Error) return sendError(httpStatus.BAD_REQUEST, 'Email Already Exists', res)
+
         console.error(error);
         sendError(httpStatus.INTERNAL_SERVER_ERROR, 'Something went wrong creating user', res)
 
