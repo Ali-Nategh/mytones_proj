@@ -25,8 +25,13 @@ const router = require('express').Router();
  *      responses:
  *          '200': 
  *              description: Song successfully found
+ *              schema:
+ *                  type: string
+ *                  format: binary
  *          '400':
- *              description: Bad Request, information invalid
+ *              description: Bad Request, Song not found
+ *          '403':
+ *              description: Token has a problem, either missing or expired
  *          '500': 
  *              description: Something went searching for song
  */
@@ -41,14 +46,15 @@ router.get('/:song_path', authenticateToken, getSong);
  *      security:
  *          - bearerAuth: []
  *          - ApiKeyAuth: []
- *      summary: upload a Song File with path
+ *      summary: Upload a Song File with path (not implemented yet)
  *      parameters:
  *      - in: path
  *        name: song_path
  *        required: true
  *        schema:
  *          type: string
- *        description: The path of the song in public folder
+ *          format: binary
+ *        description: A song to upload to the public folder
  *        example: SongTest1MaraBeboos.mp3
  *      responses:
  *          '200': 

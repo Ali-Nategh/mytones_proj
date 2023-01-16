@@ -110,14 +110,13 @@ export default router;
  *              password: Password
  *              age: 22 (optional)
  *      SongDownload:
- *          type: string
- *          format: binary
+ *          type: object
  *          required:
- *              - song_path
+ *              song_path
  *          properties:
  *              song_path:
  *                  type: string
- *                  description: Song's path in public folder
+ *                  description: Song's path in the public folder
  *          example:
  *              song_path: RandomSong.mp3
  *      Song:
