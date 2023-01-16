@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import Api404Error from '../errors/api404Error'
 const router = require('express').Router();
 import swaggerUi from 'swagger-ui-express'
+import staticRoute from './static.routes';
 import swaggerJsDoc from 'swagger-jsdoc'
 import musicRoute from './music.routes';
 import adminRoute from './admin.routes';
@@ -44,6 +45,7 @@ router.use('/', homeRoute);
 router.use('/user', userRoute)
 router.use('/admin', adminRoute);
 router.use('/music', musicRoute);
+router.use('/static', staticRoute);
 
 
 // Uncought Errors handling
@@ -107,6 +109,17 @@ export default router;
  *              email: JohnDoe@examle.com
  *              password: Password
  *              age: 22 (optional)
+ *      SongDownload:
+ *          type: string
+ *          format: binary
+ *          required:
+ *              - song_path
+ *          properties:
+ *              song_path:
+ *                  type: string
+ *                  description: Song's path in public folder
+ *          example:
+ *              song_path: RandomSong.mp3
  *      Song:
  *          type: object
  *          required:
@@ -441,9 +454,11 @@ export default router;
  *  - name: HomePage
  *    description:
  *  - name: Users
- *    description: The Users managing API
+ *    description: The Users management API
  *  - name: Admin
- *    description: The Admin API
+ *    description: The Admin's API
+ *  - name: Statics
+ *    description: The Static files management API
  *  - name: Music
  *    description: The Music management API
  */
