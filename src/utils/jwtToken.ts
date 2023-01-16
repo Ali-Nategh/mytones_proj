@@ -11,22 +11,26 @@ export function jwtAccessGen(id: string) {
 }
 
 export function jwtVerifyAccessToken(token: string) {
+    var user
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string, (err: VerifyErrors | null, user_id) => {
         if (err) {
             console.error(err);
             throw new Error(err.message)
         }
-        return user_id
+        user = user_id
     });
+    return user
 }
 
 export function jwtVerifyRefreshToken(token: string) {
+    var user
     jwt.verify(token, process.env.REFRESH_TOKEN_SECRET as string, (err: VerifyErrors | null, user_id) => {
         if (err) {
             throw new Error(err.message)
         }
-        return user_id
+        user = user_id
     });
+    return user
 }
 
 export function refreshToken(refreshToken: string, res: Response) {
