@@ -1,8 +1,5 @@
 const router = require('express').Router();
 
-import bodyParser from 'body-parser';
-const urlencodedparser = bodyParser.urlencoded({ extended: false });
-
 import { signUpUser, loginUser, refreshUserToken, logoutUser, validateUserOtp, resendUserOtp } from '../controllers/user.controller';
 import { validateUsername, validateEmail, validatePassword, validateToken, validateOtp } from '../services/validation.service';
 import validationMiddleware from '../middlewares/validateResults.middleware';
@@ -28,7 +25,7 @@ import validationMiddleware from '../middlewares/validateResults.middleware';
  *          '500': 
  *              description: Something went wrong creating user
  */
-router.post('/signup', urlencodedparser, [validateUsername(), validateEmail(), validatePassword()], validationMiddleware, signUpUser);
+router.post('/signup', [validateUsername(), validateEmail(), validatePassword()], validationMiddleware, signUpUser);
 
 
 /**
