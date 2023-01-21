@@ -40,22 +40,22 @@ router.get('/:song_path', authenticateToken, getSong);
 
 /**
  * @swagger
- * /static/{song_path}:
+ * /static/upload:
  *  post:
  *      tags: [Statics]
  *      security:
  *          - bearerAuth: []
  *          - ApiKeyAuth: []
  *      summary: Upload a Song File with path (not implemented yet)
- *      parameters:
- *      - in: path
- *        name: song_path
- *        required: true
- *        schema:
- *          type: string
- *          format: binary
- *        description: A song to upload to the public folder
- *        example: SongTest1MaraBeboos.mp3
+ *      requestBody:
+ *          content:
+ *              multipart/form-data:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          songUpload:
+ *                              type: string
+ *                              format: binary
  *      responses:
  *          '200': 
  *              description: Song successfully found
@@ -64,7 +64,7 @@ router.get('/:song_path', authenticateToken, getSong);
  *          '500': 
  *              description: Something went searching for song
  */
-router.post('/:song_path', authenticateToken, uploadSong);
+router.post('/upload', authenticateToken, uploadSong);
 
 
 export default router;
