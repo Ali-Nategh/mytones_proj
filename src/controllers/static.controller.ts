@@ -1,13 +1,13 @@
 import { logError, sendError, sendOperationalError } from "../errors/errorHandler";
 import { httpStatus } from "../errors/httpStatusCodes";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import BaseError from "../errors/baseError";
-import { getSongService, uploadSongService } from "../services/static.service";
+import { downloadSongService, uploadSongService } from "../services/static.service";
 
 
 export async function getSong(req: Request, res: Response) {
     try {
-        await getSongService(req, res)
+        await downloadSongService(req, res)
     } catch (error: BaseError | any) {
         if (error.name === "TOKEN_ERROR") {
             return sendOperationalError(error, res)
@@ -20,9 +20,9 @@ export async function getSong(req: Request, res: Response) {
     }
 };
 
-export async function uploadSong(req: Request, res: Response) {
+export async function uploadSong(req: Request, res: Response, next: NextFunction) {
     try {
-        await uploadSongService(req, res)
+        await uploadSongService(req, res, next)
     } catch (error: BaseError | any) {
         if (error.name === "TOKEN_ERROR") {
             return sendOperationalError(error, res)
