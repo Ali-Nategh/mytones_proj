@@ -1,6 +1,18 @@
 import authenticateToken from "../middlewares/authenticateToken.middleware";
 import { getSong, uploadSong } from "../controllers/static.controller";
 
+import multer from "multer"
+import path from "path";
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, path.normalize(`${__dirname}/../public`));
+    },
+    filename: (req, file, cb) => {
+        const { originalname } = file;
+        cb(null, originalname);
+    },
+});
+const upload = multer({ storage });
 
 const router = require('express').Router();
 
@@ -46,7 +58,7 @@ router.get('/:song_path', authenticateToken, getSong);
  *      security:
  *          - bearerAuth: []
  *          - ApiKeyAuth: []
- *      summary: Upload a Song File with path (not implemented yet)
+ *      summary: Upload a Song File with file name
  *      requestBody:
  *          content:
  *              multipart/form-data:
@@ -64,7 +76,11 @@ router.get('/:song_path', authenticateToken, getSong);
  *          '500': 
  *              description: Something went searching for song
  */
-router.post('/upload', authenticateToken, uploadSong);
+router.post('/upload'
+    , authenticateToken
+    , upload.single('songUpload')
+    , uploadSong
+);
 
 
 export default router;
