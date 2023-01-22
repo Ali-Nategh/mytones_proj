@@ -5,7 +5,7 @@ import {
 } from "../services/music.service";
 import { logError, sendError, sendOperationalError } from "../errors/errorHandler";
 import { httpStatus } from "../errors/httpStatusCodes";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import BaseError from "../errors/baseError";
 
 
@@ -16,6 +16,8 @@ export async function addMusic(req: Request, res: Response) {
         await addMusicService(req, res)
     } catch (error: BaseError | any) {
         if (error.name === "VALIDATION_ERROR") {
+            return sendOperationalError(error, res)
+        } else if (error.name === "FILE_ERROR") {
             return sendOperationalError(error, res)
         } else if (error.name === "ISRC_ERROR") {
             return sendOperationalError(error, res)

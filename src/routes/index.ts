@@ -123,16 +123,12 @@ export default router;
  *          type: object
  *          required:
  *              - song_name
- *              - file_path
  *              - artist_id
  *              - duration
  *          properties:
  *              song_name:
  *                  type: string
  *                  description: Song's official name
- *              file_path:
- *                  type: string
- *                  description: File path in server
  *              artist_id:
  *                  type: string
  *                  description: Song's artist id
@@ -176,10 +172,9 @@ export default router;
  *                      type: string
  *          example:
  *              song_name: RandomSong
- *              file_path: /media/audio/1/1/9.mp3
  *              artist_id: adsfg546dth1d3t1b68
  *              duration: 2:32
- *              album_id: hyffnyg546dtfjf5lpo
+ *              album_id: OPTIONAL_DeleteIfYouHaventCreatedAnAlbum
  *              copyright_info: Copyright © 2022 All rights reserved (Allin Records)
  *              publisher: John Doe from Allin Records
  *              ISRC: CCXXXYYNNNNN

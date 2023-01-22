@@ -15,13 +15,19 @@ const router = require('express').Router();
  * /music/addMusic:
  *  post:
  *      tags: [Music]
- *      summary: Create a new Song
+ *      summary: Create and Upload a new Song
  *      requestBody:
  *          required: true
  *          content: 
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/Song'
+ *              multipart/form-data:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          songUpload:
+ *                              type: string
+ *                              format: binary
+ *                          Song:
+ *                              $ref: '#/components/schemas/Song'
  *      responses:
  *          '201': 
  *              description: Song was successfully created
