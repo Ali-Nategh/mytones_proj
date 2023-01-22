@@ -1,18 +1,18 @@
 import authenticateToken from "../middlewares/authenticateToken.middleware";
-import { getSong, uploadSong } from "../controllers/static.controller";
+import { getSong, } from "../controllers/static.controller";
 
-import multer from "multer"
-import path from "path";
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.normalize(`${__dirname}/../public`));
-    },
-    filename: (req, file, cb) => {
-        const { originalname } = file;
-        cb(null, originalname);
-    },
-});
-const upload = multer({ storage });
+// import multer from "multer"
+// import path from "path";
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         cb(null, path.normalize(`${__dirname}/../public`));
+//     },
+//     filename: (req, file, cb) => {
+//         const { originalname } = file;
+//         cb(null, originalname);
+//     },
+// });
+// const upload = multer({ storage });
 
 const router = require('express').Router();
 
@@ -25,7 +25,7 @@ const router = require('express').Router();
  *      security:
  *          - bearerAuth: []
  *          - ApiKeyAuth: []
- *      summary: Get a Song File by path
+ *      summary: Download a Song File by path (To upload, use addMusic)
  *      parameters:
  *      - in: path
  *        name: song_path
@@ -47,40 +47,43 @@ const router = require('express').Router();
  *          '500': 
  *              description: Something went searching for song
  */
-router.get('/:song_path', authenticateToken, getSong);
-
-
-/**
- * @swagger
- * /static/upload:
- *  post:
- *      tags: [Statics]
- *      security:
- *          - bearerAuth: []
- *          - ApiKeyAuth: []
- *      summary: Upload a Song File with file name
- *      requestBody:
- *          content:
- *              multipart/form-data:
- *                  schema:
- *                      type: object
- *                      properties:
- *                          songUpload:
- *                              type: string
- *                              format: binary
- *      responses:
- *          '200': 
- *              description: Song successfully found
- *          '400':
- *              description: Bad Request, information invalid
- *          '500': 
- *              description: Something went searching for song
- */
-router.post('/upload'
-    , authenticateToken
-    , upload.single('songUpload')
-    , uploadSong
+router.get('/:song_path',
+    authenticateToken,
+    getSong,
 );
+
+
+// /**
+//  * @swagger
+//  * /static/upload:
+//  *  post:
+//  *      tags: [Statics]
+//  *      security:
+//  *          - bearerAuth: []
+//  *          - ApiKeyAuth: []
+//  *      summary: Upload a Song File with file name
+//  *      requestBody:
+//  *          content:
+//  *              multipart/form-data:
+//  *                  schema:
+//  *                      type: object
+//  *                      properties:
+//  *                          songUpload:
+//  *                              type: string
+//  *                              format: binary
+//  *      responses:
+//  *          '200': 
+//  *              description: Song successfully found
+//  *          '400':
+//  *              description: Bad Request, information invalid
+//  *          '500': 
+//  *              description: Something went searching for song
+//  */
+// router.post('/upload',
+//     // authenticateToken,
+//     upload.single('songUpload'),
+//     uploadSong,
+// );
 
 
 export default router;
