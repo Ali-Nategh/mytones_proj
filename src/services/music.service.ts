@@ -12,23 +12,47 @@ import Api404Error from "../errors/api404Error";
 import Api500Error from "../errors/api500Error";
 import { Request, Response } from "express";
 import { toJson } from "../utils/toJson";
-import console from "console";
+
 
 
 // --------------------------------------------------SONGS------------------------------------------------------------- //
+var multiparty = require('multiparty');
+import fs from 'fs'
+import path from "path";
+import { sendError } from "../errors/errorHandler";
 
 export async function addMusicService(req: Request, res: Response) {
+
+    const form = new multiparty.Form();
+    form.keepExtensions = true;
+    form.uploadDir = path.normalize(`${__dirname}/../public/`)
+
+    const sent_file: any = await new Promise((resolve, reject) => {
+        form.parse(req, function (err: any, fields: any, files: any) {
+            req.body = JSON.parse(fields['Song'][0])
+
+            if (Object.keys(files).length === 0) return sendError(400, 'Please select a file', res)
+
+            if (!err) {
+                resolve(files['songUpload'][0])
+            }
+        });
+    })
+
+    const file_path = sent_file.originalFilename
+    if (!file_path) throw new Api400Error(`File Path Is Required`, "VALIDATION_ERROR")
+    const pathExists = await PrismaFindSongFilepath(file_path);
+    if (pathExists) throw new Api400Error("File Path Already Exists", "PATH_ERROR")
+    fs.rename(sent_file.path, path.normalize(`${__dirname}/../public/${file_path}`), (err) => {
+        if (err) throw new Api400Error(`Something went wrong storing file`, "FILE_ERROR")
+    })
+
     const song_name = req.body.song_name
     if (!song_name) throw new Api400Error(`Song Name Is Required`, "VALIDATION_ERROR")
     const duration = req.body.duration
     if (!duration) throw new Api400Error(`Duration Is Required`, "VALIDATION_ERROR")
     const artist_id = req.body.artist_id;
     if (!artist_id) throw new Api400Error(`Artist ID Is Required`, "VALIDATION_ERROR")
-    const file_path = req.body.file_path
-    if (!file_path) throw new Api400Error(`File Path Is Required`, "VALIDATION_ERROR")
-
-    const pathExists = await PrismaFindSongFilepath(file_path);
-    if (pathExists) throw new Api400Error("File Path Already Exists", "PATH_ERROR")
 
     const ISRC = req.body.ISRC
     if (ISRC) {
@@ -39,19 +63,18 @@ export async function addMusicService(req: Request, res: Response) {
     const artistExists = await PrismaFindArtist(artist_id)
     if (!artistExists) throw new Api404Error(`Artist ID (${artist_id}) Not Found`, "ARTIST_ID_ERROR")
 
-
     const album_id = req.body.album_id;
     if (album_id) {
         const albumExists = await PrismaFindAlbum(album_id)
         if (!albumExists) throw new Api404Error(`Album ID (${album_id}) Not Found`, "ALBUM_ID_ERROR")
     }
 
-    const song = await PrismaCreateSong(song_name, req.body.file_path, artist_id, duration
+    const song = await PrismaCreateSong(song_name, file_path, artist_id, duration
         , album_id, req.body.publisher, ISRC, req.body.copyright_info, req.body.release_date
         , req.body.genres, req.body.producers, req.body.writers, req.body.engineers)
     console.log(song);
 
-    return res.status(201).send("Song Created Successfully");
+    return res.status(201).send("Song Uploaded Successfully");
 }
 
 export async function updateMusicService(req: Request, res: Response) {
