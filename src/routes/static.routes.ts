@@ -25,7 +25,7 @@ const router = require('express').Router();
  *      security:
  *          - bearerAuth: []
  *          - ApiKeyAuth: []
- *      summary: Download a Song File by path (To upload, use addMusic)
+ *      summary: Download a Song File by saved path (To upload, use addMusic)
  *      parameters:
  *      - in: path
  *        name: song_path

@@ -9,7 +9,7 @@ import validationMiddleware from '../middlewares/validateResults.middleware';
 
 /**
  * @swagger
- * /admin/getUsers:
+ * /admin/users:
  *  get:
  *      tags: [Admin]
  *      security:
@@ -34,7 +34,7 @@ router.get('/getUsers', authenticateToken, validationMiddleware, adminGetAllUser
 
 /**
  * @swagger
- * /admin/getUsersTokenless:
+ * /admin/usersTokenless:
  *  get:
  *      tags: [Admin]
  *      summary: Get a list of users without token for tests
@@ -72,7 +72,7 @@ router.get('/migratePrisma', adminMigratePrisma);
 
 /**
  * @swagger
- * /admin/getMusics:
+ * /admin/musics:
  *  get:
  *      tags: [Admin]
  *      summary: Get Literally Everything Music Related

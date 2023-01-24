@@ -112,7 +112,7 @@ router.post('/login', [validateEmail(), validatePassword()], validationMiddlewar
  * /user/refreshToken:
  *  post:
  *      tags: [Users]
- *      summary: Login with a username and password
+ *      summary: refresh AccessTokens using the RefreshToken
  *      requestBody:
  *          required: true
  *          content: 
