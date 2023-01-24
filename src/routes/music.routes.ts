@@ -297,7 +297,7 @@ router.get('/playlist/:user_id', queryPlaylist);
  * /music/actions:
  *  put:
  *      tags: [Music]
- *      summary: Update Actions (Creates / Deletes if it exists)
+ *      summary: Update Actions (Creates, or Deletes if it exists)   [LIKE/PLAY] - [for playlists: SONGS/ARTISTS/ALBUMS/DOWNLOADS]
  *      requestBody:
  *          required: true
  *          content: 
