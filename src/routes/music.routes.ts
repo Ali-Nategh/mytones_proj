@@ -12,7 +12,7 @@ const router = require('express').Router();
 
 /**
  * @swagger
- * /music/addMusic:
+ * /music/song:
  *  post:
  *      tags: [Music]
  *      summary: Create and Upload a new Song
@@ -36,11 +36,11 @@ const router = require('express').Router();
  *          '500': 
  *              description: Something went wrong creating song
  */
-router.post('/addMusic', addMusic);
+router.post('/song', addMusic);
 
 /**
  * @swagger
- * /music/updateMusic:
+ * /music/song:
  *  patch:
  *      tags: [Music]
  *      summary: Update a Song's info ( you can delete unnecessary options from the example )
@@ -58,11 +58,11 @@ router.post('/addMusic', addMusic);
  *          '500': 
  *              description: Something went wrong updating song
  */
-router.patch('/updateMusic', updateMusic);
+router.patch('/song', updateMusic);
 
 /**
  * @swagger
- * /music/queryMusic:
+ * /music/song:
  *  get:
  *      tags: [Music]
  *      summary: Get a list of songs by name
@@ -81,13 +81,13 @@ router.patch('/updateMusic', updateMusic);
  *          '500': 
  *              description: Something went wrong searching for songs
  */
-router.get('/queryMusic', queryMusic);
+router.get('/song', queryMusic);
 
 
 
 /**
  * @swagger
- * /music/addArtist:
+ * /music/artist:
  *  post:
  *      tags: [Music]
  *      summary: Create a new Artist
@@ -105,11 +105,11 @@ router.get('/queryMusic', queryMusic);
  *          '500': 
  *              description: Something went wrong creating Artist
  */
-router.post('/addArtist', addArtist);
+router.post('/artist', addArtist);
 
 /**
  * @swagger
- * /music/updateArtist:
+ * /music/artist:
  *  patch:
  *      tags: [Music]
  *      summary: Update an Artist's info ( you can delete unnecessary options from the example )
@@ -127,11 +127,11 @@ router.post('/addArtist', addArtist);
  *          '500': 
  *              description: Something went wrong updating the artist
  */
-router.patch('/updateArtist', updateArtist);
+router.patch('/artist', updateArtist);
 
 /**
  * @swagger
- * /music/queryArtist:
+ * /music/artist:
  *  get:
  *      tags: [Music]
  *      summary: Get a list of Artists by name
@@ -150,13 +150,13 @@ router.patch('/updateArtist', updateArtist);
  *          '500': 
  *              description: Something went wrong searching for artists
  */
-router.get('/queryArtist', queryArtist);
+router.get('/artist', queryArtist);
 
 
 
 /**
  * @swagger
- * /music/addAlbum:
+ * /music/album:
  *  post:
  *      tags: [Music]
  *      summary: Create a new Album
@@ -174,11 +174,11 @@ router.get('/queryArtist', queryArtist);
  *          '500': 
  *              description: Something went wrong creating Album
  */
-router.post('/addAlbum', addAlbum);
+router.post('/album', addAlbum);
 
 /**
  * @swagger
- * /music/updateAlbum:
+ * /music/album:
  *  patch:
  *      tags: [Music]
  *      summary: Update an Album's info ( you can delete unnecessary options from the example )
@@ -196,11 +196,11 @@ router.post('/addAlbum', addAlbum);
  *          '500': 
  *              description: Something went wrong updating Album
  */
-router.patch('/updateAlbum', updateAlbum);
+router.patch('/album', updateAlbum);
 
 /**
  * @swagger
- * /music/queryAlbum:
+ * /music/album:
  *  get:
  *      tags: [Music]
  *      summary: Get a list of Albums by name
@@ -219,13 +219,13 @@ router.patch('/updateAlbum', updateAlbum);
  *          '500': 
  *              description: Something went wrong searching for albums
  */
-router.get('/queryAlbum', queryAlbum);
+router.get('/album', queryAlbum);
 
 
 
 /**
  * @swagger
- * /music/addPlaylist:
+ * /music/playlist:
  *  post:
  *      tags: [Music]
  *      summary: Create a new Playlist
@@ -243,11 +243,11 @@ router.get('/queryAlbum', queryAlbum);
  *          '500': 
  *              description: Something went wrong creating Playlist
  */
-router.post('/addPlaylist', addPlaylist);
+router.post('/playlist', addPlaylist);
 
 /**
  * @swagger
- * /music/updatePlaylist:
+ * /music/playlist:
  *  patch:
  *      tags: [Music]
  *      summary: Update a Playlist's info ( you can delete unnecessary options from the example )
@@ -265,11 +265,11 @@ router.post('/addPlaylist', addPlaylist);
  *          '500': 
  *              description: Something went wrong updating the playlist
  */
-router.patch('/updatePlaylist', updatePlaylist);
+router.patch('/playlist', updatePlaylist);
 
 /**
  * @swagger
- * /music/queryPlaylist/{user_id}:
+ * /music/playlist/{user_id}:
  *  get:
  *      tags: [Music]
  *      summary: Get a Playlist by user_id
@@ -289,12 +289,12 @@ router.patch('/updatePlaylist', updatePlaylist);
  *          '500': 
  *              description: Something went searching for Playlists
  */
-router.get('/queryPlaylist/:user_id', queryPlaylist);
+router.get('/playlist/:user_id', queryPlaylist);
 
 
 /**
  * @swagger
- * /music/updateActions:
+ * /music/actions:
  *  put:
  *      tags: [Music]
  *      summary: Update Actions (Creates / Deletes if it exists)
@@ -312,11 +312,11 @@ router.get('/queryPlaylist/:user_id', queryPlaylist);
  *          '500': 
  *              description: Something went wrong updating the Actions
  */
-router.put('/updateActions', updateActions);
+router.put('/actions', updateActions);
 
 /**
  * @swagger
- * /music/queryActions:
+ * /music/actions:
  *  get:
  *      tags: [Music]
  *      summary: Get a list of user actions
@@ -341,7 +341,7 @@ router.put('/updateActions', updateActions);
  *          '500': 
  *              description: Something went wrong searching for Actions
  */
-router.get('/queryActions', queryActions);
+router.get('/actions', queryActions);
 
 
 export default router;
