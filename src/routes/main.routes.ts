@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-import { getHome } from '../controllers/home.controller'
+import { getHome } from '../controllers/home.controller';
 
 
 /**

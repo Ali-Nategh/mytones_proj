@@ -1,10 +1,10 @@
 import { logError, returnError } from '../errors/errorHandler';
 import { Request, Response, NextFunction } from 'express';
-import Api404Error from '../errors/api404Error'
+import Api404Error from '../errors/api404Error';
 const router = require('express').Router();
-import swaggerUi from 'swagger-ui-express'
+import swaggerUi from 'swagger-ui-express';
 import staticRoute from './static.routes';
-import swaggerJsDoc from 'swagger-jsdoc'
+import swaggerJsDoc from 'swagger-jsdoc';
 import musicRoute from './music.routes';
 import adminRoute from './admin.routes';
 import userRoute from './user.routes';
@@ -12,7 +12,7 @@ import homeRoute from './main.routes';
 import morgan from 'morgan';
 
 // Logger
-router.use(morgan('dev'))
+router.use(morgan('dev'));
 
 // Documentation
 const swaggerOptions = {
@@ -42,9 +42,9 @@ router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 
 router.use('/', homeRoute);
-router.use('/user', userRoute)
+router.use('/user', userRoute);
 router.use('/admin', adminRoute);
-router.use('/music', musicRoute);
+router.use('/', musicRoute);
 router.use('/static', staticRoute);
 
 
@@ -52,8 +52,8 @@ router.use('/static', staticRoute);
 router.use((req: Request, res: Response, next: NextFunction) => {
     next(new Api404Error('Page not found'));
 })
-router.use(logError)
-router.use(returnError)
+router.use(logError);
+router.use(returnError);
 
 
 export default router;

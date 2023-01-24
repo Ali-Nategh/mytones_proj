@@ -14,7 +14,7 @@ const router = require('express').Router();
  * @swagger
  * /music/song:
  *  post:
- *      tags: [Music]
+ *      tags: [Admin]
  *      summary: Create and Upload a new Song
  *      requestBody:
  *          required: true
@@ -42,7 +42,7 @@ router.post('/song', addMusic);
  * @swagger
  * /music/song:
  *  patch:
- *      tags: [Music]
+ *      tags: [Admin]
  *      summary: Update a Song's info ( you can delete unnecessary options from the example )
  *      requestBody:
  *          required: true
@@ -64,7 +64,7 @@ router.patch('/song', updateMusic);
  * @swagger
  * /music/song:
  *  get:
- *      tags: [Music]
+ *      tags: [Users]
  *      summary: Get a list of songs by name
  *      parameters:
  *      - in: query
@@ -89,7 +89,7 @@ router.get('/song', queryMusic);
  * @swagger
  * /music/artist:
  *  post:
- *      tags: [Music]
+ *      tags: [Admin]
  *      summary: Create a new Artist
  *      requestBody:
  *          required: true
@@ -111,7 +111,7 @@ router.post('/artist', addArtist);
  * @swagger
  * /music/artist:
  *  patch:
- *      tags: [Music]
+ *      tags: [Admin]
  *      summary: Update an Artist's info ( you can delete unnecessary options from the example )
  *      requestBody:
  *          required: true
@@ -133,7 +133,7 @@ router.patch('/artist', updateArtist);
  * @swagger
  * /music/artist:
  *  get:
- *      tags: [Music]
+ *      tags: [Users]
  *      summary: Get a list of Artists by name
  *      parameters:
  *      - in: query
@@ -158,7 +158,7 @@ router.get('/artist', queryArtist);
  * @swagger
  * /music/album:
  *  post:
- *      tags: [Music]
+ *      tags: [Admin]
  *      summary: Create a new Album
  *      requestBody:
  *          required: true
@@ -180,7 +180,7 @@ router.post('/album', addAlbum);
  * @swagger
  * /music/album:
  *  patch:
- *      tags: [Music]
+ *      tags: [Admin]
  *      summary: Update an Album's info ( you can delete unnecessary options from the example )
  *      requestBody:
  *          required: true
@@ -202,7 +202,7 @@ router.patch('/album', updateAlbum);
  * @swagger
  * /music/album:
  *  get:
- *      tags: [Music]
+ *      tags: [Users]
  *      summary: Get a list of Albums by name
  *      parameters:
  *      - in: query
@@ -227,7 +227,7 @@ router.get('/album', queryAlbum);
  * @swagger
  * /music/playlist:
  *  post:
- *      tags: [Music]
+ *      tags: [Admin]
  *      summary: Create a new Playlist
  *      requestBody:
  *          required: true
@@ -249,7 +249,7 @@ router.post('/playlist', addPlaylist);
  * @swagger
  * /music/playlist:
  *  patch:
- *      tags: [Music]
+ *      tags: [Admin]
  *      summary: Update a Playlist's info ( you can delete unnecessary options from the example )
  *      requestBody:
  *          required: true
@@ -271,7 +271,7 @@ router.patch('/playlist', updatePlaylist);
  * @swagger
  * /music/playlist/{user_id}:
  *  get:
- *      tags: [Music]
+ *      tags: [Users]
  *      summary: Get a Playlist by user_id
  *      parameters:
  *      - in: path
@@ -296,8 +296,8 @@ router.get('/playlist/:user_id', queryPlaylist);
  * @swagger
  * /music/actions:
  *  put:
- *      tags: [Music]
- *      summary: Update Actions (Creates, or Deletes if it exists)   [LIKE/PLAY] - [for playlists: SONGS/ARTISTS/ALBUMS/DOWNLOADS]
+ *      tags: [Admin]
+ *      summary: Update Actions (Creates, or Deletes if it exists) - (LIKE/PLAY) - (for user playlists => SONGS/ARTISTS/ALBUMS/DOWNLOADS)
  *      requestBody:
  *          required: true
  *          content: 
@@ -318,7 +318,7 @@ router.put('/actions', updateActions);
  * @swagger
  * /music/actions:
  *  get:
- *      tags: [Music]
+ *      tags: [Admin]
  *      summary: Get a list of user actions
  *      parameters:
  *      - in: query
