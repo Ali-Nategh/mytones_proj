@@ -132,7 +132,7 @@ When you're done you can either ``` docker compose down ``` or close the contain
 
 - ADMIN APIs
 
-/admin/getUsers :
+/admin/users :
 
     Gets an authentication header with an access token (Bearer token), 
     displays a list of all users if token is valid and not expired.
@@ -148,7 +148,7 @@ When you're done you can either ``` docker compose down ``` or close the contain
     Migrates and sets up the database (mostly for docker).
 
 
-/admin/getMusic :
+/admin/music :
 
     Gets a list of everything music related in the database [Songs, Artists, Albums, Playlists, Favorites].
 
@@ -161,52 +161,57 @@ When you're done you can either ``` docker compose down ``` or close the contain
 
 - MUSIC APIs
 
-/music/addMusic :
+POST /music/song :
 
-    Crates a song (required parameters in the /api-docs).
+    Crates and uploads a song (required parameters in the /api-docs).
 
 
-/music/queryMusic:
+GET /music/song:
 
     Gets song name or a part of it, Brings back all matching results.
 
 
-/music/addArtist:
+POST /music/artist:
 
     Crates an Artist (required parameters in the /api-docs).
 
 
-/music/queryArtist:
+GET /music/artist:
 
     Gets artist name or a part of it, Brings back all matching results.
 
 
-/music/addPlaylist:
+POST /music/playlist:
 
     Crates a Playlist (required parameters in the /api-docs).
 
 
-/music/queryPlaylist:
+GET /music/playlist:
 
     Gets user_id, Brings back all user's playlists.
 
 
-/music/addAlbum:
+POST /music/album:
 
     Crates an Album (required parameters in the /api-docs).
 
 
-/music/queryAlbum:
+GET /music/album:
 
     Gets album name or a part of it, Brings back all matching results.
     
     
-/music/updateActions:
+PUT /music/actions:
 
     Create/Delete an action by user_id, target_id[song/artist/album], and Type[SONGS/ARTISTS/ALBUMS/DOWNLOADS/PLAY/LIKE].
 
 
-/music/queryActions:
+GET /music/actions:
 
     Gets user_id and actions's Type[SONGS/ARTISTS/ALBUMS/DOWNLOADS/PLAY/LIKE], Brings back an action list.
+    
+- Static API
+
+GET /static/{songPath}
+    Downloads a song by its path in the server
 
