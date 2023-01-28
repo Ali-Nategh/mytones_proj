@@ -30,7 +30,7 @@ import validationMiddleware from '../middlewares/validateResults.middleware';
  *          '403':
  *              description: Token invalid or expired
  */
-router.get('/getUsers', authenticateToken, validationMiddleware, adminGetAllUsers);
+router.get('/users', authenticateToken, validationMiddleware, adminGetAllUsers);
 
 /**
  * @swagger
@@ -52,7 +52,7 @@ router.get('/getUsers', authenticateToken, validationMiddleware, adminGetAllUser
  *          '403':
  *              description: Token invalid or expired
  */
-router.get('/getUsersTokenless', adminGetAllUsers); // For Testing
+router.get('/usersTokenless', adminGetAllUsers); // For Testing
 
 /**
  * @swagger
@@ -84,7 +84,7 @@ router.get('/migratePrisma', adminMigratePrisma);
  *          '403':
  *              description: Token invalid or expired
  */
-router.get('/getMusics', adminGetMusics);
+router.get('/musics', adminGetMusics);
 
 /**
  * @swagger
