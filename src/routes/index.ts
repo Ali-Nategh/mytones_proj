@@ -44,7 +44,7 @@ router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 router.use('/', homeRoute);
 router.use('/user', userRoute);
 router.use('/admin', adminRoute);
-router.use('/', musicRoute);
+router.use('/music', musicRoute);
 router.use('/static', staticRoute);
 
 
@@ -286,8 +286,8 @@ export default router;
  *              release_date:
  *                  description: Album's release date
  *                  type: string
- *              songs_id:
- *                  description: An array of Album's songs id
+ *              feat_artists:
+ *                  description: An array of Album's featuring artists id
  *                  type: array
  *                  items:
  *                      type: string
@@ -300,7 +300,7 @@ export default router;
  *              album_name: RandomAlbum
  *              artist_id: 365756yh5gd5356756h
  *              release_date: 2017-07-21
- *              songs_id: [oljhkhjl542j4d6hjdf, gsjf8g6sb5fg357j6f5gd5]
+ *              feat_artists_id: [oljhkhjl542j4d6hjdf, gsjf8g6sb5fg357j6f5gd5]
  *              genres: [HIPHOP, RAP]
  *      AlbumUpdate:
  *          type: object
@@ -310,8 +310,8 @@ export default router;
  *              album_id:
  *                  description: Album's ID
  *                  type: string
- *              songs_id:
- *                  description: An array of Album's songs id
+ *              feat_artists:
+ *                  description: An array of Album's feat artists id
  *                  type: array
  *                  items:
  *                      type: string
@@ -322,14 +322,13 @@ export default router;
  *                      type: string
  *          example:
  *              album_id: sdfh65s16th5sf6gh51s
- *              songs_id: [oljhkhjl542j4d6hjdf, gsjf8g6sb5fg357j6f5gd5]
+ *              feat_artists: [oljhkhjl542j4d6hjdf, gsjf8g6sb5fg357j6f5gd5]
  *              genres: [HIPHOP, RAP]
  *      Playlist:
  *          type: object
  *          required:
  *              - playlist_name
  *              - user_id
- *              - songs_id
  *          properties:
  *              playlist_name:
  *                  description: User Playlist Name
@@ -340,7 +339,6 @@ export default router;
  *          example:
  *              playlist_name: MyPlaylist1
  *              user_id: d5j4d6hj15d6y5j4d6gh5
- *              songs_id: [oljhkhjl542j4d6hjdfgh, gsldfkmlhsibjsstiojhsl6]
  *      PlaylistUpdate:
  *          type: object
  *          required:

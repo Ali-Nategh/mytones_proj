@@ -106,6 +106,7 @@ export async function PrismaDeleteEverything() {
     await prisma.playlist.deleteMany({});
     await prisma.artist.deleteMany({});
     await prisma.album.deleteMany({});
+    await prisma.actions.deleteMany({});
 };
 
 export async function RedisFindRefreshToken(refresh_token: string) {

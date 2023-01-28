@@ -29,7 +29,8 @@ export async function addMusicService(req: Request, res: Response) {
 
     const sent_file: any = await new Promise((resolve, reject) => {
         form.parse(req, function (err: any, fields: any, files: any) {
-            req.body = JSON.parse(fields['Song'][0])
+            try { req.body = JSON.parse(fields['Song'][0]) }
+            catch (error) { console.log(error) }
 
             if (Object.keys(files).length === 0) return sendError(400, 'Please select a file', res)
 
@@ -42,7 +43,11 @@ export async function addMusicService(req: Request, res: Response) {
     const file_path = sent_file.originalFilename
     if (!file_path) throw new Api400Error(`File Path Is Required`, "VALIDATION_ERROR")
     const pathExists = await PrismaFindSongFilepath(file_path);
-    if (pathExists) throw new Api400Error("File Path Already Exists", "PATH_ERROR")
+    console.log()
+    if (pathExists) {
+        fs.unlink(sent_file.path, (err) => { if (err) console.error(err) })
+        throw new Api400Error("File Path Already Exists or JSON invalid", "PATH_ERROR")
+    }
     fs.rename(sent_file.path, path.normalize(`${__dirname}/../public/${file_path}`), (err) => {
         if (err) throw new Api400Error(`Something went wrong storing file`, "FILE_ERROR")
     })
@@ -240,15 +245,15 @@ export async function updateAlbumService(req: Request, res: Response) {
     if (!albumExists) throw new Api404Error('Artist ID Not Found', "ALBUM_ID_ERROR")
 
     let noErrors = true;
-    const songs = req.body.songs_id;
+    const feat_artists = req.body.feat_artists;
     const genres = req.body.genres;
 
-    if (songs) {
-        for (let i = 0; i < songs.length; i++) {
-            const song = await PrismaFindSong(songs[i])
-            if (!song) {
+    if (feat_artists) {
+        for (let i = 0; i < feat_artists.length; i++) {
+            const artist = await PrismaFindArtist(feat_artists[i])
+            if (!artist) {
                 noErrors = false;
-                throw new Api404Error(`Song ID (${songs[i]}) Not Found`, "SONG_ID_ERROR")
+                throw new Api404Error(`Artist ID (${feat_artists[i]}) Not Found`, "ARTIST_ID_ERROR")
             }
         }
     }
@@ -261,7 +266,7 @@ export async function updateAlbumService(req: Request, res: Response) {
         }
     }
     if (noErrors) {
-        const album = await PrismaUpdateAlbum(album_id, songs, genres)
+        const album = await PrismaUpdateAlbum(album_id, feat_artists, genres)
         console.log(album);
         return res.status(200).send("Album Updated Successfully");
     } else {
@@ -286,25 +291,10 @@ export async function addPlaylistService(req: Request, res: Response) {
     const user = await PrismaFindUser(user_id)
     if (!user) throw new Api404Error(`User (${user_id}) Not Found`, "USER_ID_ERROR")
 
-    let noErrors = true;
-    const songs = req.body.songs_id;
-    if (songs) {
-        for (let i = 0; i < songs.length; i++) {
-            const song = await PrismaFindSong(songs[i])
-            if (!song) {
-                noErrors = false;
-                throw new Api404Error(`Song ID (${songs[i]}) Not Found`, "SONG_ID_ERROR")
-            }
-        }
-    }
+    const playlist = await PrismaCreatePlaylist(req.body.playlist_name, user_id)
+    console.log(playlist)
+    return res.status(201).send("Playlist Created Successfully");
 
-    if (noErrors) {
-        const playlist = await PrismaCreatePlaylist(req.body.playlist_name, user_id, songs)
-        console.log(playlist)
-        return res.status(201).send("Playlist Created Successfully");
-    } else {
-        throw new Api500Error("Something Went Wrong", "UNKNOWN_ERROR")
-    }
 
 }
 
@@ -320,15 +310,7 @@ export async function updatePlaylistService(req: Request, res: Response) {
     const userExists = await PrismaFindUser(playlist_id)
     if (!userExists) throw new Api404Error('User ID Not Found', "USER_ID_ERROR")
 
-    const songs = req.body.songs_id;
-    if (songs) {
-        for (let i = 0; i < songs.length; i++) {
-            const song = await PrismaFindSong(songs[i])
-            if (!song) throw new Api404Error(`Song ID (${songs[i]}) Not Found`, "SONG_ID_ERROR")
-        }
-    }
-
-    const playlist_update = await PrismaUpdatePlaylist(playlist_id, user_id, req.body.playlist_name, songs)
+    const playlist_update = await PrismaUpdatePlaylist(playlist_id, user_id, req.body.playlist_name)
     console.log(playlist_update)
     return res.status(200).send("Playlist updated Successfully");
 }
