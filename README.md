@@ -52,7 +52,6 @@ You might also need to generate the prisma client and migrate database before ru
     
 
 
-
 After setting things up you can play around and test the API, the API DOCUMENTATION is located at:
 
 ```
