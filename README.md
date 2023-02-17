@@ -1,6 +1,6 @@
 You can view the Front End of the website on my friends gituhub: https://sajadzshoki.github.io/Mytones/ 
 
-(The Back End is NOT Implemented on this link)
+( The Back End is NOT Implemented on this link, will be added soon )
 
 
 # MyTones Project
